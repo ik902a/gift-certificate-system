@@ -20,7 +20,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.ErrorMessageKey;
 import com.epam.esm.exception.InvalidDataException;
-//import com.epam.esm.exception.ParamException;
+import com.epam.esm.exception.ParamException;
 import com.epam.esm.exception.ResourceException;
 
 @RestControllerAdvice
@@ -58,14 +58,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return responseList;
     }
 
-//	@ExceptionHandler(ParamException.class)
-//	@ResponseStatus(HttpStatus.BAD_REQUEST)
-//	public ResponseEntity<IncorrectData> paramExceptionHandler(ParamException exception, Locale locale) {
-//		String errorMessage = messageSource.getMessage(exception.getMessage(), new String[] {}, locale);
-//		String errorCode = HttpStatus.BAD_REQUEST.value() + exception.getErrorCode();
-//		IncorrectData incorrectData = new IncorrectData(errorMessage, errorCode);
-//		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
-//	}
+	@ExceptionHandler(ParamException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<IncorrectData> paramExceptionHandler(ParamException exception, Locale locale) {
+		String errorMessage = messageSource.getMessage(exception.getMessage(), new String[] {}, locale);
+		String errorCode = HttpStatus.BAD_REQUEST.value() + exception.getErrorCode();
+		IncorrectData incorrectData = new IncorrectData(errorMessage, errorCode);
+		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
+	}
     
 //	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 //	@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)

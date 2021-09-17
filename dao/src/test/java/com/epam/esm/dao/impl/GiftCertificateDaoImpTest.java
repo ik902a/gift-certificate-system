@@ -1,16 +1,19 @@
 package com.epam.esm.dao.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +36,8 @@ import com.epam.esm.entity.Tag;
 public class GiftCertificateDaoImpTest {
 	public static Logger log = LogManager.getLogger();
 	GiftCertificate giftCertificate;
+	GiftCertificate giftCertificate5;
+	GiftCertificate giftCertificateAdded;
 	GiftCertificate giftCertificateUpdate;
 	GiftCertificate giftCertificateSort;
 	
@@ -42,45 +47,68 @@ public class GiftCertificateDaoImpTest {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-    @BeforeEach
-    void setUp() {
-        giftCertificate = new GiftCertificate();
-        giftCertificate.setId(1L);
-        giftCertificate.setName("Name1");
-        giftCertificate.setDescription("Some description 1");
-        giftCertificate.setPrice(new BigDecimal("50"));
-        giftCertificate.setDuration(90);
-        giftCertificate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-        giftCertificate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-        
-        giftCertificateUpdate = new GiftCertificate();
-        giftCertificateUpdate.setId(3L);
-        giftCertificateUpdate.setName("NameUpdate");
-        giftCertificateUpdate.setDescription("Some description 1");
-        giftCertificateUpdate.setPrice(new BigDecimal("10"));
-        giftCertificateUpdate.setDuration(120);
-        giftCertificateUpdate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-        giftCertificateUpdate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-        giftCertificateUpdate.setTags(new ArrayList<>());
-        
-        giftCertificateSort = new GiftCertificate();
-        giftCertificateSort.setId(2L);
-        giftCertificateSort.setName("Name2");
-        giftCertificateSort.setDescription("Some description 2");
-        giftCertificateSort.setPrice(new BigDecimal("70"));
-        giftCertificateSort.setDuration(42);
-        giftCertificateSort.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-        giftCertificateSort.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-        giftCertificateSort.setTags(new ArrayList<>());
-    }
+	@BeforeEach
+	void setUp() {
+		giftCertificate = new GiftCertificate();
+		giftCertificate.setId(1L);
+		giftCertificate.setName("First");
+		giftCertificate.setDescription("Some description 1");
+		giftCertificate.setPrice(new BigDecimal("50"));
+		giftCertificate.setDuration(90);
+		giftCertificate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificate5 = new GiftCertificate();
+		giftCertificate5.setName("Fifth");
+		giftCertificate5.setDescription("Some description 5");
+		giftCertificate5.setPrice(new BigDecimal("50"));
+		giftCertificate5.setDuration(90);
+		giftCertificate5.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificate5.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificateAdded = new GiftCertificate();
+		giftCertificateAdded.setId(5L);
+		giftCertificateAdded.setName("Fifth");
+		giftCertificateAdded.setDescription("Some description 5");
+		giftCertificateAdded.setPrice(new BigDecimal("50"));
+		giftCertificateAdded.setDuration(90);
+		giftCertificateAdded.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificateAdded.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificateUpdate = new GiftCertificate();
+		giftCertificateUpdate.setId(3L);
+		giftCertificateUpdate.setName("ThirdUpdate");
+		giftCertificateUpdate.setDescription("Some description 3");
+		giftCertificateUpdate.setPrice(new BigDecimal("10"));
+		giftCertificateUpdate.setDuration(120);
+		giftCertificateUpdate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificateUpdate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificateUpdate.setTags(new ArrayList<>());
+		giftCertificateSort = new GiftCertificate();
+		giftCertificateSort.setId(2L);
+		giftCertificateSort.setName("Second");
+		giftCertificateSort.setDescription("Some description 2");
+		giftCertificateSort.setPrice(new BigDecimal("70"));
+		giftCertificateSort.setDuration(42);
+		giftCertificateSort.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificateSort.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificateSort.setTags(List.of(new Tag(1L, "tag1"), new Tag(3L, "tag3")));
+	}
  
     
     @AfterEach
     void tearDown() {
-      //  JdbcTestUtils.deleteFromTables(jdbcTemplate, "gift_certificates_tags", "tags", "gift_certificates");
         giftCertificate = null;
     	giftCertificateUpdate = null;
     	giftCertificateSort = null;
+    }
+    
+//	@AfterAll
+//	void baseTearDown() {
+//		JdbcTestUtils.deleteFromTables(jdbcTemplate, "gift_certificates_tags", "tags", "gift_certificates");
+//	}
+    
+    @Test
+    public void createPositiveTest() {
+        GiftCertificate actual = giftCertificateDao.create(giftCertificate5);
+        assertEquals(giftCertificateAdded, actual);
     }
     
     @Test
@@ -93,17 +121,29 @@ public class GiftCertificateDaoImpTest {
     
     @Test
     public void findEntityByIdPositiveTest() {
-        GiftCertificate actual = giftCertificateDao.findEntityById(1).get();
+        Optional<GiftCertificate> actual = giftCertificateDao.findEntityById(1);
         log.info(actual.toString());
-		assertEquals(giftCertificate, actual);
+		assertEquals(Optional.of(giftCertificate), actual);
 	}
+    
+    @Test
+    public void findEntityByIdNegativeTest() {
+        Optional<GiftCertificate> actual = giftCertificateDao.findEntityById(15);
+        assertFalse(actual.isPresent());
+    }
 
 	@Test
 	public void findEntityByNamePositiveTest() {
-		GiftCertificate actual = giftCertificateDao.findEntityByName("Name1").get();
+		Optional<GiftCertificate> actual = giftCertificateDao.findEntityByName("First");
 		log.info(actual.toString());
-		assertEquals(giftCertificate, actual);
+		assertEquals(Optional.of(giftCertificate), actual);
 	}
+	
+    @Test
+    public void findEntityByNameNegativeTest() {
+        Optional<GiftCertificate> actual = giftCertificateDao.findEntityByName("Sun");
+        assertFalse(actual.isPresent());
+    }
 
 	@Test
 	public void updatePositiveTest() {
@@ -116,32 +156,40 @@ public class GiftCertificateDaoImpTest {
 		boolean actual = giftCertificateDao.delete(4);
 		assertTrue(actual);
 	}
-    
-    @Test
-    public void deleteGiftCertificateTagPositiveTest() {
-    	boolean actual = giftCertificateDao.deleteGiftCertificateTag(2);
+
+	@Test
+	public void deleteNegativeTest() {
+		assertFalse(giftCertificateDao.delete(42));
+	}
+
+	@Test
+	public void deleteGiftCertificateTagPositiveTest() {
+		boolean actual = giftCertificateDao.deleteGiftCertificateTag(2);
         assertTrue(actual);
+    }
+	
+	@Test
+	public void deleteGiftCertificateTagNegativeTest() {
+		boolean actual = giftCertificateDao.deleteGiftCertificateTag(42);
+		assertFalse(actual);
     }
 
     @Test
     public void findEntityByTagNamePositiveTest() {
-        List<GiftCertificate> actual = giftCertificateDao.findEntityByTagName("tag2", "asc");
-        log.info(actual.get(0).toString());
-        assertEquals(giftCertificateSort, actual);
+        List<GiftCertificate> actual = giftCertificateDao.findEntityByTagName("tag1", "asc");
+        assertEquals(List.of(giftCertificateSort), actual);
     }
  
     @Test
     public void findEntityByPartNamePositiveTest() {
-        List<GiftCertificate> actual = giftCertificateDao.findEntityByPartName("nameU", "asc");//TODO
-        log.info(actual.get(0).toString());
-        assertEquals(giftCertificateUpdate, actual);
+        List<GiftCertificate> actual = giftCertificateDao.findEntityByPartName("Sec", "asc");
+        assertEquals(List.of(giftCertificateSort), actual);
     }
     
     @Test
     public void findEntityByPartDescriptionPositiveTest() {
         List<GiftCertificate> actual = 
-        		giftCertificateDao.findEntityByPartDescription("Some description 2", "asc");//TODO
-        log.info("Find by DESCRIPTION " + actual.get(0).toString());
-        assertEquals(giftCertificateSort, actual);
+        		giftCertificateDao.findEntityByPartDescription("Some description 2", "asc");
+        assertEquals(List.of(giftCertificateSort), actual);
     }
 }

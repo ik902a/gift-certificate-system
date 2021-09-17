@@ -1,7 +1,7 @@
 package com.epam.esm.dao.impl;
 
 import static com.epam.esm.dao.ColumnName.*;
-import static com.epam.esm.dao.OrderType.*;
+import static com.epam.esm.entity.OrderType.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +21,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.epam.esm.dao.GiftCertificateDao;
-import com.epam.esm.dao.OrderType;
+import com.epam.esm.entity.OrderType;
 import com.epam.esm.entity.GiftCertificate;
 
 @Repository
@@ -45,7 +45,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 	private static final String SQL_FIND_GIFT_CERTIFICATE_BY_TAG = "SELECT id, name, description, "
 			+ "price, duration, create_date, last_update_date FROM gift_certificates WHERE id IN "
 			+ "(SELECT gift_certificate_id FROM gift_certificates_tags "
-			+ "JOIN tags ON gift_certificates_tags.tag_id = tags.id WHERE tags.name=?)";
+			+ "JOIN tags ON gift_certificates_tags.tag_id = tags.id WHERE tags.name=?) ORDER BY name ";
 	private static final String SQL_SELECT_GIFT_CERTIFICATE_BY_NAME_AND_ORDER = "SELECT id, name, "
 			+ "description, price, duration, create_date, last_update_date FROM gift_certificates "
 			+ "WHERE name LIKE CONCAT('%',?,'%') ORDER BY name ";
@@ -143,10 +143,9 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     
     @Override
     public List<GiftCertificate> findEntityByPartName(String name, String orderBy) {
-    	log.debug("DAO---------------NAME={}, ORDER={}",  name, orderBy);
         List<GiftCertificate> giftCertificateList = jdbcTemplate.query(
                 addOrder(SQL_SELECT_GIFT_CERTIFICATE_BY_NAME_AND_ORDER, orderBy), 
-                new GiftCertificateRowMapper(), name);        
+                new GiftCertificateRowMapper(), name);     
         return addTags(giftCertificateList);
     }
  

@@ -7,7 +7,6 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.logging.log4j.LogManager;
@@ -19,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.OrderType;
 import com.epam.esm.entity.ParamName;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ErrorCode;
@@ -31,19 +31,12 @@ import com.epam.esm.validator.GiftCertificateValidator;
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 	public static Logger log = LogManager.getLogger();
+	private static final String ORDER_BY = "order_by";
+
 	@Autowired
 	private GiftCertificateDao giftCertificateDao;
 	@Autowired
 	private TagDao tagDao;
-	
-	
-	
-//	@Autowired
-//	public GiftCertificateServiceImpl(GiftCertificateDao giftCertificateDao, TagDao tagDao) {
-//		super();
-//		this.giftCertificateDao = giftCertificateDao;
-//		this.tagDao = tagDao;
-//	}
 
 	@Override
 	@Transactional
@@ -67,40 +60,28 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 				tagDao.findEntityByName(tag.getName()).orElseGet(() -> tagDao.create(tag)).getId()));
 		giftCertificateDao.createGiftCertificateTag(giftCertificate);
 	}
-
-//	@Override
-//	@Transactional
-//	public List<GiftCertificate> findAll() {
-//		List<GiftCertificate> giftCertificateList = giftCertificateDao.findAll();
-//		return giftCertificateList;
-//	}
 	
 	@Override
 	@Transactional
 	public List<GiftCertificate> findAll(Map<String, String> params) {
-		log.debug("Params ---------------{}", params.toString());
 		List<GiftCertificate> giftCertificateList;
 		if (params.isEmpty()) {
 			giftCertificateList = giftCertificateDao.findAll();
 		} else {
-//			String orderBy = params.containsKey() ? params.get("order_by") : "asc";
-//			params.remove("order_by");
-			
-			String orderBy = params.getOrDefault("order_by", "asc");// TODO подправить
-			
+			String orderBy = params.getOrDefault(ORDER_BY, OrderType.ASC.toString().toLowerCase());//Order by default
 			Optional<String> param = params.keySet()
 					.stream()
-					.filter(p -> EnumUtils.isValidEnum(ParamName.class, p))
-					.findFirst();
-			
+					.filter(p -> EnumUtils.isValidEnumIgnoreCase(ParamName.class, p))
+					.findFirst();//Find param for searching
 			if (param.isPresent()) {
-				log.debug("Param ---------------{}", param.get().toString());
-			switch (ParamName.valueOf(params.get(param.get()).toUpperCase())) {
+			switch (ParamName.valueOf(param.get().toUpperCase())) {
 	           case  TAG:
-	        	   giftCertificateList = giftCertificateDao.findEntityByTagName(param.get(), orderBy);
+	        	   giftCertificateList = giftCertificateDao.findEntityByTagName(
+	        			   params.get(param.get()), orderBy);
 	               break;
 	           case NAME:
-	        	   giftCertificateList = giftCertificateDao.findEntityByPartName(param.get(), orderBy);
+	        	   giftCertificateList = giftCertificateDao.findEntityByPartName(
+	        			   params.get(param.get()), orderBy);
 	               break;
 	           case DESCRIPTION:
 	        	   giftCertificateList =giftCertificateDao.findEntityByPartDescription(param.get(), orderBy);

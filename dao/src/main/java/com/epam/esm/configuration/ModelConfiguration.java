@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
@@ -19,6 +20,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @Configuration
 @PropertySource("classpath:database.properties")
+@ComponentScan("com.epam.esm.dao.impl")
 public class ModelConfiguration {
 	public static Logger log = LogManager.getLogger();
 	
@@ -31,7 +33,6 @@ public class ModelConfiguration {
     @Value("${db.url}")
     private String url;
 
-    
     @Value("classpath:gift_certificates_db_script.sql")
     private String createTableScript;
     @Value("classpath:init_db_script.sql")
@@ -64,7 +65,6 @@ public class ModelConfiguration {
 	}
 
     @Bean
-    @Profile("prod")
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }

@@ -21,17 +21,15 @@ import com.epam.esm.entity.Tag;
 
 @Repository
 public class TagDaoImpl implements TagDao {
-	public static final String SQL_CREATE_TAG = "INSERT INTO tags (name) VALUES (?)";
-	public static final String SQL_FIND_ALL_TAGS = "SELECT id, name FROM tags";
-	public static final String SQL_FIND_TAG_BY_ID = "SELECT id, name FROM tags WHERE id=?";
-	public static final String SQL_FIND_TAG_BY_NAME = "SELECT id, name FROM tags WHERE name=?";
-	public static final String SQL_DELETE_TAG = "DELETE FROM tags WHERE id=?";
-	private static final String SQL_FIND_TAG_BY_GIFT_CERTIFICATE = "SELECT t.id, t.name FROM tags t "
-			+ "JOIN gift_certificates_tags gct ON t.id = gct.gift_certificate_id "
-			+ "JOIN gift_certificates gc ON gct.tag_id = gc.id WHERE t.id IN "
+	private static final String SQL_CREATE_TAG = "INSERT INTO tags (name) VALUES (?)";
+	private static final String SQL_FIND_ALL_TAGS = "SELECT id, name FROM tags";
+	private static final String SQL_FIND_TAG_BY_ID = "SELECT id, name FROM tags WHERE id=?";
+	private static final String SQL_FIND_TAG_BY_NAME = "SELECT id, name FROM tags WHERE name=?";
+	private static final String SQL_DELETE_TAG = "DELETE FROM tags WHERE id=?";
+	private static final String SQL_FIND_TAG_BY_GIFT_CERTIFICATE = "SELECT id, name FROM tags WHERE id IN "
 			+ "(SELECT tag_id FROM gift_certificates_tags gct "
-			+ "JOIN gift_certificates gc ON gct.gift_certificate_id = gc.id WHERE gc.id=?)";
-
+			+ "JOIN gift_certificates gc ON gct.gift_certificate_id = gc.id WHERE gc.id=?)";	
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
