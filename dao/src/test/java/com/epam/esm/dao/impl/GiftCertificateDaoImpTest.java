@@ -100,10 +100,10 @@ public class GiftCertificateDaoImpTest {
     	giftCertificateSort = null;
     }
     
-//	@AfterAll
-//	void baseTearDown() {
-//		JdbcTestUtils.deleteFromTables(jdbcTemplate, "gift_certificates_tags", "tags", "gift_certificates");
-//	}
+	@AfterAll
+	void baseTearDown() {
+		JdbcTestUtils.deleteFromTables(jdbcTemplate, "gift_certificates_tags", "tags", "gift_certificates");
+	}
     
     @Test
     public void createPositiveTest() {

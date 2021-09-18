@@ -1,13 +1,28 @@
 package com.epam.esm.entity;
 
+/**
+ * The {@code Tag} class describes the entity tag
+ * 
+ * @author Ihar Klepcha
+ * @see Entity
+ */
 public class Tag extends Entity {
 	private static final long serialVersionUID = 1L;
 	private long id;
     private String name;
     
+    /**
+	 * Constructs a new tag
+	 */
 	public Tag() {
 	}
 
+	/**
+	 * Constructs a new tag with the specified
+	 * 
+	 * @param id {@link long} tag id
+	 * @param name {@link String} name
+	 */
 	public Tag(long id, String name) {
 		this.id = id;
 		this.name = name;

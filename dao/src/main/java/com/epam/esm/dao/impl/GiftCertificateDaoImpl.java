@@ -24,6 +24,12 @@ import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.entity.OrderType;
 import com.epam.esm.entity.GiftCertificate;
 
+/**
+ * The {@code GiftCertificateDaoImpl} class works with gift_certificates table in database
+ * 
+ * @author Ihar Klepcha
+ * @see GiftCertificateDao
+ */
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 	public static Logger log = LogManager.getLogger();
@@ -82,12 +88,12 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 	public void createGiftCertificateTag(GiftCertificate giftCertificate) {
 		giftCertificate.getTags().forEach(
 				tag -> jdbcTemplate.update(SQL_CREATE_GIFT_CERTIFICATE_TAG, 
-						giftCertificate.getId(), tag.getId()));
+						giftCertificate.getId(), 
+						tag.getId()));
 	}
 	
 	@Override
 	public List<GiftCertificate> findAll() {
-		log.info("DAO find all------------------------");
 		List<GiftCertificate> giftCertificateList = jdbcTemplate.query(
 				SQL_FIND_ALL_GIFT_CERTIFICATES, new GiftCertificateRowMapper());
 		return giftCertificateList;
@@ -98,7 +104,6 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 		 Optional<GiftCertificate> giftCertificate = jdbcTemplate.queryForStream(
 				 SQL_FIND_GIFT_CERTIFICATE_BY_ID, new GiftCertificateRowMapper(), id)
 				 .findFirst();
-		 log.debug("DAO Entitty {}", giftCertificate);
 		return giftCertificate;
 	}
 	
@@ -161,19 +166,19 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 		giftCertificateList.forEach(gc -> gc.setTags(tagDao.findEntityByGiftCertificate(gc.getId())));
 		return giftCertificateList;
 	}
-    
-    private String addOrder (String sqlQuery, String orderBy) {
-           switch (OrderType.valueOf(orderBy.toUpperCase())) {
-               case ASC:
-                   sqlQuery += ASC.toString();
-                   break;
-               case DESC:
-            	   sqlQuery += DESC.toString();
-               default:
-                   throw new IllegalArgumentException("Invalid order: {}" + orderBy);//TODO
-           }
-           return sqlQuery;
-    }
+
+	private String addOrder(String sqlQuery, String orderBy) {
+		switch (OrderType.valueOf(orderBy.toUpperCase())) {
+		case ASC:
+			sqlQuery += ASC.toString();
+			break;
+		case DESC:
+			sqlQuery += DESC.toString();
+		default:
+			throw new IllegalArgumentException("Invalid order: {}" + orderBy);// TODO
+		}
+		return sqlQuery;
+	}
 	
     private static final class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
 

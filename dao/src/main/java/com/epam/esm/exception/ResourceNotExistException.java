@@ -1,25 +1,31 @@
 package com.epam.esm.exception;
 
-public class ResourceException extends RuntimeException {
+/**
+ * The {@code ResourceNotExistException} class describes the exception
+ * 
+ * @author Ihar Klepcha
+ * @see RuntimeException
+ */
+public class ResourceNotExistException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
     private String incorrectParameter;
     private String errorCode;
 
-	public ResourceException() {
+	public ResourceNotExistException() {
 		super();
 	}
 
-	public ResourceException(String message) {
+	public ResourceNotExistException(String message) {
 		super(message);
 	}
 
-	public ResourceException(String message, String incorrectParameter, String errorCode) {
+	public ResourceNotExistException(String message, String incorrectParameter, String errorCode) {
 		super(message);
 		this.incorrectParameter = incorrectParameter;
 		this.errorCode = errorCode;
 	}
 
-	public ResourceException(String message, String errorCode) {
+	public ResourceNotExistException(String message, String errorCode) {
 		super(message);
 		this.errorCode = errorCode;
 	}

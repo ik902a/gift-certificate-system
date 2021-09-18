@@ -24,15 +24,20 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.ErrorMessageKey;
 import com.epam.esm.exception.ParamException;
-import com.epam.esm.exception.ResourceException;
+import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.validator.GiftCertificateValidator;
 
+/**
+ * The {@code GiftCertificateServiceImpl} class is responsible for operations with gift certificate
+ * 
+ * @author Ihar Klepcha
+ * @see GiftCertificateService
+ */
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 	public static Logger log = LogManager.getLogger();
 	private static final String ORDER_BY = "order_by";
-
 	@Autowired
 	private GiftCertificateDao giftCertificateDao;
 	@Autowired
@@ -53,51 +58,48 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		}
 		return giftCertificate;
 	}
-	
+
 	private void createGiftCertificateTag(GiftCertificate giftCertificate) {
 		List<Tag> tags = giftCertificate.getTags();
-		tags.forEach(tag -> tag.setId(
-				tagDao.findEntityByName(tag.getName()).orElseGet(() -> tagDao.create(tag)).getId()));
+		tags.forEach(
+				tag -> tag.setId(tagDao.findEntityByName(tag.getName()).orElseGet(
+						() -> tagDao.create(tag)).getId()));
 		giftCertificateDao.createGiftCertificateTag(giftCertificate);
 	}
-	
+
 	@Override
 	@Transactional
-	public List<GiftCertificate> findAll(Map<String, String> params) {
+	public List<GiftCertificate> find(Map<String, String> params) {
 		List<GiftCertificate> giftCertificateList;
 		if (params.isEmpty()) {
 			giftCertificateList = giftCertificateDao.findAll();
 		} else {
-			String orderBy = params.getOrDefault(ORDER_BY, OrderType.ASC.toString().toLowerCase());//Order by default
-			Optional<String> param = params.keySet()
-					.stream()
-					.filter(p -> EnumUtils.isValidEnumIgnoreCase(ParamName.class, p))
-					.findFirst();//Find param for searching
+			String orderBy = params.getOrDefault(ORDER_BY, OrderType.ASC.toString().toLowerCase());// Order by default
+			Optional<String> param = params.keySet().stream()
+					.filter(p -> EnumUtils.isValidEnumIgnoreCase(ParamName.class, p)).findFirst();// Find param for
+																									// searching
 			if (param.isPresent()) {
-			switch (ParamName.valueOf(param.get().toUpperCase())) {
-	           case  TAG:
-	        	   giftCertificateList = giftCertificateDao.findEntityByTagName(
-	        			   params.get(param.get()), orderBy);
-	               break;
-	           case NAME:
-	        	   giftCertificateList = giftCertificateDao.findEntityByPartName(
-	        			   params.get(param.get()), orderBy);
-	               break;
-	           case DESCRIPTION:
-	        	   giftCertificateList =giftCertificateDao.findEntityByPartDescription(param.get(), orderBy);
-	               break;
-	           default:
-	        	   throw new ParamException(ErrorMessageKey.INCORRECT_PARAM.getErrorMessageKey(), 
-	   					ErrorCode.INCORRECT_PARAM.getErrorCode());
+				switch (ParamName.valueOf(param.get().toUpperCase())) {
+				case TAG:
+					giftCertificateList = giftCertificateDao.findEntityByTagName(params.get(param.get()), orderBy);
+					break;
+				case NAME:
+					giftCertificateList = giftCertificateDao.findEntityByPartName(params.get(param.get()), orderBy);
+					break;
+				case DESCRIPTION:
+					giftCertificateList = giftCertificateDao.findEntityByPartDescription(param.get(), orderBy);
+					break;
+				default:
+					throw new ParamException(ErrorMessageKey.INCORRECT_PARAM.getErrorMessageKey(),
+							ErrorCode.INCORRECT_PARAM.getErrorCode());
+				}
+			} else {
+				throw new ParamException(ErrorMessageKey.INCORRECT_PARAM.getErrorMessageKey(),
+						ErrorCode.INCORRECT_PARAM.getErrorCode());
 			}
-		} else {
-			throw new ParamException(ErrorMessageKey.INCORRECT_PARAM.getErrorMessageKey(), 
-					ErrorCode.INCORRECT_PARAM.getErrorCode());
-		}
 		}
 		return giftCertificateList;
 	}
-	
 
 	@Override
 	@Transactional
@@ -108,7 +110,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		if (giftCertificateOptional.isPresent()) {
 			giftCertificate = giftCertificateOptional.get();
 		} else {
-			throw new ResourceException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey(), 
+			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey(), 
 					String.valueOf(id),
 					GIFT_CERTIFICATE_INCORRECT_ID.getErrorCode());
 		}
@@ -129,42 +131,22 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		giftCertificate = giftCertificateDao.update(giftCertificate);
 		return giftCertificate;
 	}
-	
+
 	@Override
 	@Transactional
 	public void delete(long id) {
 		GiftCertificateValidator.validateId(id);
 		if (!giftCertificateDao.delete(id)) {
-			throw new ResourceException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey(), String.valueOf(id),
+			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey(), 
+					String.valueOf(id),
 					GIFT_CERTIFICATE_INCORRECT_ID.getErrorCode());
 		}
-	}
-	
-	@Override
-	@Transactional
-	public List<GiftCertificate> findByTagName(String tagName, String orderBy) {
-		List<GiftCertificate> giftCertificateList = giftCertificateDao.findEntityByTagName(tagName, orderBy);
-		return giftCertificateList;
-	}
-//	
-	@Override
-	@Transactional
-	public List<GiftCertificate> findByPartName(String name, String orderBy) {
-		List<GiftCertificate> giftCertificateList = giftCertificateDao.findEntityByPartName(name, orderBy);
-		return giftCertificateList;
-	}
-
-	@Override
-	@Transactional
-	public List<GiftCertificate> findByPartDescription(String description, String orderBy) {
-		List<GiftCertificate> giftCertificateList = 
-				giftCertificateDao.findEntityByPartDescription(description, orderBy);
-		return giftCertificateList;
 	}
 
 	private void containsName(String name) {
 		if (giftCertificateDao.findEntityByName(name).isPresent()) {
-			throw new ResourceException(NAME_EXIST.getErrorMessageKey(), name,
+			throw new ResourceNotExistException(NAME_EXIST.getErrorMessageKey(),
+					name,
 					GIFT_CERTIFICATE_INCORRECT_DATA.getErrorCode());
 		}
 	}
@@ -187,7 +169,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		giftCertificate.setId(giftCertificateOld.getId());
 	}
 
-	private void updateGiftCertificateTag(GiftCertificate giftCertificateOld, GiftCertificate giftCertificate) {
+	private void updateGiftCertificateTag(GiftCertificate giftCertificateOld, 
+			GiftCertificate giftCertificate) {
 		List<Tag> tagList = giftCertificate.getTags();
 		if (tagList != null && !tagList.equals(giftCertificateOld.getTags())) {
 			if (giftCertificateOld.getTags() != null) {

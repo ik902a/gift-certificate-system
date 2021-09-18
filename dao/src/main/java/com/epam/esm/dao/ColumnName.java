@@ -1,5 +1,10 @@
 package com.epam.esm.dao;
 
+/**
+ * The {@code ColumnName} class describes all column name
+ * 
+ * @author Ihar Klepcha
+ */
 public class ColumnName {
 	//gift_certificates
 	public static final String GIFT_CERTIFICATES_ID = "gift_certificates.id";

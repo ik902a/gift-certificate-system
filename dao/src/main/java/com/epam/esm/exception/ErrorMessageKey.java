@@ -1,7 +1,11 @@
 package com.epam.esm.exception;
 
+/**
+ * The {@code ErrorMessageKey} enum describes errors messages keys
+ * 
+ * @author Ihar Klepcha
+ */
 public enum ErrorMessageKey {
-	
 	RESOURCE_NOT_FOUND_BY_ID ("message.resource_not_found_by_id"),
 	INCORRECT_ID ("message.incorrect_id"),
 	INCORRECT_NAME ("message.incorrect_name"),
@@ -25,4 +29,3 @@ public enum ErrorMessageKey {
 		return errorMessageKey;
 	}
 }
-

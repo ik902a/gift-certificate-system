@@ -12,13 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.exception.ResourceException;
+import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.TagService;
 import com.epam.esm.validator.TagValidator;
 
+/**
+ * The {@code TagServiceImpl} class is responsible for operations with the car
+ * 
+ * @author Ihar Klepcha
+ * @see TagService
+ */
 @Service
 public class TagServiceImpl implements TagService {
-
 	@Autowired
 	private TagDao tagDao;
 
@@ -28,7 +33,7 @@ public class TagServiceImpl implements TagService {
 		String tagName = tag.getName();
 		TagValidator.validateName(tagName);
 		if (tagDao.findEntityByName(tagName).isPresent()) {
-			throw new ResourceException(NAME_EXIST.getErrorMessageKey(), 
+			throw new ResourceNotExistException(NAME_EXIST.getErrorMessageKey(), 
 					tagName, 
 					TAG_INCORRECT_DATA.getErrorCode());
 		}
@@ -45,11 +50,11 @@ public class TagServiceImpl implements TagService {
 
 	@Override
 	@Transactional
-	public Tag findById(long id) {
+	public Tag findById(long id) {//TODO fix test
 		TagValidator.validateId(id);
 		Optional<Tag> tagOptional = tagDao.findEntityById(id);
-		Tag tag = tagOptional.orElseThrow(() -> new ResourceException(
-				RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey(),
+		Tag tag = tagOptional.orElseThrow(
+				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey(),
 				String.valueOf(id), 
 				TAG_INCORRECT_ID.getErrorCode()));
 		return tag;
@@ -60,7 +65,7 @@ public class TagServiceImpl implements TagService {
 	public void delete(long id) {
 		TagValidator.validateId(id);
 		if (!tagDao.delete(id)) {
-			throw new ResourceException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey(), 
+			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey(), 
 					String.valueOf(id),
 					TAG_INCORRECT_ID.getErrorCode());
 		}

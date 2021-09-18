@@ -1,5 +1,11 @@
 package com.epam.esm.exception;
 
+/**
+ * The {@code ParamException} class describes the exception
+ * 
+ * @author Ihar Klepcha
+ * @see RuntimeException
+ */
 public class ParamException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
     private String errorCode;
@@ -10,7 +16,6 @@ public class ParamException extends RuntimeException {
 
 	public ParamException(String message) {
 		super(message);
-
 	}
 
 	public ParamException(String message, String errorCode) {

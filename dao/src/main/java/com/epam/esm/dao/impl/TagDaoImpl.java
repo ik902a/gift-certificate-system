@@ -19,6 +19,12 @@ import org.springframework.stereotype.Repository;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
 
+/**
+ * The {@code TagDaoImpl} class works with tags table in database
+ * 
+ * @author Ihar Klepcha
+ * @see TagDao
+ */
 @Repository
 public class TagDaoImpl implements TagDao {
 	private static final String SQL_CREATE_TAG = "INSERT INTO tags (name) VALUES (?)";

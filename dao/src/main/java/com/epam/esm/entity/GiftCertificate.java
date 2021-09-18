@@ -6,6 +6,12 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+/**
+ * The {@code GiftCertificate} class describes the entity gift certificate
+ * 
+ * @author Ihar Klepcha
+ * @see Entity
+ */
 public class GiftCertificate extends Entity {
 	private static final long serialVersionUID = 1L;
 	private long id;
@@ -19,7 +25,35 @@ public class GiftCertificate extends Entity {
 	private ZonedDateTime lastUpdateDate;
 	private List<Tag> tags;
 
+	/**
+	 * Constructs a new gift certificate
+	 */
 	public GiftCertificate() {
+	}
+
+	/**
+	 * Constructs a new gift certificate with the specified
+	 * 
+	 * @param id {@link long} gift certificate id
+	 * @param name {@link String} name
+	 * @param description {@link String} description
+	 * @param price {@link BigDecimal} price
+	 * @param duration {@link int} duration
+	 * @param createDate {@link ZonedDateTime} create date
+	 * @param lastUodateDate {@link ZonedDateTime} last update date
+	 * @param tags {@link List<Tag>} list tags
+	 */
+	public GiftCertificate(long id, String name, String description, BigDecimal price, int duration,
+			ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<Tag> tags) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.duration = duration;
+		this.createDate = createDate;
+		this.lastUpdateDate = lastUpdateDate;
+		this.tags = tags;
 	}
 
 	public long getId() {
@@ -160,5 +194,4 @@ public class GiftCertificate extends Entity {
 		sb.append(", ").append(tags).append(" }");
 		return sb.toString();
 	}
-
 }
