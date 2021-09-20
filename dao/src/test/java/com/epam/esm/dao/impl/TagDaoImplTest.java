@@ -14,10 +14,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.jdbc.JdbcTestUtils;
 
 import com.epam.esm.configuration.TestConfiguration;
 import com.epam.esm.dao.TagDao;
@@ -28,38 +32,34 @@ import com.epam.esm.entity.Tag;
 @ActiveProfiles(value = "dev")
 public class TagDaoImplTest {
 	public static Logger log = LogManager.getLogger();
-	Tag tag1;
-	Tag tag3;
-	Tag tag4;
-	Tag tagAdded;
-	
+	@Value("classpath:init_db_script.sql")
+	private String initTableScript;
 	
     @Autowired
     private TagDao tagDao;
-    
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
 	@BeforeEach
 	void setUp() {
-		tag1 = new Tag(1L, "tag1");
-		tag3 = new Tag(3L, "tag3");
-		tag4 = new Tag();
-		tag4.setName("tag4");
-		tagAdded = new Tag(4L, "tag4");
+		new EmbeddedDatabaseBuilder()
+		.setType(EmbeddedDatabaseType.H2)
+		.addScript(initTableScript)
+		.build();
 	}
 	
     @AfterEach
     void tearDown() {
-        tag1 = null;
-        tag4 = null;
-    	tagAdded = null;
+    	JdbcTestUtils.deleteFromTables(jdbcTemplate, "gift_certificates_tags", "tags", "gift_certificates");
     }
     
     @Test
     public void createPositiveTest() {
-        Tag actual = tagDao.create(tag4);
-        assertEquals(tagAdded, actual);
+    	Tag tagNew = new Tag();
+		tagNew.setName("tag4");
+		Tag tagCreated = new Tag(4L, "tag4");
+        Tag actual = tagDao.create(tagNew);
+        assertEquals(tagCreated, actual);
     }
     
     @Test
@@ -70,8 +70,9 @@ public class TagDaoImplTest {
     
     @Test
     public void findEntityByIdPositiveTest() {
+    	Tag tag = new Tag(1L, "tag1");
         Optional<Tag> actual = tagDao.findEntityById(1);
-		assertEquals(Optional.of(tag1), actual);
+		assertEquals(Optional.of(tag), actual);
 	}
     
     @Test
@@ -82,8 +83,9 @@ public class TagDaoImplTest {
     
 	@Test
 	public void findEntityByNamePositiveTest() {
+		Tag tag = new Tag(1L, "tag1");
 		Optional<Tag> actual = tagDao.findEntityByName("tag1");
-		assertEquals(Optional.of(tag1), actual);
+		assertEquals(Optional.of(tag), actual);
 	}
 	
     @Test
@@ -104,6 +106,8 @@ public class TagDaoImplTest {
 	
 	@Test
 	public void findEntityByGiftCertificatePositiveTest() {
+		Tag tag1 = new Tag(1L, "tag1");
+		Tag tag3 = new Tag(3L, "tag3");
 		List<Tag> actual = tagDao.findEntityByGiftCertificate(2);
 		assertEquals(List.of(tag1, tag3), actual);
 	}

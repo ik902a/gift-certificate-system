@@ -38,7 +38,7 @@ public class TestConfiguration {
 		log.info("registration embedded data source Bean");
 		return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
 				.addScript(createTableScript)
-				.addScript(initTableScript).build();
+				.build();
 	}
 
     /**

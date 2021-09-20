@@ -4,12 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -27,7 +25,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.epam.esm.configuration.ModelConfiguration;
 import com.epam.esm.configuration.TestConfiguration;
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.TagDao;
@@ -42,12 +39,10 @@ public class GiftCertificateServiceImplTest {
 	GiftCertificate giftCertificate;
 	GiftCertificate giftCertificateUpdate;
 	MockitoSession session;
-	
 	@Mock
 	GiftCertificateDao giftCertificateDao;
 	@Mock
-	TagDao tagDao;
-	    
+	TagDao tagDao; 
 	@InjectMocks
 	GiftCertificateServiceImpl giftCertificateService = new GiftCertificateServiceImpl();
 
@@ -57,7 +52,6 @@ public class GiftCertificateServiceImplTest {
 	            .initMocks(this)
 	            .strictness(Strictness.LENIENT)
 	            .startMocking();
-	    
         giftCertificate = new GiftCertificate();
         giftCertificate.setId(1L);
         giftCertificate.setName("Name1");
@@ -66,7 +60,6 @@ public class GiftCertificateServiceImplTest {
         giftCertificate.setDuration(90);
         giftCertificate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
         giftCertificate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-       
         giftCertificateUpdate = new GiftCertificate();
         giftCertificateUpdate.setId(1L);
         giftCertificateUpdate.setName("NameUpdate");
@@ -83,58 +76,58 @@ public class GiftCertificateServiceImplTest {
         session.finishMocking();
     }
     
-//    @Test
-//    public void createPositiveTest() {
-//        when(giftCertificateDao.create(isA(GiftCertificate.class))).thenReturn(giftCertificate);
-//        GiftCertificate actual = giftCertificateService.create(giftCertificate);
-//        assertEquals(giftCertificate, actual);
-//    }
+    @Test
+    public void createPositiveTest() {
+        when(giftCertificateDao.create(isA(GiftCertificate.class))).thenReturn(giftCertificate);
+        GiftCertificate actual = giftCertificateService.create(giftCertificate);
+        assertEquals(giftCertificate, actual);
+    }
     
-//    @Test
-//    public void findPositiveTest() {
-//        when(giftCertificateDao.find()).thenReturn(List.of(giftCertificate));
-//        List<GiftCertificate> actual = giftCertificateService.find(Collections.<String, String>emptyMap());
-//        assertEquals(List.of(giftCertificate), actual);
-//    }
+    @Test
+    public void findPositiveTest() {
+        when(giftCertificateDao.find(anyMap())).thenReturn(List.of(giftCertificate));
+        List<GiftCertificate> actual = giftCertificateService.find(Collections.<String, String>emptyMap());
+        assertEquals(List.of(giftCertificate), actual);
+    }
 
-//    @Test
-//    public void findByIdPositiveTest() {
-//        when(giftCertificateDao.findEntityById(anyLong())).thenReturn(Optional.of(giftCertificate));
-//        GiftCertificate actual = giftCertificateService.findById(1);
-//        assertEquals(giftCertificate, actual);
-//    }
+    @Test
+    public void findByIdPositiveTest() {
+        when(giftCertificateDao.findEntityById(anyLong())).thenReturn(Optional.of(giftCertificate));
+        GiftCertificate actual = giftCertificateService.findById(1);
+        assertEquals(giftCertificate, actual);
+    }
     
-//    @Test
-//    public void findByIdNegativeTest() {
-//        when(giftCertificateDao.findEntityById(anyLong())).thenReturn(Optional.empty());
-//        assertThrows(ResourceException.class, () -> giftCertificateService.findById(42));
-//    }
-//    
-//    @Test
-//    public void updatePositiveTest() {
-//    	when(giftCertificateDao.findEntityById(anyLong())).thenReturn(Optional.of(giftCertificate));
-//        when(giftCertificateDao.update(isA(GiftCertificate.class))).thenReturn(giftCertificateUpdate);
-//        GiftCertificate actual = giftCertificateService.update(giftCertificateUpdate);
-//        assertEquals(giftCertificateUpdate, actual);
-//    }
-//
-//    @Test
-//    public void updateNegativeTest() {
-//        when(giftCertificateDao.findEntityById(anyLong())).thenReturn(Optional.empty());
-//        assertThrows(ResourceException.class,
-//                () -> giftCertificateService.update(giftCertificate));
-//    }
-//    
-//    @Test
-//    public void deletePositiveTest() {
-//        when(giftCertificateDao.delete(anyLong())).thenReturn(true);
-//        giftCertificateService.delete(1);
-//        verify(giftCertificateDao, times(1)).delete(anyLong());
-//    }
-//
-//    @Test
-//    public void deleteNegativeTest() {
-//        when(giftCertificateDao.delete(anyLong())).thenReturn(false);
-//        assertThrows(ResourceException.class, () -> giftCertificateService.delete(42));
-//    }
+    @Test
+    public void findByIdNegativeTest() {
+        when(giftCertificateDao.findEntityById(anyLong())).thenReturn(Optional.empty());
+        assertThrows(ResourceNotExistException.class, () -> giftCertificateService.findById(42));
+    }
+    
+    @Test
+    public void updatePositiveTest() {
+    	when(giftCertificateDao.findEntityById(anyLong())).thenReturn(Optional.of(giftCertificate));
+        when(giftCertificateDao.update(isA(GiftCertificate.class))).thenReturn(giftCertificateUpdate);
+        GiftCertificate actual = giftCertificateService.update(giftCertificateUpdate);
+        assertEquals(giftCertificateUpdate, actual);
+    }
+
+    @Test
+    public void updateNegativeTest() {
+        when(giftCertificateDao.findEntityById(anyLong())).thenReturn(Optional.empty());
+        assertThrows(ResourceNotExistException.class,
+                () -> giftCertificateService.update(giftCertificate));
+    }
+    
+    @Test
+    public void deletePositiveTest() {
+        when(giftCertificateDao.delete(anyLong())).thenReturn(true);
+        giftCertificateService.delete(1);
+        verify(giftCertificateDao, times(1)).delete(anyLong());
+    }
+
+    @Test
+    public void deleteNegativeTest() {
+        when(giftCertificateDao.delete(anyLong())).thenReturn(false);
+        assertThrows(ResourceNotExistException.class, () -> giftCertificateService.delete(42));
+    }
 }
