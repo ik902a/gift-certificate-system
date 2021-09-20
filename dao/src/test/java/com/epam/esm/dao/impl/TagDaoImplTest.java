@@ -19,12 +19,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.epam.esm.configuration.ModelConfiguration;
+import com.epam.esm.configuration.TestConfiguration;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = ModelConfiguration.class)
+@ContextConfiguration(classes = TestConfiguration.class)
 @ActiveProfiles(value = "dev")
 public class TagDaoImplTest {
 	public static Logger log = LogManager.getLogger();

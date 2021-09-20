@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.commons.lang3.EnumUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.OrderType;
-import com.epam.esm.entity.ParamName;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.exception.ErrorCode;
-import com.epam.esm.exception.ErrorMessageKey;
-import com.epam.esm.exception.ParamException;
 import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.validator.GiftCertificateValidator;
@@ -37,7 +31,6 @@ import com.epam.esm.validator.GiftCertificateValidator;
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 	public static Logger log = LogManager.getLogger();
-	private static final String ORDER_BY = "order_by";
 	@Autowired
 	private GiftCertificateDao giftCertificateDao;
 	@Autowired
@@ -70,34 +63,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	@Override
 	@Transactional
 	public List<GiftCertificate> find(Map<String, String> params) {
-		List<GiftCertificate> giftCertificateList;
-		if (params.isEmpty()) {
-			giftCertificateList = giftCertificateDao.findAll();
-		} else {
-			String orderBy = params.getOrDefault(ORDER_BY, OrderType.ASC.toString().toLowerCase());// Order by default
-			Optional<String> param = params.keySet().stream()
-					.filter(p -> EnumUtils.isValidEnumIgnoreCase(ParamName.class, p)).findFirst();// Find param for
-																									// searching
-			if (param.isPresent()) {
-				switch (ParamName.valueOf(param.get().toUpperCase())) {
-				case TAG:
-					giftCertificateList = giftCertificateDao.findEntityByTagName(params.get(param.get()), orderBy);
-					break;
-				case NAME:
-					giftCertificateList = giftCertificateDao.findEntityByPartName(params.get(param.get()), orderBy);
-					break;
-				case DESCRIPTION:
-					giftCertificateList = giftCertificateDao.findEntityByPartDescription(param.get(), orderBy);
-					break;
-				default:
-					throw new ParamException(ErrorMessageKey.INCORRECT_PARAM.getErrorMessageKey(),
-							ErrorCode.INCORRECT_PARAM.getErrorCode());
-				}
-			} else {
-				throw new ParamException(ErrorMessageKey.INCORRECT_PARAM.getErrorMessageKey(),
-						ErrorCode.INCORRECT_PARAM.getErrorCode());
-			}
-		}
+		List<GiftCertificate> giftCertificateList = giftCertificateDao.find(params);
 		return giftCertificateList;
 	}
 

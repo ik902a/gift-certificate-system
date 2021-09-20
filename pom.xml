@@ -1,18 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.epam.esm</groupId>
-  <artifactId>gift-certificate-system</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  
-  <modules>
-  	<module>rest-api</module>
-  	<module>dao</module>
-  </modules>
-  
-  
-  <dependencies>
-    		<dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.epam.esm</groupId>
+	<artifactId>gift-certificate-system</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>rest-api</module>
+		<module>dao</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>5.3.9</version>
@@ -23,27 +24,22 @@
 			<version>5.3.9</version>
 			<scope>test</scope>
 		</dependency>
-
-
-	<dependency>
-		<groupId>com.fasterxml.jackson.core</groupId>
-		<artifactId>jackson-databind</artifactId>
-		<version>2.12.5</version>
-	</dependency>
-	<dependency>
-		<groupId>com.fasterxml.jackson.datatype</groupId>
-		<artifactId>jackson-datatype-jsr310</artifactId>
-		<version>2.12.5</version>
-	</dependency>
-		
-		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.12.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.12.5</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.12.0</version>
 		</dependency>
-		
-  		<dependency>
+		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
 			<version>2.14.0</version>
@@ -53,13 +49,12 @@
 			<artifactId>log4j-core</artifactId>
 			<version>2.14.0</version>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>3.12.4</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -72,6 +67,5 @@
 			<version>5.7.2</version>
 			<scope>test</scope>
 		</dependency>
-  </dependencies>
-  
+	</dependencies>
 </project>

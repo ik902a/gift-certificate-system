@@ -20,6 +20,12 @@ public class InvalidDataException extends RuntimeException {
 		this.incorrectParameter = incorrectParameter;
 		this.errorCode = errorCode;
 	}
+	
+	public InvalidDataException(List<String> errorMessageKeys, String errorCode) {
+		super();
+		this.errorMessageKeys = errorMessageKeys;
+		this.errorCode = errorCode;
+	}
 
 	public List<String> getErrorMessageKeys() {
 		return errorMessageKeys;

@@ -1,6 +1,5 @@
 package com.epam.esm.dao;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.epam.esm.entity.Entity;
@@ -20,13 +19,6 @@ public interface BaseDao<T extends Entity> {
 	 * @return {@link T} if the record has been created
 	 */
 	T create(T t);
-
-	/**
-	 * Looks for all entity
-	 * 
-	 * @return {@link List} of {@link T} entity received from database
-	 */
-	List<T> findAll();
 
 	/**
 	 * Looks for an entity where entity has id

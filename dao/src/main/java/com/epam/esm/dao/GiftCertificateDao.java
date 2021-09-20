@@ -1,6 +1,7 @@
 package com.epam.esm.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.epam.esm.entity.GiftCertificate;
 
@@ -11,6 +12,14 @@ import com.epam.esm.entity.GiftCertificate;
  * @see BaseDao
  */
 public interface GiftCertificateDao extends BaseDao<GiftCertificate> {
+	
+	/**
+	 * Looks for all entity
+	 * 
+	 * @param  params {@link Map} of {@link String} and {@link String} parameters for searching
+	 * @return {@link List} of {@link T} entity received from database
+	 */
+	List<GiftCertificate> find(Map<String, String> params);
 
 	/**
 	 * Updates an entity 
@@ -34,31 +43,4 @@ public interface GiftCertificateDao extends BaseDao<GiftCertificate> {
 	 * @return boolean true if the record has been deleted, else false
 	 */
 	boolean deleteGiftCertificateTag(long id);
-
-	/**
-	 * Looks for an entity where tag has name
-	 * 
-	 * @param tagName {@link String} name of tag
-	 * @param orderBy {@link String} order
-	 * @return {@link List} of {@link T} entity received from database
-	 */
-	List<GiftCertificate> findEntityByTagName(String tagName, String orderBy);
-	
-	/**
-	 * Looks for an entity where entity has name
-	 * 
-	 * @param name {@link String}  entity name
-	 * @param orderBy {@link String} order
-	 * @return {@link List} of {@link T} entity received from database
-	 */
-	List<GiftCertificate> findEntityByPartName(String name, String orderBy);
-	
-	/**
-	 * Looks for an entity where entity has description
-	 * 
-	 * @param name {@link String}  entity description
-	 * @param orderBy {@link String} order
-	 * @return {@link List} of {@link T} entity received from database
-	 */
-	List<GiftCertificate> findEntityByPartDescription(String description, String orderBy);
 }

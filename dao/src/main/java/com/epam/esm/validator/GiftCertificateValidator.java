@@ -45,7 +45,7 @@ public class GiftCertificateValidator {
 			tagList.forEach(tag -> validateTagName(tag.getName(), errorMessageKeys));
 		}
 		if (!errorMessageKeys.isEmpty()) {
-			throw new InvalidDataException(errorMessageKeys, String.valueOf(giftCertificate.getId()),
+			throw new InvalidDataException(errorMessageKeys, 
 					GIFT_CERTIFICATE_INCORRECT_DATA.getErrorCode());
 		}
 	}
