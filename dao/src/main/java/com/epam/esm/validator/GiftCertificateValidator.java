@@ -53,7 +53,7 @@ public class GiftCertificateValidator {
     /**
   	 * Checks if id is valid
   	 * 
-  	 * @param id {@link long} gift certificate id
+  	 * @param id is gift certificate id
   	 */
 	public static void validateId(long id) {
 		if (id < MIN_ID) {
@@ -103,7 +103,7 @@ public class GiftCertificateValidator {
     /**
   	 * Checks if duration is valid
   	 * 
-  	 * @param duration {@link int} duration
+  	 * @param duration
   	 * @param errorMessageKeys {@link List} of {@link String} list keys messages for warning 
   	 */
 	private static void validateDuration(int duration, List<String> errorMessageKeys) {

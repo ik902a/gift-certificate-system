@@ -24,8 +24,6 @@ public class TestConfiguration {
 	public static Logger log = LogManager.getLogger();
 	@Value("classpath:gift_certificates_db_script.sql")
 	private String createTableScript;
-	@Value("classpath:init_db_script.sql")
-	private String initTableScript;
 	
     /**
      * Creates bean embeddedDataSource for working with database by testing

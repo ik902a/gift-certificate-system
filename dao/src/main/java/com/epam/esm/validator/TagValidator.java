@@ -21,7 +21,7 @@ public class TagValidator {
 	/**
 	 * Checks if id is valid
 	 * 
-	 * @param id {@link long} tag id
+	 * @param id is tag id
 	 */
 	public static void validateId(long id) {
 		if (id < MIN_ID) {

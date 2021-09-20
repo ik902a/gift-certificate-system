@@ -46,7 +46,7 @@ public class GiftCertificateController {
      *
      * @return {@link List} of {@link Tag} founded tags
      */
-	@PostMapping(consumes = "application/json")
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public GiftCertificate createGiftCertificate(@RequestBody GiftCertificate giftCertificate) {
 		GiftCertificate giftCertificateCreated = giftCertificateService.create(giftCertificate);
@@ -62,7 +62,6 @@ public class GiftCertificateController {
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public List<GiftCertificate> getGiftCertificates(@RequestParam Map<String, String> params) {
-		log.info("Get mapping with Params {}", params.toString() );
 		List<GiftCertificate> giftCertificates = giftCertificateService.find(params);
 		return giftCertificates;
 	}

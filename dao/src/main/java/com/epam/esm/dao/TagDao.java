@@ -22,7 +22,7 @@ public interface TagDao extends BaseDao<Tag> {
 	/**
 	 * Looks for an entity where entity has name
 	 * 
-	 * @param giftCertificateId {@link long} gift certificate id
+	 * @param giftCertificateId is gift certificate id
 	 * @return {@link List} of {@link Tag} entity received from database
 	 */
 	List<Tag> findEntityByGiftCertificate(long giftCertificateId);

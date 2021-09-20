@@ -23,7 +23,7 @@ public interface BaseDao<T extends Entity> {
 	/**
 	 * Looks for an entity where entity has id
 	 * 
-	 * @param id {@link long} entity id
+	 * @param id is entity id
 	 * @return {@link Optional} of {@link T} entity received from database
 	 */
 	Optional<T> findEntityById(long id);
@@ -39,7 +39,7 @@ public interface BaseDao<T extends Entity> {
 	/**
 	 * Deletes a record in the corresponding database table
 	 * 
-	 * @param id {@link long} entity id
+	 * @param id is entity id
 	 * @return boolean true if the record has been deleted, else false
 	 */
 	boolean delete(long id);

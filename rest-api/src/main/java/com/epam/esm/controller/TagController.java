@@ -39,7 +39,6 @@ public class TagController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Tag createTag(@RequestBody Tag tag) {
-		log.info("Post mapping Tag");
 		Tag tagCreated = tagService.create(tag);
 		return tagCreated;
 	}
@@ -52,7 +51,6 @@ public class TagController {
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public List<Tag> getAllTags() {
-		log.info("Get mapping Tag");
 		List<Tag> tags = tagService.findAll();
 		return tags;
 	}
