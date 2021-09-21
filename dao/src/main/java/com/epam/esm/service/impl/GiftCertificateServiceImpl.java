@@ -41,7 +41,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	public GiftCertificate create(GiftCertificate giftCertificate) {
 		log.info("CREATE {}", giftCertificate);
 		GiftCertificateValidator.validateGiftCertificate(giftCertificate);
-		containsName(giftCertificate.getName());// Check if DB contains Name
+		throwErrorIfCertificateExist(giftCertificate.getName());
 		ZonedDateTime currentDate = ZonedDateTime.now();
 		giftCertificate.setCreateDate(currentDate);
 		giftCertificate.setLastUpdateDate(currentDate);
@@ -89,7 +89,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		GiftCertificate giftCertificateOld = findById(giftCertificate.getId());
 		String newName = giftCertificate.getName();
 		if (!newName.equals(giftCertificateOld.getName())) {
-			containsName(newName);
+			throwErrorIfCertificateExist(newName);
 		}
 		updateFields(giftCertificateOld, giftCertificate);
 		GiftCertificateValidator.validateGiftCertificate(giftCertificate);
@@ -109,7 +109,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		}
 	}
 
-	private void containsName(String name) {
+	private void throwErrorIfCertificateExist(String name) {
 		if (giftCertificateDao.findEntityByName(name).isPresent()) {
 			throw new ResourceNotExistException(NAME_EXIST.getErrorMessageKey(),
 					name,

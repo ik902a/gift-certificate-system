@@ -1,4 +1,4 @@
-package com.epam.esm.exception_handler;
+package com.epam.esm.exceptionhandler;
 
 /**
  * The {@code IncorrectData} class describes the entity incorrect data for response

@@ -1,4 +1,4 @@
-package com.epam.esm.exception_handler;
+package com.epam.esm.exceptionhandler;
 
 import java.util.ArrayList;
 import java.util.List;

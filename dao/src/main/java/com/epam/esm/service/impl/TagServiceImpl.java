@@ -50,7 +50,7 @@ public class TagServiceImpl implements TagService {
 
 	@Override
 	@Transactional
-	public Tag findById(long id) {//TODO fix test
+	public Tag findById(long id) {
 		TagValidator.validateId(id);
 		Optional<Tag> tagOptional = tagDao.findEntityById(id);
 		Tag tag = tagOptional.orElseThrow(
