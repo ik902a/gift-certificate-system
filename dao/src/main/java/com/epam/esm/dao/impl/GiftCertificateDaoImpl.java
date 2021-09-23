@@ -49,8 +49,6 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	@Autowired
-	private TagDaoImpl tagDao;
 
 	@Override
 	public GiftCertificate create(GiftCertificate giftCertificate) {
@@ -85,7 +83,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 		String sqlQuestion = SelectGiftCertificateSqlQueryBuilder.buildQuery(params);
 		List<GiftCertificate> giftCertificateList = jdbcTemplate.query(
 				sqlQuestion, new GiftCertificateRowMapper());
-		return addTags(giftCertificateList);
+		return giftCertificateList;
 	}
 	
 	@Override
@@ -127,11 +125,6 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     	int row = jdbcTemplate.update(SQL_DELETE_GIFT_CERTIFICATE_TAG, id);
 		return row > 0;
     }
-    
-	private List<GiftCertificate> addTags(List<GiftCertificate> giftCertificateList) {
-		giftCertificateList.forEach(gc -> gc.setTags(tagDao.findEntityByGiftCertificate(gc.getId())));
-		return giftCertificateList;
-	}
 	
     private static final class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
 

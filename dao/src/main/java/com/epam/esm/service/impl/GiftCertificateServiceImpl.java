@@ -18,6 +18,7 @@ import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
+import com.epam.esm.exception.InvalidDataException;
 import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.validator.GiftCertificateValidator;
@@ -64,7 +65,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	@Transactional
 	public List<GiftCertificate> find(Map<String, String> params) {
 		List<GiftCertificate> giftCertificateList = giftCertificateDao.find(params);
-		return giftCertificateList;
+		return addTags(giftCertificateList);
 	}
 
 	@Override
@@ -80,7 +81,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 					String.valueOf(id),
 					GIFT_CERTIFICATE_INCORRECT_ID.getErrorCode());
 		}
-		return giftCertificate;
+		
+		return addTags(giftCertificate);
 	}
 
 	@Override
@@ -88,14 +90,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	public GiftCertificate update(GiftCertificate giftCertificate) {
 		GiftCertificate giftCertificateOld = findById(giftCertificate.getId());
 		String newName = giftCertificate.getName();
-		if (!newName.equals(giftCertificateOld.getName())) {
+		if (newName != null && !newName.equals(giftCertificateOld.getName())) {
 			throwErrorIfCertificateExist(newName);
 		}
-		updateFields(giftCertificateOld, giftCertificate);
+		giftCertificate = updateFields(giftCertificateOld, giftCertificate);
 		GiftCertificateValidator.validateGiftCertificate(giftCertificate);
 		updateGiftCertificateTag(giftCertificateOld, giftCertificate);
 		giftCertificate = giftCertificateDao.update(giftCertificate);
-		return giftCertificate;
+		return addTags(giftCertificate);
 	}
 
 	@Override
@@ -111,13 +113,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
 	private void throwErrorIfCertificateExist(String name) {
 		if (giftCertificateDao.findEntityByName(name).isPresent()) {
-			throw new ResourceNotExistException(NAME_EXIST.getErrorMessageKey(),
+			throw new InvalidDataException(List.of(NAME_EXIST.getErrorMessageKey()),
 					name,
 					GIFT_CERTIFICATE_INCORRECT_DATA.getErrorCode());
 		}
 	}
 
-	private void updateFields(GiftCertificate giftCertificateOld, GiftCertificate giftCertificate) {
+	private GiftCertificate updateFields(GiftCertificate giftCertificateOld, GiftCertificate giftCertificate) {
 		if (giftCertificate.getName() == null) {
 			giftCertificate.setName(giftCertificateOld.getName());
 		}
@@ -133,6 +135,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		giftCertificate.setCreateDate(giftCertificateOld.getCreateDate());
 		giftCertificate.setLastUpdateDate(ZonedDateTime.now());
 		giftCertificate.setId(giftCertificateOld.getId());
+		return giftCertificate;
 	}
 
 	private void updateGiftCertificateTag(GiftCertificate giftCertificateOld, 
@@ -144,5 +147,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 			}
 			createGiftCertificateTag(giftCertificate);
 		}
+	}
+	
+	private List<GiftCertificate> addTags(List<GiftCertificate> giftCertificateList) {
+		giftCertificateList.forEach(gc -> gc.setTags(tagDao.findEntityByGiftCertificate(gc.getId())));
+		return giftCertificateList;
+	}
+	
+	private GiftCertificate addTags(GiftCertificate giftCertificate) {
+		List<Tag> tagList = tagDao.findEntityByGiftCertificate(giftCertificate.getId());
+		giftCertificate.setTags(tagList);
+		return giftCertificate;
 	}
 }
