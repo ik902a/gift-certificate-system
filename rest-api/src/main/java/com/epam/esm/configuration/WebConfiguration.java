@@ -19,37 +19,37 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
  * @author Ihar Klepcha
  * @see WebMvcConfigurer
  */
-@Configuration
-@EnableWebMvc
-@ComponentScan("com.epam.esm")
+//@Configuration
+//@EnableWebMvc
+//@ComponentScan("com.epam.esm")
 public class WebConfiguration implements WebMvcConfigurer {
 	@Value("messages")
 	private String basename;
 	@Value("UTF-8")
 	private String encoding;
 
-	/**
-	 * Creates bean MessageSource for working
-	 *
-	 * @return the message source
-	 */
-	@Bean
-	public MessageSource messageSource() {
-		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-		messageSource.setBasename(basename);
-		messageSource.setDefaultEncoding(encoding);
-		return messageSource;
-	}
-
-	/**
-	 * Creates bean LocaleResolver for working
-	 *
-	 * @return the resolver
-	 */
-	@Bean
-	public LocaleResolver localeResolver() {
-		AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
-		localeResolver.setDefaultLocale(Locale.US);
-		return localeResolver;
-	}
+//	/**
+//	 * Creates bean MessageSource for working
+//	 *
+//	 * @return the message source
+//	 */
+//	@Bean
+//	public MessageSource messageSource() {
+//		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+//		messageSource.setBasename(basename);
+//		messageSource.setDefaultEncoding(encoding);
+//		return messageSource;
+//	}
+//
+//	/**
+//	 * Creates bean LocaleResolver for working
+//	 *
+//	 * @return the resolver
+//	 */
+//	@Bean
+//	public LocaleResolver localeResolver() {
+//		AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
+//		localeResolver.setDefaultLocale(Locale.US);
+//		return localeResolver;
+//	}
 }
