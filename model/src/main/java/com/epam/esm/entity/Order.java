@@ -10,8 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="orders")
+//@Entity
+//@Table(name="orders")
 public class Order extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 	@Id

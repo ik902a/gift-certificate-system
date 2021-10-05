@@ -21,26 +21,26 @@ public interface GiftCertificateDao extends BaseDao<GiftCertificate> {
 	 */
 	List<GiftCertificate> find(Map<String, String> params);
 
-//	/**
-//	 * Updates an entity 
-//	 * 
-//	 * @param  giftCertificate {@link GiftCertificate} entity
-//	 * @return {@link GiftCertificate} entity received from database
-//	 */
-//	GiftCertificate update(GiftCertificate giftCertificate);
-//
+	/**
+	 * Updates an entity 
+	 * 
+	 * @param  giftCertificate {@link GiftCertificate} entity
+	 * @return {@link GiftCertificate} entity received from database
+	 */
+	GiftCertificate update(GiftCertificate giftCertificate);
+
 //	/**
 //	 * Creates a record in the gift_certificates _tag table in database
 //	 * 
 //	 * @param giftCertificate {@link GiftCertificate} entity
 //	 */
 //	void createGiftCertificateTag(GiftCertificate giftCertificate);
-//
-//	/**
-//	 * Deletes a record in the gift_certificates _tag table in database
-//	 * 
-//	 * @param id {@link long} entity id
-//	 * @return boolean true if the record has been deleted, else false
-//	 */
-//	boolean deleteGiftCertificateTag(long id);
+
+	/**
+	 * Deletes a record in the gift_certificates _tag table in database
+	 * 
+	 * @param id {@link long} entity id
+	 * @return boolean true if the record has been deleted, else false
+	 */
+	boolean deleteGiftCertificateTag(long id);
 }

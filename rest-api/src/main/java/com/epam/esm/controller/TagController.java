@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-//import com.epam.esm.entity.Tag;
-//import com.epam.esm.service.TagService;
+import com.epam.esm.entity.Tag;
+import com.epam.esm.service.TagService;
 
 /**
  * The {@code TagController} class contains endpoint of the API
@@ -27,9 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/tags")
 public class TagController {
 	public static Logger log = LogManager.getLogger();
-//	@Autowired
-//	private TagService tagService;
-//
+	@Autowired
+	private TagService tagService;
+
 //    /**
 //     * Creates new tag, processes POST requests at /tags
 //     *
@@ -67,15 +67,15 @@ public class TagController {
 //		Tag tag = tagService.findById(id);
 //		return tag;
 //	}
-//
-//	/**
-//     * Deletes tag by id, processes DELETE requests at /tags/{id}
-//     *
-//     * @param id is the tag id
-//     */
-//	@DeleteMapping("/{id}")
-//	@ResponseStatus(HttpStatus.NO_CONTENT)
-//	public void deleteTag(@PathVariable long id) {
-//		tagService.delete(id);
-//	}
+
+	/**
+     * Deletes tag by id, processes DELETE requests at /tags/{id}
+     *
+     * @param id is the tag id
+     */
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteTag(@PathVariable long id) {
+		tagService.delete(id);
+	}
 }

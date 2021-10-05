@@ -14,6 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * The {@code GiftCertificate} class describes the entity gift certificate
@@ -24,23 +31,33 @@ import javax.persistence.Table;
 @Entity
 @Table(name="gift_certificates")
 public class GiftCertificate extends AbstractEntity {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private long id;
+	@NotBlank
+    @Size(max = 45)
 	@Column(name="name")
 	private String name;
+	@NotBlank
+    @Size(max = 100)
 	@Column(name="description")
 	private String description;
+	@NotNull
+	@Digits(integer = 4, fraction = 2)
 	@Column(name="price")
 	private BigDecimal price;
+	@DecimalMin(value = "1")
+	@DecimalMax(value = "365")
+	@NotNull
 	@Column(name="duration")
 	private int duration;
 	@Column(name = "create_date")
 	private ZonedDateTime createDate;
 	@Column(name = "last_update_date")
 	private ZonedDateTime lastUpdateDate;
+	@Valid
 	@ManyToMany         
 	@JoinTable(name = "gift_certificates_tags"
 		, joinColumns = @JoinColumn(name = "gift_certificate_id")
