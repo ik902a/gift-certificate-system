@@ -40,7 +40,6 @@ public class GiftCertificateQueryBuilder {
 		CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
 		Root<GiftCertificate> giftCertificateRoot = criteriaQuery.from(GiftCertificate.class);
 		List<Predicate> predicateList = new ArrayList<>();
-
 		if (params.containsKey(TAG.toString().toLowerCase())) {
 			predicateList.add(addTags(params.get(TAG.toString().toLowerCase()), criteriaBuilder, giftCertificateRoot));
 		}
@@ -51,6 +50,7 @@ public class GiftCertificateQueryBuilder {
 			predicateList.add(addDescription(params.get(DESCRIPTION.toString().toLowerCase()), criteriaBuilder,
 					giftCertificateRoot));
 		}
+
 		criteriaQuery.select(giftCertificateRoot).where(predicateList.toArray(new Predicate[] {}));
 		Order order = addSort(params, criteriaBuilder, giftCertificateRoot);
 		criteriaQuery.orderBy(order);

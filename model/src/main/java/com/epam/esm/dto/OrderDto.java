@@ -1,35 +1,33 @@
-package com.epam.esm.entity;
+package com.epam.esm.dto;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
-@Entity
-@Table(name="orders")
-public class Order extends AbstractEntity {
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
+import org.springframework.hateoas.RepresentationModel;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+public class OrderDto extends RepresentationModel<OrderDto> {
 	private long id;
-	@Column(name = "date")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	private ZonedDateTime date;
-	@Column(name="cost")
+	@NotNull
+	@Digits(integer = 4, fraction = 2)
 	private BigDecimal cost;
-	@Column(name="number")
+	@NotBlank
+	@Positive
 	private int number;
 	
-	public Order() {
+	public OrderDto() {
 		super();
 	}
 
-	public Order(long id, ZonedDateTime date, BigDecimal cost, int number) {
+	public OrderDto(long id, ZonedDateTime date, BigDecimal cost, int number) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -72,7 +70,7 @@ public class Order extends AbstractEntity {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((cost == null) ? 0 : cost.hashCode());
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
@@ -84,11 +82,11 @@ public class Order extends AbstractEntity {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Order other = (Order) obj;
+		OrderDto other = (OrderDto) obj;
 		if (cost == null) {
 			if (other.cost != null)
 				return false;
@@ -109,7 +107,7 @@ public class Order extends AbstractEntity {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nOrder{ id=").append(id);
+		sb.append("\nOrderDTO{ id=").append(id);
 		sb.append(", date=").append(date);
 		sb.append(", cost=").append(cost);
 		sb.append(", number=").append(number).append(" }");

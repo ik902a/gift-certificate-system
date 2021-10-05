@@ -7,10 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name = "users")
+@Entity
+@Table(name = "users")
 public class User extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -19,6 +21,8 @@ public class User extends AbstractEntity {
     private long id;
     @Column(name = "login")
     private String login;
+    @OneToMany
+    @JoinColumn(name = "users_id")
     private List<Order> orders;
     
 	public User() {
@@ -79,7 +83,8 @@ public class User extends AbstractEntity {
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("\nUser{ id=").append(id);
-		sb.append(", login=").append(login).append(" }");
+		sb.append(", login=").append(login);
+		sb.append(", ").append(orders).append(" }");
 		return sb.toString();
 	}
 }

@@ -74,9 +74,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	public List<GiftCertificateDto> find(Map<String, String> params) {
 		log.info("FIND GiftCertificate BY PARAMS Service {}", params);
 		List<GiftCertificate> giftCertificateList = giftCertificateDao.find(params);
+		log.info("FIND GiftCertificate Service {}", giftCertificateList.get(0).toString());
+		
 	    List<GiftCertificateDto> giftCertificateDtoList = giftCertificateList.stream()
                 .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
                 .collect(Collectors.toList());
+	    log.info("FIND GiftCertificate DTO Service {}", giftCertificateDtoList.get(0).toString());
+	    
 		return giftCertificateDtoList;
 //		return addTags(giftCertificateList);//TODO Deprecate
 	}

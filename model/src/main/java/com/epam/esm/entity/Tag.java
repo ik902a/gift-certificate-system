@@ -6,8 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 /**
  * The {@code Tag} class describes the entity tag
@@ -23,8 +21,6 @@ public class Tag extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
-	@NotBlank
-    @Size(max = 45)
     @Column(name = "name")
     private String name;
     

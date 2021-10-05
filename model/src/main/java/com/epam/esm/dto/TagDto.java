@@ -1,9 +1,14 @@
 package com.epam.esm.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import org.springframework.hateoas.RepresentationModel;
 
 public class TagDto extends RepresentationModel<TagDto> {
 	private long id;
+	@NotBlank
+    @Size(max = 45)
     private String name;
     
     

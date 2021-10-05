@@ -51,7 +51,7 @@ public class GiftCertificateController {
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public GiftCertificateDto createGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
+	public GiftCertificateDto createGiftCertificate(@RequestBody @Valid GiftCertificateDto giftCertificateDto) {
 		GiftCertificateDto giftCertificateCreatedDto = giftCertificateService.create(giftCertificateDto);
 		log.info("Controller CREATE GiftCertificate is worcking");
 		return giftCertificateCreatedDto;
@@ -78,6 +78,7 @@ public class GiftCertificateController {
 	public List<GiftCertificateDto> getGiftCertificates(@RequestParam Map<String, String> params) {
 		List<GiftCertificateDto> giftCertificatesDto = giftCertificateService.find(params);
 		log.info("GET mapping. Controller is worcking");
+		log.info("FIND GiftCertificate DTO Controller {}", giftCertificatesDto.get(0).toString());
 		return giftCertificatesDto;
 	}
 	

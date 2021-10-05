@@ -5,20 +5,38 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
 	private long id;
+	@NotBlank
+    @Size(max = 45)
     private String name;
+	@NotBlank
+    @Size(max = 100)
     private String description;
+	@NotNull
+	@Digits(integer = 4, fraction = 2)
     private BigDecimal price;
+	@DecimalMin(value = "1")
+	@DecimalMax(value = "365")
+	@NotNull
     private int duration;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private ZonedDateTime createDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private ZonedDateTime lastUpdateDate;
+    @Valid
     private List<TagDto> tags;
     
 	public GiftCertificateDto() {
