@@ -4,6 +4,7 @@ package com.epam.esm.service.impl;
 //import static com.epam.esm.exception.ErrorMessageKey.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -56,8 +57,8 @@ public class TagServiceImpl implements TagService {
 
 	@Override
 	@Transactional
-	public List<TagDto> findAll() {
-		List<Tag> tagList = tagDao.findAll();
+	public List<TagDto> findAll(Map<String, String> params) {
+		List<Tag> tagList = tagDao.find(params);
 		 List<TagDto> tagDtoList = tagList.stream()
 	                .map(tag -> modelMapper.map(tag, TagDto.class))
 	                .collect(Collectors.toList());

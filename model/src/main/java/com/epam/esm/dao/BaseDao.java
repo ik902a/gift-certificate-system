@@ -1,5 +1,7 @@
 package com.epam.esm.dao;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.epam.esm.entity.AbstractEntity;
@@ -19,6 +21,14 @@ public interface BaseDao<T extends AbstractEntity> {
 	 * @return {@link T} if the record has been created
 	 */
 	T create(T t);
+	
+	/**
+	 * Looks for all entity
+	 * 
+	 * @param  params {@link Map} of {@link String} and {@link String} parameters for searching
+	 * @return {@link List} of {@link T} entity received from database
+	 */
+	List<T> find(Map<String, String> params);
 
 	/**
 	 * Looks for an entity where entity has id

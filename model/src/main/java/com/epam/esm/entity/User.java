@@ -22,7 +22,7 @@ public class User extends AbstractEntity {
     @Column(name = "login")
     private String login;
     @OneToMany
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private List<Order> orders;
     
 	public User() {

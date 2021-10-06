@@ -2,26 +2,18 @@ package com.epam.esm.dao.impl;
 
 //import static com.epam.esm.dao.ColumnName.*;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.epam.esm.dao.TagDao;
-import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
+import com.epam.esm.util.PaginationParamExtractor;
 
 /**
  * The {@code TagDaoImpl} class works with tags table in database
@@ -31,16 +23,28 @@ import com.epam.esm.entity.Tag;
  */
 @Repository
 public class TagDaoImpl implements TagDao {
+	private static final String FIND_ALL_TAGS = "FROM Tag";
 	private static final String FIND_TAG_BY_NAME = "FROM Tag WHERE name=:name";
 	private static final String DELETE_TAG = "DELETE FROM Tag WHERE id=:id";
-	
-	@PersistenceContext
-    private EntityManager entityManager;
 
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Override
+	public Tag create(Tag tag) {
+		entityManager.persist(tag);
+		return tag;
+	}
+    
     @Override
-    public Tag create(Tag tag) {
-        entityManager.persist(tag);
-        return tag;
+    public List<Tag> find(Map<String, String> params) {
+    	int offset = PaginationParamExtractor.getOffset(params);
+		int limit = PaginationParamExtractor.getLimit(params);
+        List<Tag> tagList = entityManager.createQuery(FIND_ALL_TAGS, Tag.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+        return tagList;
     }
     
 	@Override
@@ -65,14 +69,16 @@ public class TagDaoImpl implements TagDao {
 	        .executeUpdate();
 			return row > 0;
 	}
-	
+
 	@Override
 	public List<Tag> findEntityByGiftCertificate(long giftCertificateId) {
-		List<Tag> tagList = List.of(entityManager.find(Tag.class, 4));
-//				jdbcTemplate.query(
-//				SQL_FIND_TAG_BY_GIFT_CERTIFICATE, new TagRowMapper(), giftCertificateId);
-		return tagList;
+		// TODO Auto-generated method stub
+		return null;
 	}
+	
+	
+	
+
 	
 	
 //	private static final String SQL_CREATE_TAG = "INSERT INTO tags (name) VALUES (?)";
@@ -82,28 +88,6 @@ public class TagDaoImpl implements TagDao {
 //	private static final String SQL_FIND_TAG_BY_GIFT_CERTIFICATE = "SELECT id, name FROM tags WHERE id IN "
 //			+ "(SELECT tag_id FROM gift_certificates_tags gct "
 //			+ "JOIN gift_certificates gc ON gct.gift_certificate_id = gc.id WHERE gc.id=?)";	
-	
-
-
-
-//
-//	@Override
-//	public List<Tag> findAll() {
-//		List<Tag> tagList = jdbcTemplate.query(SQL_FIND_ALL_TAGS, new TagRowMapper());
-//		return tagList;
-//	}
-
-
-	@Override
-	public List<Tag> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	
-	
-	
 	
 	
 //	@Override

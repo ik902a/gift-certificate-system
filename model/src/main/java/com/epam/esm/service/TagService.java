@@ -1,6 +1,7 @@
 package com.epam.esm.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.Tag;
@@ -25,7 +26,7 @@ public interface TagService {
 	 * 
 	 * @return {@link List} of {@link Tag} received from database
 	 */
-	List<TagDto> findAll();
+	List<TagDto> findAll(Map<String, String> params);
 
 	/**
 	 * Finds tag by id

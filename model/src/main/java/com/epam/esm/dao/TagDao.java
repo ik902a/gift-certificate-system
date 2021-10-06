@@ -11,13 +11,6 @@ import com.epam.esm.entity.Tag;
  * @see BaseDao
  */
 public interface TagDao extends BaseDao<Tag> {
-	
-	/**
-	 * Looks for all entity
-	 * 
-	 * @return {@link List} of {@link Tag} entity received from database
-	 */
-	List<Tag> findAll();
 
 	/**
 	 * Looks for an entity where entity has name

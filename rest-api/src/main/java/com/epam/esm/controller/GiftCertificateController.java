@@ -52,9 +52,9 @@ public class GiftCertificateController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public GiftCertificateDto createGiftCertificate(@RequestBody @Valid GiftCertificateDto giftCertificateDto) {
-		GiftCertificateDto giftCertificateCreatedDto = giftCertificateService.create(giftCertificateDto);
+		GiftCertificateDto giftCertificateDtoCreated = giftCertificateService.create(giftCertificateDto);
 		log.info("Controller CREATE GiftCertificate is worcking");
-		return giftCertificateCreatedDto;
+		return giftCertificateDtoCreated;
 	
 //	@RequestMapping(value="/register", method=POST)
 //	public String processRegistration(@Valid Spitter spitter,

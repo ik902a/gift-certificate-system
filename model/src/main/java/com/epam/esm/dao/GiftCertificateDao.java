@@ -12,14 +12,6 @@ import com.epam.esm.entity.GiftCertificate;
  * @see BaseDao
  */
 public interface GiftCertificateDao extends BaseDao<GiftCertificate> {
-	
-	/**
-	 * Looks for all entity
-	 * 
-	 * @param  params {@link Map} of {@link String} and {@link String} parameters for searching
-	 * @return {@link List} of {@link T} entity received from database
-	 */
-	List<GiftCertificate> find(Map<String, String> params);
 
 	/**
 	 * Updates an entity 

@@ -33,7 +33,7 @@ public interface GiftCertificateService {
 	/**
 	 * Finds gift certificate by id
 	 * 
-	 * @param id {@link long} gift certificate id
+	 * @param id is gift certificate id
 	 * @return {@link GiftCertificate} received from database
 	 */
 	GiftCertificateDto findById(long id);
