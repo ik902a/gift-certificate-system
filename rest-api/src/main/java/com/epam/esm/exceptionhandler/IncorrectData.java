@@ -1,5 +1,7 @@
 package com.epam.esm.exceptionhandler;
 
+import java.util.List;
+
 /**
  * The {@code IncorrectData} class describes the entity incorrect data for response
  * 
@@ -7,7 +9,7 @@ package com.epam.esm.exceptionhandler;
 
  */
 public class IncorrectData {
-    private String errorMessage;
+    private List<String> errorMessage;
     private String errorCode;
     
 	/**
@@ -23,17 +25,17 @@ public class IncorrectData {
 	 * @param errorMessage {@link String} error message
 	 * @param errorCode {@link String} error code
 	 */
-	public IncorrectData(String errorMessage, String errorCode) {
+	public IncorrectData(List<String> errorMessage, String errorCode) {
 		super();
 		this.errorMessage = errorMessage;
 		this.errorCode = errorCode;
 	}
 
-	public String getErrorMessage() {
+	public List<String> getErrorMessage() {
 		return errorMessage;
 	}
 
-	public void setErrorMessage(String errorMessage) {
+	public void setErrorMessage(List<String> errorMessage) {
 		this.errorMessage = errorMessage;
 	}
 

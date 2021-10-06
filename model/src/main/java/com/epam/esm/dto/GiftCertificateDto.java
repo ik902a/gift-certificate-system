@@ -14,9 +14,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+@Component
 public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
 	private long id;
 	@NotBlank

@@ -19,7 +19,7 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
  * @author Ihar Klepcha
  * @see WebMvcConfigurer
  */
-//@Configuration
+@Configuration
 //@EnableWebMvc
 //@ComponentScan("com.epam.esm")
 public class WebConfiguration implements WebMvcConfigurer {
@@ -28,19 +28,19 @@ public class WebConfiguration implements WebMvcConfigurer {
 	@Value("UTF-8")
 	private String encoding;
 
-//	/**
-//	 * Creates bean MessageSource for working
-//	 *
-//	 * @return the message source
-//	 */
-//	@Bean
-//	public MessageSource messageSource() {
-//		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-//		messageSource.setBasename(basename);
-//		messageSource.setDefaultEncoding(encoding);
-//		return messageSource;
-//	}
-//
+	/**
+	 * Creates bean MessageSource for working
+	 *
+	 * @return the message source
+	 */
+	@Bean
+	public MessageSource messageSource() {
+		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+		messageSource.setBasename(basename);
+		messageSource.setDefaultEncoding(encoding);
+		return messageSource;
+	}
+
 //	/**
 //	 * Creates bean LocaleResolver for working
 //	 *

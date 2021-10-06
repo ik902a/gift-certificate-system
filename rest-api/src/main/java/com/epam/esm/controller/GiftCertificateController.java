@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +33,7 @@ import com.epam.esm.entity.Tag;
  * 
  * @author Ihar Klepcha
  */
+@Validated
 @RestController
 @RequestMapping("/gift-certificates")
 public class GiftCertificateController {
@@ -51,21 +55,24 @@ public class GiftCertificateController {
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public GiftCertificateDto createGiftCertificate(@RequestBody @Valid GiftCertificateDto giftCertificateDto) {
+	public GiftCertificateDto createGiftCertificate(@Valid @RequestBody GiftCertificateDto giftCertificateDto) {
 		GiftCertificateDto giftCertificateDtoCreated = giftCertificateService.create(giftCertificateDto);
 		log.info("Controller CREATE GiftCertificate is worcking");
 		return giftCertificateDtoCreated;
-	
-//	@RequestMapping(value="/register", method=POST)
-//	public String processRegistration(@Valid Spitter spitter,
-//	Errors errors) {
-//	if (errors.hasErrors()) {
-//	return "registerForm";
-//	}
-//	spitterRepository.save(spitter);
-//	return "redirect:/spitter/" + spitter.getUsername();
-//	}
 	}
+//	@PostMapping
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public GiftCertificateDto createGiftCertificate(
+//			@Valid @RequestBody GiftCertificateDto giftCertificateDto, Errors errors) {
+//		if (errors.hasErrors()) {
+//			return giftCertificateDto;
+//			}
+//		GiftCertificateDto giftCertificateDtoCreated = giftCertificateService.create(giftCertificateDto);
+//		log.info("Controller CREATE GiftCertificate is worcking");
+//		return giftCertificateDtoCreated;
+//	}
+
+
 
 	/**
      * Gets gift certificates by params, processes GET requests at /gift-certificates
@@ -90,7 +97,7 @@ public class GiftCertificateController {
      */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public GiftCertificateDto getGiftCertificateById(@PathVariable long id) {
+	public GiftCertificateDto getGiftCertificateById(@Positive @PathVariable long id) {
 		GiftCertificateDto giftCertificateDto = giftCertificateService.findById(id);
 		return giftCertificateDto;
 	}
