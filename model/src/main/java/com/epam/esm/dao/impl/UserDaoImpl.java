@@ -28,7 +28,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User create(User user) {
 		entityManager.persist(user);
-		return null;
+		return user;
 	}
 
 	@Override

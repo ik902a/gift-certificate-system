@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.entity.Tag;
@@ -49,9 +50,10 @@ public class GiftCertificateController {
 	}
 
 	/**
-     * Gets tags, processes GET requests at /tags
+     * Creates new gift certificate, processes POST requests at /gift-certificates
      *
-     * @return {@link List} of {@link Tag} founded tags
+     * @param giftCertificateDto {@link GiftCertificateDto} gift certificate DTO
+     * @return {@link GiftCertificateDto} created gift certificate DTO
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

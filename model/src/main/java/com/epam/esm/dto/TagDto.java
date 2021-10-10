@@ -4,7 +4,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TagDto extends RepresentationModel<TagDto> {
 	private long id;
 	@NotBlank

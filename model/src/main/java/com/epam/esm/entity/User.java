@@ -1,5 +1,6 @@
 package com.epam.esm.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -7,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -21,20 +21,29 @@ public class User extends AbstractEntity {
     private long id;
     @Column(name = "login")
     private String login;
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    private List<Order> orders;
+    
+    @OneToMany(mappedBy="user")
+    private List<Order> orderList;
     
 	public User() {
 		super();
 	}
 
-	public User(long id, String login) {
+    public User(long id, String login, List<Order> orderList) {
 		super();
 		this.id = id;
 		this.login = login;
+		this.orderList = orderList;
 	}
 
+	public void addOrder(Order order) {
+        if (orderList == null) {
+            orderList = new ArrayList<>();
+        }
+        orderList.add(order);
+        order.setUser(this);
+    }
+	
 	public long getId() {
 		return id;
 	}
@@ -43,12 +52,20 @@ public class User extends AbstractEntity {
 		this.id = id;
 	}
 
-	public String getName() {
+	public String getLogin() {
 		return login;
 	}
 
-	public void setName(String name) {
-		this.login = name;
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public List<Order> getOrderList() {
+		return orderList;
+	}
+
+	public void setOrderList(List<Order> orderList) {
+		this.orderList = orderList;
 	}
 
 	@Override
@@ -57,6 +74,7 @@ public class User extends AbstractEntity {
 		int result = 1;
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
+		result = prime * result + ((orderList == null) ? 0 : orderList.hashCode());
 		return result;
 	}
 
@@ -76,15 +94,19 @@ public class User extends AbstractEntity {
 				return false;
 		} else if (!login.equals(other.login))
 			return false;
+		if (orderList == null) {
+			if (other.orderList != null)
+				return false;
+		} else if (!orderList.equals(other.orderList))
+			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("\nUser{ id=").append(id);
-		sb.append(", login=").append(login);
-		sb.append(", ").append(orders).append(" }");
+		sb.append(", login=").append(login).append(" }");
 		return sb.toString();
 	}
 }

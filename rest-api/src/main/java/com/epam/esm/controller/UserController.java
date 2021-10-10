@@ -58,7 +58,7 @@ public class UserController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public UserDto user(@RequestBody @Valid UserDto userDto) {
+	public UserDto createUser(@RequestBody @Valid UserDto userDto) {
 		UserDto userDtoCreated = userService.create(userDto);
 		log.info("Controller CREATE User is worcking");
 		return userDtoCreated;

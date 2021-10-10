@@ -17,8 +17,10 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Component
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
 	private long id;
 	@NotBlank
@@ -38,6 +40,7 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     private ZonedDateTime createDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private ZonedDateTime lastUpdateDate;
+    
     @Valid
     private List<TagDto> tags;
     
@@ -45,8 +48,8 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
 		super();
 	}
 
-	public GiftCertificateDto(long id, String name, String description, BigDecimal price, int duration,
-			ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<TagDto> tags) {
+    public GiftCertificateDto(long id, String name, String description, BigDecimal price, int duration, 
+    		ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<TagDto> tags) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -57,8 +60,8 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
 		this.lastUpdateDate = lastUpdateDate;
 		this.tags = tags;
 	}
-    
-    public void addTag(TagDto tag) {
+
+	public void addTag(TagDto tag) {
         if (tags == null) {
             tags = new ArrayList<>();
         }

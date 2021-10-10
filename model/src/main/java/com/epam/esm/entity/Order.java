@@ -2,12 +2,20 @@ package com.epam.esm.entity;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -18,23 +26,38 @@ public class Order extends AbstractEntity {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private long id;
-	@Column(name = "date")
+	@Column(name="date")
 	private ZonedDateTime date;
 	@Column(name="cost")
 	private BigDecimal cost;
-	@Column(name="number")
-	private int number;
+	
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
+	
+	@OneToMany(mappedBy="order")     
+	private List<GiftCertificateOrder> giftCertificateOrderList;
 	
 	public Order() {
 		super();
 	}
 
-	public Order(long id, ZonedDateTime date, BigDecimal cost, int number) {
+	public Order(long id, ZonedDateTime date, BigDecimal cost, User user,
+			List<GiftCertificateOrder> giftCertificateOrderList) {
 		super();
 		this.id = id;
 		this.date = date;
 		this.cost = cost;
-		this.number = number;
+		this.user = user;
+		this.giftCertificateOrderList = giftCertificateOrderList;
+	}
+
+	public void addGiftCertificateOrder(GiftCertificateOrder giftCertificateOrder) {
+		if (giftCertificateOrderList == null) {
+			giftCertificateOrderList = new ArrayList<>();
+		}
+		giftCertificateOrderList.add(giftCertificateOrder);
+		giftCertificateOrder.setOrder(this);
 	}
 
 	public long getId() {
@@ -61,12 +84,20 @@ public class Order extends AbstractEntity {
 		this.cost = cost;
 	}
 
-	public int getNumber() {
-		return number;
+	public User getUser() {
+		return user;
 	}
 
-	public void setNumber(int number) {
-		this.number = number;
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<GiftCertificateOrder> getGiftCertificateOrderList() {
+		return giftCertificateOrderList;
+	}
+
+	public void setGiftCertificateOrderList(List<GiftCertificateOrder> giftCertificateOrderList) {
+		this.giftCertificateOrderList = giftCertificateOrderList;
 	}
 
 	@Override
@@ -75,8 +106,9 @@ public class Order extends AbstractEntity {
 		int result = 1;
 		result = prime * result + ((cost == null) ? 0 : cost.hashCode());
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result + ((giftCertificateOrderList == null) ? 0 : giftCertificateOrderList.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + number;
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
 
@@ -99,20 +131,24 @@ public class Order extends AbstractEntity {
 				return false;
 		} else if (!date.equals(other.date))
 			return false;
+		if (giftCertificateOrderList == null) {
+			if (other.giftCertificateOrderList != null)
+				return false;
+		} else if (!giftCertificateOrderList.equals(other.giftCertificateOrderList))
+			return false;
 		if (id != other.id)
 			return false;
-		if (number != other.number)
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append("\nOrder{ id=").append(id);
-		sb.append(", date=").append(date);
-		sb.append(", cost=").append(cost);
-		sb.append(", number=").append(number).append(" }");
-		return sb.toString();
+		return "Order [id=" + id + ", date=" + date + ", cost=" + cost + ", user=" + user
+				+ ", giftCertificateOrderList=" + giftCertificateOrderList + "]";
 	}
 }

@@ -35,8 +35,8 @@ public class TagController {
     /**
      * Creates new tag, processes POST requests at /tags
      *
-     * @param tag {@link Tag} tag
-     * @return {@link Tag}  created tag
+     * @param tagDto {@link TagDto} tagDTO
+     * @return {@link TagDto} created tagDTO
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

@@ -15,7 +15,7 @@ public interface UserService {
 	 * Finds user by parameters
 	 * 
 	 * @param params {@link Map} of {@link String} and {@link String} parameters
-	 * @return {@link List} of {@link User} received from database
+	 * @return {@link List} of {@link UserDto} received from database
 	 */
 	List<UserDto> find(Map<String, String> params);
 
@@ -23,7 +23,7 @@ public interface UserService {
 	 * Finds user by id
 	 * 
 	 * @param id is user id
-	 * @return {@link User} received from database
+	 * @return {@link UserDto} received from database
 	 */
 	UserDto findById(long id);
 	

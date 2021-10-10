@@ -2,10 +2,10 @@ package com.epam.esm.entity;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -41,11 +42,18 @@ public class GiftCertificate extends AbstractEntity {
 	private ZonedDateTime createDate;
 	@Column(name = "last_update_date")
 	private ZonedDateTime lastUpdateDate;
+	
 	@ManyToMany         
 	@JoinTable(name = "gift_certificates_tags"
 		, joinColumns = @JoinColumn(name = "gift_certificate_id")
 		, inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private List<Tag> tags;
+	
+
+	@OneToMany(mappedBy = "giftCertificate", cascade = CascadeType.ALL)    
+	private List<GiftCertificateOrder> giftCertificateOrderList;
+	
+
 	
 	/**
 	 * Constructs a new gift certificate
@@ -65,8 +73,26 @@ public class GiftCertificate extends AbstractEntity {
 	 * @param lastUodateDate {@link ZonedDateTime} last update date
 	 * @param tags {@link List} of ({@link Tag} list tags
 	 */
+
+	
+//    public void addTag(Tag tag) {
+//        if (tags == null) {
+//            tags = new ArrayList<>();
+//        }
+//        tags.add(tag);
+//    }
+//
+//	public void addTag(GiftCertificateOrder giftCertificateOrder) {
+//        if (giftCertificateOrderList == null) {
+//        	giftCertificateOrderList = new ArrayList<>();
+//        }
+//        giftCertificateOrderList.add(giftCertificateOrder);
+//        giftCertificateOrder.setGiftCertificate(this);
+//    }
+
 	public GiftCertificate(long id, String name, String description, BigDecimal price, int duration,
-			ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<Tag> tags) {
+			ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<Tag> tags,
+			List<GiftCertificateOrder> giftCertificateOrderList) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -76,14 +102,8 @@ public class GiftCertificate extends AbstractEntity {
 		this.createDate = createDate;
 		this.lastUpdateDate = lastUpdateDate;
 		this.tags = tags;
+		this.giftCertificateOrderList = giftCertificateOrderList;
 	}
-	
-    public void addTag(Tag tag) {
-        if (tags == null) {
-            tags = new ArrayList<>();
-        }
-        tags.add(tag);
-    }
 
 	public long getId() {
 		return id;
@@ -149,6 +169,14 @@ public class GiftCertificate extends AbstractEntity {
 		this.tags = tags;
 	}
 
+	public List<GiftCertificateOrder> getGiftCertificateOrderList() {
+		return giftCertificateOrderList;
+	}
+
+	public void setGiftCertificateOrderList(List<GiftCertificateOrder> giftCertificateOrderList) {
+		this.giftCertificateOrderList = giftCertificateOrderList;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -156,6 +184,7 @@ public class GiftCertificate extends AbstractEntity {
 		result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + duration;
+		result = prime * result + ((giftCertificateOrderList == null) ? 0 : giftCertificateOrderList.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((lastUpdateDate == null) ? 0 : lastUpdateDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -185,6 +214,11 @@ public class GiftCertificate extends AbstractEntity {
 			return false;
 		if (duration != other.duration)
 			return false;
+		if (giftCertificateOrderList == null) {
+			if (other.giftCertificateOrderList != null)
+				return false;
+		} else if (!giftCertificateOrderList.equals(other.giftCertificateOrderList))
+			return false;
 		if (id != other.id)
 			return false;
 		if (lastUpdateDate == null) {
@@ -212,15 +246,25 @@ public class GiftCertificate extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append("\nGift certificate{ ID=").append(id);
-		sb.append(", name=").append(name);
-		sb.append(", description=").append(description);
-		sb.append(", price=").append(price);
-		sb.append(", duration= ").append(duration);
-		sb.append(", create_date=").append(createDate);
-		sb.append(", last_update_date=").append(lastUpdateDate);
-		sb.append(", ").append(tags).append(" }");
-		return sb.toString();
+		return "GiftCertificate [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
+				+ ", duration=" + duration + ", createDate=" + createDate + ", lastUpdateDate=" + lastUpdateDate
+				+ ", tags=" + tags + ", giftCertificateOrderList=" + giftCertificateOrderList + "]";
 	}
+
+
+	
+
+//	@Override
+//	public String toString() {
+//		final StringBuilder sb = new StringBuilder();
+//		sb.append("\nGift certificate{ ID=").append(id);
+//		sb.append(", name=").append(name);
+//		sb.append(", description=").append(description);
+//		sb.append(", price=").append(price);
+//		sb.append(", duration= ").append(duration);
+//		sb.append(", create_date=").append(createDate);
+//		sb.append(", last_update_date=").append(lastUpdateDate);
+//		sb.append(", ").append(tags).append(" }");
+//		return sb.toString();
+//	}
 }
