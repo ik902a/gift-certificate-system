@@ -22,9 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.PageDto;
-import com.epam.esm.dto.TagDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.service.UserService;
 
@@ -43,14 +41,14 @@ public class UserController {
 	 *               searching users
 	 * @return {@link List} of {@link UserDto} founded users
 	 */
-//	@GetMapping
-//	@ResponseStatus(HttpStatus.OK)
-//	public PageDto<UserDto> getAllUsers(@RequestParam Map<String, String> params) {
-//		PageDto<UserDto> pageDto = userService.find(params);
-//		pageDto.getContent().forEach(this::addLinks);
-//		log.info("FIND User DTO Controller");
-//		return pageDto;
-//	}
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public PageDto<UserDto> getAllUsers(@RequestParam Map<String, String> params) {
+		PageDto<UserDto> pageDto = userService.find(params);
+		pageDto.getContent().forEach(this::addLinks);
+		log.info("FIND User DTO Controller");
+		return pageDto;
+	}
 
 	/**
 	 * Gets user by id, processes GET requests at /users/{id}

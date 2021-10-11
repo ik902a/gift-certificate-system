@@ -1,7 +1,11 @@
 package com.epam.esm.service.impl;
 
+import static com.epam.esm.exception.ErrorCode.*;
+import static com.epam.esm.exception.ErrorMessageKey.*;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,8 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.esm.dao.UserDao;
+import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.User;
+import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.UserService;
 
 /**
@@ -32,23 +38,27 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public List<UserDto> find(Map<String, String> params) {
+	public PageDto<UserDto> find(Map<String, String> params) {
 		log.info("FIND User BY PARAMS Service {}", params);
 		List<User> userList = userDao.find(params);
 	    List<UserDto> userDtoList = userList.stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
-		return userDtoList;
+	    long totalPositions = userDao.getTotalNumber(params);
+		return new PageDto<>(userDtoList, totalPositions);
 	}
 
 	@Override
 	@Transactional
 	public UserDto findById(long id) {
 		log.info("FIND User BY ID Service id={}", id);
-		User user = userDao.findEntityById(id);
+		Optional<User> userOptional = userDao.findEntityById(id);
+		User user = userOptional.orElseThrow(
+			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+					, id
+					, USER_INCORRECT.getErrorCode()));
 		return modelMapper.map(user, UserDto.class);
 	}
-
 
 	@Override
 	@Transactional

@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -33,9 +32,8 @@ import com.epam.esm.exception.ResourceNotExistException;
  * @see ResponseEntityExceptionHandler
  */
 @RestControllerAdvice
-public class RestExceptionHandler 
+public class RestExceptionHandler {
 //extends ResponseEntityExceptionHandler 
-{
 	@Autowired
 	private MessageSource messageSource;
 	
@@ -89,6 +87,15 @@ public class RestExceptionHandler
 		String message = exception.getLocalizedMessage();
 		String code = HttpStatus.BAD_REQUEST.value() + ErrorCode.INCORRECT_PARAM.getErrorCode();
 		
+		ErrorData incorrectData = new ErrorData(List.of(message), code);
+		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(UnsupportedOperationException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<ErrorData> unsupportedOperationExceptionHandler(UnsupportedOperationException exception) {
+		String message = exception.getLocalizedMessage();
+		String code = HttpStatus.BAD_REQUEST.value() + ErrorCode.INCORRECT_PARAM.getErrorCode();
 		ErrorData incorrectData = new ErrorData(List.of(message), code);
 		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
 	}

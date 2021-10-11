@@ -1,8 +1,8 @@
 package com.epam.esm.service;
 
-import java.util.List;
 import java.util.Map;
 
+import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.UserDto;
 
 /**
@@ -15,9 +15,9 @@ public interface UserService {
 	 * Finds user by parameters
 	 * 
 	 * @param params {@link Map} of {@link String} and {@link String} parameters
-	 * @return {@link List} of {@link UserDto} received from database
+	 * @return {@link PageDto} of {@link UserDto} received from database
 	 */
-	List<UserDto> find(Map<String, String> params);
+	PageDto<UserDto> find(Map<String, String> params);
 
 	/**
 	 * Finds user by id
