@@ -1,5 +1,7 @@
 package com.epam.esm.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
@@ -43,6 +45,7 @@ public class OrderController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public OrderDto createOrder(@Valid @RequestBody OrderDataDto orderDataDto) {
 		OrderDto orderDtoCreated = orderService.create(orderDataDto);
+		addLinks(orderDtoCreated);
 		log.info("Controller CREATE Order is worcking");
 		return orderDtoCreated;
 	}
@@ -57,8 +60,17 @@ public class OrderController {
 	@ResponseStatus(HttpStatus.OK)
 	public OrderDto getOrderById(@Positive @PathVariable long id) {
 		OrderDto orderDto = orderService.findById(id);
+		addLinks(orderDto);
+		log.info("FIND Order DTO by id Controller");
 		return orderDto;
 	}
 	
-	
+	private void addLinks(OrderDto orderDto) {
+		orderDto.add(linkTo(methodOn(OrderController.class).getOrderById(orderDto.getId())).withSelfRel());
+		orderDto.getUser().add(
+				linkTo(methodOn(UserController.class).getUserById(orderDto.getUser().getId())).withSelfRel());
+		orderDto.getGiftCertificates().forEach(giftCertificateDto -> giftCertificateDto.add(
+				linkTo(methodOn(GiftCertificateController.class).getGiftCertificateById(
+						giftCertificateDto.getId())).withSelfRel()));
+	}
 }

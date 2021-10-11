@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
 		order = orderDao.create(order);
 		addGiftCertificateOrderData(order);
 		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
-		orderDto.setGiftCertificateList(addGiftCertificatesDto(order));
+		orderDto.setGiftCertificates(addGiftCertificatesDto(order));
 		return orderDto;
 	}
 
@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
 		log.info("FIND Order BY ID Service id={}", id);
 		Order order = orderDao.findEntityById(id);
 		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
-		orderDto.setGiftCertificateList(addGiftCertificatesDto(order));
+		orderDto.setGiftCertificates(addGiftCertificatesDto(order));
 		return orderDto;
 	}
 }

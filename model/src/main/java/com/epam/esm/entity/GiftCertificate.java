@@ -2,10 +2,10 @@ package com.epam.esm.entity;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,18 +42,14 @@ public class GiftCertificate extends AbstractEntity {
 	private ZonedDateTime createDate;
 	@Column(name = "last_update_date")
 	private ZonedDateTime lastUpdateDate;
-	
 	@ManyToMany         
 	@JoinTable(name = "gift_certificates_tags"
 		, joinColumns = @JoinColumn(name = "gift_certificate_id")
 		, inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private List<Tag> tags;
 	
-
-	@OneToMany(mappedBy = "giftCertificate", cascade = CascadeType.ALL)    
+	@OneToMany(mappedBy = "giftCertificate")    
 	private List<GiftCertificateOrder> giftCertificateOrderList;
-	
-
 	
 	/**
 	 * Constructs a new gift certificate
@@ -72,24 +68,8 @@ public class GiftCertificate extends AbstractEntity {
 	 * @param createDate {@link ZonedDateTime} create date
 	 * @param lastUodateDate {@link ZonedDateTime} last update date
 	 * @param tags {@link List} of ({@link Tag} list tags
+	 * @param giftCertificateOrderList {@link List} of ({@link GiftCertificateOrder} list giftCertificateOrder
 	 */
-
-	
-//    public void addTag(Tag tag) {
-//        if (tags == null) {
-//            tags = new ArrayList<>();
-//        }
-//        tags.add(tag);
-//    }
-//
-//	public void addTag(GiftCertificateOrder giftCertificateOrder) {
-//        if (giftCertificateOrderList == null) {
-//        	giftCertificateOrderList = new ArrayList<>();
-//        }
-//        giftCertificateOrderList.add(giftCertificateOrder);
-//        giftCertificateOrder.setGiftCertificate(this);
-//    }
-
 	public GiftCertificate(long id, String name, String description, BigDecimal price, int duration,
 			ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<Tag> tags,
 			List<GiftCertificateOrder> giftCertificateOrderList) {
@@ -103,6 +83,21 @@ public class GiftCertificate extends AbstractEntity {
 		this.lastUpdateDate = lastUpdateDate;
 		this.tags = tags;
 		this.giftCertificateOrderList = giftCertificateOrderList;
+	}
+
+	public void addTag(Tag tag) {
+		if (tags == null) {
+			tags = new ArrayList<>();
+		}
+		tags.add(tag);
+	}
+
+	public void addGiftCertificateOrder(GiftCertificateOrder giftCertificateOrder) {
+		if (giftCertificateOrderList == null) {
+			giftCertificateOrderList = new ArrayList<>();
+		}
+		giftCertificateOrderList.add(giftCertificateOrder);
+		giftCertificateOrder.setGiftCertificate(this);
 	}
 
 	public long getId() {
@@ -246,25 +241,15 @@ public class GiftCertificate extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "GiftCertificate [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", duration=" + duration + ", createDate=" + createDate + ", lastUpdateDate=" + lastUpdateDate
-				+ ", tags=" + tags + ", giftCertificateOrderList=" + giftCertificateOrderList + "]";
+		final StringBuilder sb = new StringBuilder();
+		sb.append("\nGift certificate{ ID=").append(id);
+		sb.append(", name=").append(name);
+		sb.append(", description=").append(description);
+		sb.append(", price=").append(price);
+		sb.append(", duration= ").append(duration);
+		sb.append(", create_date=").append(createDate);
+		sb.append(", last_update_date=").append(lastUpdateDate);
+		sb.append(", tags=").append(tags).append(" }");
+		return sb.toString();
 	}
-
-
-	
-
-//	@Override
-//	public String toString() {
-//		final StringBuilder sb = new StringBuilder();
-//		sb.append("\nGift certificate{ ID=").append(id);
-//		sb.append(", name=").append(name);
-//		sb.append(", description=").append(description);
-//		sb.append(", price=").append(price);
-//		sb.append(", duration= ").append(duration);
-//		sb.append(", create_date=").append(createDate);
-//		sb.append(", last_update_date=").append(lastUpdateDate);
-//		sb.append(", ").append(tags).append(" }");
-//		return sb.toString();
-//	}
 }

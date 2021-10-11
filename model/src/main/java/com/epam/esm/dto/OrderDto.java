@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Component
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OrderDto extends RepresentationModel<OrderDto> {
 	private long id;
@@ -19,17 +18,17 @@ public class OrderDto extends RepresentationModel<OrderDto> {
 	private ZonedDateTime date;
 	private BigDecimal cost;
 	private UserInOrderDto user;
-	private List<GiftCertificateDto> giftCertificateList;
+	private List<GiftCertificateDto> giftCertificates;
 	
 	public OrderDto() {
 		super();
 	}
 
 	public void addGiftCertificate(GiftCertificateDto giftCertificate) {
-        if (giftCertificateList == null) {
-        	giftCertificateList = new ArrayList<>();
+        if (giftCertificates == null) {
+        	giftCertificates = new ArrayList<>();
         }
-        giftCertificateList.add(giftCertificate);
+        giftCertificates.add(giftCertificate);
     }
 
 	public long getId() {
@@ -64,12 +63,12 @@ public class OrderDto extends RepresentationModel<OrderDto> {
 		this.user = user;
 	}
 	
-	public List<GiftCertificateDto> getGiftCertificateList() {
-		return giftCertificateList;
+	public List<GiftCertificateDto> getGiftCertificates() {
+		return giftCertificates;
 	}
 
-	public void setGiftCertificateList(List<GiftCertificateDto> giftCertificateList) {
-		this.giftCertificateList = giftCertificateList;
+	public void setGiftCertificates(List<GiftCertificateDto> giftCertificates) {
+		this.giftCertificates = giftCertificates;
 	}
 
 

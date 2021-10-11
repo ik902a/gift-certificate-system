@@ -2,27 +2,34 @@ package com.epam.esm.dto;
 
 import java.util.List;
 
-
 /**
- * Class is implementation of pattern DTO for transmission page
+ * The {@code PageDto} class is implementation of pattern DTO for transmission page
  * entity between service and controller.
  *
  * @param <T> the entity which presents on page
  * @author Ihar Klepcha
- * @version 1.0
  */
 public class PageDto<T> {
 	private List<T> content;
-    private long totalPages;
+    private long totalPosition;
     
+    /**
+	 * Constructs a new Page DTO
+	 */
 	public PageDto() {
 		super();
 	}
 
-	public PageDto(List<T> content, long totalPages) {
+	/**
+	 * Constructs a new tag with the specified
+	 * 
+	 * @param content {@link List} of {@link T} list entities
+	 * @param totalPosition contains number total positions
+	 */
+	public PageDto(List<T> content, long totalPosition) {
 		super();
 		this.content = content;
-		this.totalPages = totalPages;
+		this.totalPosition = totalPosition;
 	}
 
 	public List<T> getContent() {
@@ -33,12 +40,12 @@ public class PageDto<T> {
 		this.content = content;
 	}
 
-	public long getTotalPages() {
-		return totalPages;
+	public long getTotalPosition() {
+		return totalPosition;
 	}
 
-	public void setTotalPages(long totalPages) {
-		this.totalPages = totalPages;
+	public void setTotalPosition(long totalPosition) {
+		this.totalPosition = totalPosition;
 	}
 
 	@Override
@@ -46,7 +53,7 @@ public class PageDto<T> {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + (int) (totalPages ^ (totalPages >>> 32));
+		result = prime * result + (int) (totalPosition ^ (totalPosition >>> 32));
 		return result;
 	}
 
@@ -64,13 +71,16 @@ public class PageDto<T> {
 				return false;
 		} else if (!content.equals(other.content))
 			return false;
-		if (totalPages != other.totalPages)
+		if (totalPosition != other.totalPosition)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "PageDto [content=" + content + ", totalPages=" + totalPages + "]";
-	}
+		final StringBuilder sb = new StringBuilder();
+		sb.append("\nPage DTO{ content=").append(content);
+		sb.append(", totalPosition=").append(totalPosition).append(" }");
+		return sb.toString();
+	} 
 }

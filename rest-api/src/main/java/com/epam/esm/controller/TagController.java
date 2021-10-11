@@ -1,12 +1,19 @@
 package com.epam.esm.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 import java.util.List;
 import java.util.Map;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.service.TagService;
 
@@ -25,10 +33,12 @@ import com.epam.esm.service.TagService;
  * 
  * @author Ihar Klepcha
  */
+@Validated
 @RestController
 @RequestMapping("/tags")
 public class TagController {
 	public static Logger log = LogManager.getLogger();
+    private static final String DELETE = "delete";
 	@Autowired
 	private TagService tagService;
 
@@ -40,8 +50,10 @@ public class TagController {
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public TagDto createTag(@RequestBody TagDto tagDto) {
+	public TagDto createTag(@Valid @RequestBody TagDto tagDto) {
 		TagDto tagDtoCreated = tagService.create(tagDto);
+		log.info("CREATE Tag DTO Controller");
+		addLinks(tagDtoCreated);
 		return tagDtoCreated;
 	}
 
@@ -52,11 +64,13 @@ public class TagController {
      */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<TagDto> getAllTags(@RequestParam Map<String, String> params) {
-		List<TagDto> tagDtoList = tagService.findAll(params);
-		return tagDtoList;
+	public PageDto<TagDto> getAllTags(@Valid @RequestParam Map<String, String> params) {
+		PageDto<TagDto> pageDto = tagService.find(params);
+		log.info("FIND all Tag DTO Controller");
+		pageDto.getContent().forEach(this::addLinks);
+		return pageDto;
 	}
-
+	
 	/**
      * Gets tag by id, processes GET requests at /tags/{id}
      *
@@ -65,8 +79,10 @@ public class TagController {
      */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public TagDto getTag(@PathVariable long id) {
+	public TagDto getTagById(@Positive @PathVariable long id) {
 		TagDto tagDto = tagService.findById(id);
+		addLinks(tagDto);
+		log.info("FIND Tag DTO by id Controller");
 		return tagDto;
 	}
 
@@ -77,7 +93,13 @@ public class TagController {
      */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteTag(@PathVariable long id) {
+	public ResponseEntity<Void> deleteTag(@Positive @PathVariable long id) {
 		tagService.delete(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+    private void addLinks(TagDto tagDto) {
+        tagDto.add(linkTo(methodOn(TagController.class).getTagById(tagDto.getId())).withSelfRel());
+        tagDto.add(linkTo(methodOn(TagController.class).deleteTag(tagDto.getId())).withRel(DELETE));
+    }
 }

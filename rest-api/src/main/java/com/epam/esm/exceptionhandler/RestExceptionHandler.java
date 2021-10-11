@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.ErrorMessageKey;
 //import com.epam.esm.exception.InvalidDataException;
 //import com.epam.esm.exception.ParamException;
-//import com.epam.esm.exception.ResourceNotExistException;
+import com.epam.esm.exception.ResourceNotExistException;
 
 /**
  * The {@code RestExceptionHandler} class represents controller which handle all
@@ -37,33 +38,61 @@ public class RestExceptionHandler
 {
 	@Autowired
 	private MessageSource messageSource;
+	
+	/**
+	 * Handles ResourceNotExistException
+	 *
+	 * @param exception {@link ResourceNotExistException} exception
+	 * @param locale    {@link Locale} locale of HTTP request
+	 * @return {@link ResponseEntity} the response message
+	 */
+	@ExceptionHandler(ResourceNotExistException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ResponseEntity<ErrorData> resourceExceptionHandler(ResourceNotExistException exception, 
+			Locale locale) {
+		String message = messageSource.getMessage(exception.getMessage(),
+				new String[] { String.valueOf(exception.getIncorrectParameter()) }, locale);
+		String code = HttpStatus.NOT_FOUND.value() + exception.getErrorCode();
+		
+		ErrorData incorrectData = new ErrorData(List.of(message), code);
+		return new ResponseEntity<>(incorrectData, HttpStatus.NOT_FOUND);
+	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<IncorrectData> methodExceptionHandler(MethodArgumentNotValidException exception) {
+	public ResponseEntity<ErrorData> methodExceptionHandler(MethodArgumentNotValidException exception) {
 		List<String> messageList = new ArrayList<>();
 		for (FieldError fieldError : exception.getBindingResult().getFieldErrors()) {
-			
 			String message = fieldError.getDefaultMessage();
 			messageList.add(message);
 		}
 		String code = HttpStatus.BAD_REQUEST.value() + ErrorCode.INCORRECT_PARAM.getErrorCode();
-		IncorrectData incorrectData = new IncorrectData(messageList, code);
-
+		
+		ErrorData incorrectData = new ErrorData(messageList, code);
 		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<IncorrectData> constraintExceptionHandler(ConstraintViolationException exception) {
+	public ResponseEntity<ErrorData> constraintExceptionHandler(ConstraintViolationException exception) {
 		String message = exception.getLocalizedMessage();
 		String code = HttpStatus.BAD_REQUEST.value() + ErrorCode.INCORRECT_PARAM.getErrorCode();
-
-		IncorrectData incorrectData = new IncorrectData(List.of(message), code);
-
+		
+		ErrorData incorrectData = new ErrorData(List.of(message), code);
 		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
 	}
-
+	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<ErrorData> argumentTypeMismatchExceptionHandler(
+			MethodArgumentTypeMismatchException exception) {
+		String message = exception.getLocalizedMessage();
+		String code = HttpStatus.BAD_REQUEST.value() + ErrorCode.INCORRECT_PARAM.getErrorCode();
+		
+		ErrorData incorrectData = new ErrorData(List.of(message), code);
+		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
+	}
+	
 	/**
 	 * Handles Exception
 	 *
@@ -73,31 +102,14 @@ public class RestExceptionHandler
 	 */
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public ResponseEntity<IncorrectData> exceptionHandler(Exception exception, Locale locale) {
+	public ResponseEntity<ErrorData> exceptionHandler(Exception exception, Locale locale) {
 		String errorMessage = messageSource.getMessage(ErrorMessageKey.INTERNAL_SERVER_ERROR.getErrorMessageKey(),
 				new String[] {}, locale);
 		String errorCode = HttpStatus.INTERNAL_SERVER_ERROR.value() + ErrorCode.DEFAULT_ERROR.getErrorCode();
-		IncorrectData incorrectData = new IncorrectData(List.of(errorMessage), errorCode);
+		
+		ErrorData incorrectData = new ErrorData(List.of(errorMessage), errorCode);
 		return new ResponseEntity<>(incorrectData, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-//	/**
-//	 * Handles ResourceNotExistException
-//	 *
-//	 * @param exception {@link ResourceNotExistException} exception
-//	 * @param locale    {@link Locale} locale of HTTP request
-//	 * @return {@link ResponseEntity} the response message
-//	 */
-//	@ExceptionHandler(ResourceNotExistException.class)
-//	@ResponseStatus(HttpStatus.NOT_FOUND)
-//	public ResponseEntity<IncorrectData> resourceExceptionHandler(ResourceNotExistException exception, 
-//			Locale locale) {
-//		String errorMessage = messageSource.getMessage(exception.getMessage(),
-//				new String[] { exception.getIncorrectParameter() }, locale);
-//		String errorCode = HttpStatus.NOT_FOUND.value() + exception.getErrorCode();
-//		IncorrectData incorrectData = new IncorrectData(errorMessage, errorCode);
-//		return new ResponseEntity<>(incorrectData, HttpStatus.NOT_FOUND);
-//	}
 //
 //	/**
 //	 * Handles InvalidDataException

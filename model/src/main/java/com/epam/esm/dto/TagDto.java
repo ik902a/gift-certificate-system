@@ -4,15 +4,19 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.springframework.hateoas.RepresentationModel;
-import org.springframework.stereotype.Component;
 
-@Component
+/**
+ * The {@code TagDto} class is implementation of pattern DTO for transmission tag
+ * entity between service and controller.
+ *
+ * @author Ihar Klepcha
+ * @see RepresentationModel
+ */
 public class TagDto extends RepresentationModel<TagDto> {
 	private long id;
 	@NotBlank
     @Size(max = 45)
     private String name;
-    
     
 	public TagDto() {
 		super();

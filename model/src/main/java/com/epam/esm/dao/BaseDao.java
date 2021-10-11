@@ -36,7 +36,7 @@ public interface BaseDao<T extends AbstractEntity> {
 	 * @param id is entity id
 	 * @return {@link Optional} of {@link T} entity received from database
 	 */
-	T findEntityById(long id);
+	Optional<T> findEntityById(long id);
 
 	/**
 	 * Looks for an entity where entity has name

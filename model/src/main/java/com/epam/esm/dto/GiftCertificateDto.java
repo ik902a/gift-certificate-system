@@ -14,11 +14,17 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.hateoas.RepresentationModel;
-import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * The {@code GiftCertificateDto} class is implementation of pattern DTO for transmission Gift Certificate
+ * entity between service and controller.
+ *
+ * @author Ihar Klepcha
+ * @see RepresentationModel
+ */
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
 	private long id;
@@ -39,7 +45,6 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     private ZonedDateTime createDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private ZonedDateTime lastUpdateDate;
-    
     @Valid
     private List<TagDto> tags;
     
@@ -130,7 +135,7 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
 	public void setTags(List<TagDto> tags) {
 		this.tags = tags;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -195,14 +200,14 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nGiftCertificateDTO{ id=").append(id);
+		sb.append("\nGift Certificate DTO{ id=").append(id);
 		sb.append(", name=").append(name);
 		sb.append(", description=").append(description);
 		sb.append(", price=").append(price);
 		sb.append(", duration= ").append(duration);
 		sb.append(", create_date=").append(createDate);
 		sb.append(", last_update_date=").append(lastUpdateDate);
-		sb.append(", ").append(tags).append(" }");
+		sb.append(", tags=").append(tags).append(" }");
 		return sb.toString();
 	}
 }

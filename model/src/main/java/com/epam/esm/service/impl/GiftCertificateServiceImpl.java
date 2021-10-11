@@ -1,7 +1,7 @@
 package com.epam.esm.service.impl;
 
-//import static com.epam.esm.exception.ErrorCode.*;
-//import static com.epam.esm.exception.ErrorMessageKey.*;
+import static com.epam.esm.exception.ErrorCode.*;
+import static com.epam.esm.exception.ErrorMessageKey.*;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -20,11 +20,10 @@ import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.PageDto;
-import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 //import com.epam.esm.exception.InvalidDataException;
-//import com.epam.esm.exception.ResourceNotExistException;
+import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.GiftCertificateService;
 
 
@@ -48,7 +47,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	@Transactional
 	public GiftCertificateDto create(GiftCertificateDto giftCertificateDto) {
 		log.info("CREATE GiftCertificate Service {}", giftCertificateDto);
-		
 //		GiftCertificateValidator.validateGiftCertificate(giftCertificate);
 //		throwErrorIfCertificateExist(giftCertificate.getName());
 		ZonedDateTime currentDate = ZonedDateTime.now();
@@ -56,18 +54,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		giftCertificateDto.setLastUpdateDate(currentDate);
 		GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
 		if (giftCertificate.getTags() != null) {
-			createGiftCertificateTag(giftCertificate);
+			createNewTag(giftCertificate);
 		}
 		giftCertificate = giftCertificateDao.create(giftCertificate);
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
 	}
 	
-	private void createGiftCertificateTag(GiftCertificate giftCertificate) {
+	private void createNewTag(GiftCertificate giftCertificate) {
 		List<Tag> tags = giftCertificate.getTags();
-		tags.forEach(
-				tag -> tag.setId(tagDao.findEntityByName(tag.getName()).orElseGet(
+		tags.forEach(tag -> tag.setId(tagDao.findEntityByName(tag.getName()).orElseGet(
 						() -> tagDao.create(tag)).getId()));
-//		giftCertificateDao.createGiftCertificateTag(giftCertificate);
 	}
 
 	@Override
@@ -78,35 +74,21 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	    List<GiftCertificateDto> giftCertificateDtoList = giftCertificateList.stream()
                 .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
                 .collect(Collectors.toList());
-	    
-	    long totalNumberPositions = giftCertificateDao.getTotalNumber(params);
-        return new PageDto<>(giftCertificateDtoList, totalNumberPositions);
-//		return addTags(giftCertificateList);//TODO Deprecate
+	    long totalPositions = giftCertificateDao.getTotalNumber(params);
+        return new PageDto<>(giftCertificateDtoList, totalPositions);
 	}
-	
-
 	
 	@Override
 	@Transactional
 	public GiftCertificateDto findById(long id) {
 		log.info("FIND GiftCertificate BY ID Service id={}", id);
-		GiftCertificate giftCertificate = giftCertificateDao.findEntityById(id);
+		Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityById(id);
+		GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
+				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+						, id
+						, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
 	}
-//	@Override
-//	@Transactional
-//	public GiftCertificateDto findById(long id) {
-////		GiftCertificateValidator.validateId(id);//TODO valid id
-//		GiftCertificate giftCertificate = giftCertificateDao.findEntityById(id);
-//		
-////		GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
-////				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey(),
-////				String.valueOf(id), 
-////				GIFT_CERTIFICATE_INCORRECT_ID.getErrorCode()));
-//	
-//		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
-////		return addTags(giftCertificate);
-//	}
 
 	@Override
 	@Transactional
@@ -116,7 +98,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		giftCertificateDto = updateFields(giftCertificateOldDto, giftCertificateDto);
 		GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
 		if (giftCertificate.getTags() != null) {
-			createGiftCertificateTag(giftCertificate);
+			createNewTag(giftCertificate);
 		}
 		giftCertificate = giftCertificateDao.update(giftCertificate);
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
@@ -142,18 +124,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	@Transactional
 	public void delete(long id) {
 		log.info("DELETE GiftCertificate Service id={}", id);
-		giftCertificateDao.delete(id);
+		if (!giftCertificateDao.delete(id)) {
+		throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+				, id
+				, GIFT_CERTIFICATE_INCORRECT.getErrorCode());
+		}
 	}
-//	@Override
-//	@Transactional
-//	public void delete(long id) {
-//		//GiftCertificateValidator.validateId(id);//TODO valid id
-//		if (!giftCertificateDao.delete(id)) {
-////			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey(), 
-////					String.valueOf(id),
-////					GIFT_CERTIFICATE_INCORRECT_ID.getErrorCode());
-//		}
-//	}
 	
 	private GiftCertificateDto updateFields(GiftCertificateDto giftCertificateOldDto
 			, GiftCertificateDto giftCertificateDto) {
@@ -177,33 +153,33 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		giftCertificateDto.setId(giftCertificateOldDto.getId());
 		return giftCertificateDto;
 	}
-
-//	private void updateGiftCertificateTag(GiftCertificate giftCertificateOld, 
-//			GiftCertificate giftCertificate) {
-//		List<Tag> tagList = giftCertificateDto.getTags();
-//		if (tagList != null && !tagList.equals(giftCertificateOld.getTags())) {
-//			if (giftCertificateOld.getTags() != null) {
-//				giftCertificateDao.deleteGiftCertificateTag(giftCertificateOld.getId());
-//			}
-//			createGiftCertificateTag(giftCertificate);
-//		}
-//	}
-	
-//	private void throwErrorIfCertificateExist(String name) {
-//	if (giftCertificateDao.findEntityByName(name).isPresent()) {
-//		throw new InvalidDataException(List.of(NAME_EXIST.getErrorMessageKey()),
-//				name,
-//				GIFT_CERTIFICATE_INCORRECT_DATA.getErrorCode());
-//	}
-//}
-//	private List<GiftCertificate> addTags(List<GiftCertificate> giftCertificateList) {
-//		giftCertificateList.forEach(gc -> gc.setTags(tagDao.findEntityByGiftCertificate(gc.getId())));
-//		return giftCertificateList;
-//	}
-//	
-//	private GiftCertificate addTags(GiftCertificate giftCertificate) {
-//		List<Tag> tagList = tagDao.findEntityByGiftCertificate(giftCertificate.getId());
-//		giftCertificate.setTags(tagList);
-//		return giftCertificate;
-//	}
 }
+
+//private void updateGiftCertificateTag(GiftCertificate giftCertificateOld, 
+//GiftCertificate giftCertificate) {
+//List<Tag> tagList = giftCertificateDto.getTags();
+//if (tagList != null && !tagList.equals(giftCertificateOld.getTags())) {
+//if (giftCertificateOld.getTags() != null) {
+//	giftCertificateDao.deleteGiftCertificateTag(giftCertificateOld.getId());
+//}
+//createGiftCertificateTag(giftCertificate);
+//}
+//}
+
+//private void throwErrorIfCertificateExist(String name) {
+//if (giftCertificateDao.findEntityByName(name).isPresent()) {
+//throw new InvalidDataException(List.of(NAME_EXIST.getErrorMessageKey()),
+//	name,
+//	GIFT_CERTIFICATE_INCORRECT_DATA.getErrorCode());
+//}
+//}
+//private List<GiftCertificate> addTags(List<GiftCertificate> giftCertificateList) {
+//giftCertificateList.forEach(gc -> gc.setTags(tagDao.findEntityByGiftCertificate(gc.getId())));
+//return giftCertificateList;
+//}
+//
+//private GiftCertificate addTags(GiftCertificate giftCertificate) {
+//List<Tag> tagList = tagDao.findEntityByGiftCertificate(giftCertificate.getId());
+//giftCertificate.setTags(tagList);
+//return giftCertificate;
+//} 

@@ -1,8 +1,5 @@
 package com.epam.esm.dao;
 
-import java.util.List;
-import java.util.Map;
-
 import com.epam.esm.entity.GiftCertificate;
 
 /**
@@ -20,19 +17,4 @@ public interface GiftCertificateDao extends BaseDao<GiftCertificate> {
 	 * @return {@link GiftCertificate} entity received from database
 	 */
 	GiftCertificate update(GiftCertificate giftCertificate);
-
-//	/**
-//	 * Creates a record in the gift_certificates _tag table in database
-//	 * 
-//	 * @param giftCertificate {@link GiftCertificate} entity
-//	 */
-//	void createGiftCertificateTag(GiftCertificate giftCertificate);
-
-	/**
-	 * Deletes a record in the gift_certificates _tag table in database
-	 * 
-	 * @param id {@link long} entity id
-	 * @return boolean true if the record has been deleted, else false
-	 */
-	boolean deleteGiftCertificateTag(long id);
 }

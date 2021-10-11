@@ -1,7 +1,5 @@
 package com.epam.esm.dao.impl;
 
-//import static com.epam.esm.dao.ColumnName.*;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,7 +24,6 @@ public class TagDaoImpl implements TagDao {
 	private static final String FIND_ALL_TAGS = "FROM Tag";
 	private static final String FIND_TAG_BY_NAME = "FROM Tag WHERE name=:name";
 	private static final String DELETE_TAG = "DELETE FROM Tag WHERE id=:id";
-
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -40,26 +37,23 @@ public class TagDaoImpl implements TagDao {
     public List<Tag> find(Map<String, String> params) {
     	int offset = PaginationParamExtractor.getOffset(params);
 		int limit = PaginationParamExtractor.getLimit(params);
-        List<Tag> tagList = entityManager.createQuery(FIND_ALL_TAGS, Tag.class)
+        return entityManager.createQuery(FIND_ALL_TAGS, Tag.class)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
-        return tagList;
     }
     
 	@Override
-	public Tag findEntityById(long id) {
-		Tag tag = entityManager.find(Tag.class, id);
-		return tag;
+	public Optional<Tag> findEntityById(long id) {
+		return Optional.ofNullable(entityManager.find(Tag.class, id));
 	}
 	
 	@Override
 	public Optional<Tag> findEntityByName(String name) {
-		Optional<Tag> tag = entityManager.createQuery(FIND_TAG_BY_NAME, Tag.class)
+		return entityManager.createQuery(FIND_TAG_BY_NAME, Tag.class)
 				.setParameter(ColumnName.TAGS_NAME, name)
 				.getResultStream()
 				.findFirst();
-		return tag;
 	}
 	
 	@Override
@@ -67,7 +61,7 @@ public class TagDaoImpl implements TagDao {
 	int row = entityManager.createQuery(DELETE_TAG)
 	        .setParameter(ColumnName.TAGS_ID, id)
 	        .executeUpdate();
-			return row > 0;
+	return row > 0;
 	}
 
 	@Override
@@ -75,17 +69,13 @@ public class TagDaoImpl implements TagDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public long getTotalNumber(Map<String, String> params) {
-		// TODO Auto-generated method stub
-		return 0;
+        return entityManager.createQuery(FIND_ALL_TAGS, Tag.class)
+        		.getResultStream()
+				.count();
 	}
-	
-	
-	
-
-	
 	
 //	private static final String SQL_CREATE_TAG = "INSERT INTO tags (name) VALUES (?)";
 //	private static final String SQL_FIND_ALL_TAGS = "SELECT id, name FROM tags";
@@ -94,22 +84,4 @@ public class TagDaoImpl implements TagDao {
 //	private static final String SQL_FIND_TAG_BY_GIFT_CERTIFICATE = "SELECT id, name FROM tags WHERE id IN "
 //			+ "(SELECT tag_id FROM gift_certificates_tags gct "
 //			+ "JOIN gift_certificates gc ON gct.gift_certificate_id = gc.id WHERE gc.id=?)";	
-	
-	
-//	@Override
-//	public List<Tag> findEntityByGiftCertificate(long giftCertificateId) {
-//		List<Tag> tagList = jdbcTemplate.query(
-//				SQL_FIND_TAG_BY_GIFT_CERTIFICATE, new TagRowMapper(), giftCertificateId);
-//		return tagList;
-//	}
-	
-//	private static final class TagRowMapper implements RowMapper<Tag> {
-//
-//		public Tag mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-//			Tag tag = new Tag();
-//			tag.setId(resultSet.getLong(TAGS_ID));
-//			tag.setName(resultSet.getString(TAGS_NAME));
-//			return tag;
-//		}
-//	}
 }

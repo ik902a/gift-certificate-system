@@ -42,11 +42,11 @@ public class UserDaoImpl implements UserDao {
         return userList;
 	}
 
-	@Override
-	public User findEntityById(long id) {
-		User user = entityManager.find(User.class, id);
-		return user;
-	}
+//	@Override
+//	public User findEntityById(long id) {
+//		User user = entityManager.find(User.class, id);
+//		return user;
+//	}
 
 	@Override
 	public Optional<User> findEntityByName(String login) {
@@ -64,6 +64,12 @@ public class UserDaoImpl implements UserDao {
 	public long getTotalNumber(Map<String, String> params) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Optional<User> findEntityById(long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

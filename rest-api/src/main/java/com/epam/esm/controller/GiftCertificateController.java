@@ -1,5 +1,7 @@
 package com.epam.esm.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.Errors;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.PageDto;
-import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.service.GiftCertificateService;
-import com.epam.esm.entity.Tag;
 
 /**
  * The {@code GiftCertificateController} class contains endpoint of the API
@@ -40,6 +40,8 @@ import com.epam.esm.entity.Tag;
 @RequestMapping("/gift-certificates")
 public class GiftCertificateController {
 	public static Logger log = LogManager.getLogger();
+    private static final String DELETE = "delete";
+    private static final String UPDATE = "update";
 	@Autowired
 	private GiftCertificateService giftCertificateService;
 	
@@ -60,7 +62,8 @@ public class GiftCertificateController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public GiftCertificateDto createGiftCertificate(@Valid @RequestBody GiftCertificateDto giftCertificateDto) {
 		GiftCertificateDto giftCertificateDtoCreated = giftCertificateService.create(giftCertificateDto);
-		log.info("Controller CREATE GiftCertificate is worcking");
+		log.info("CREATE GiftCertificate DTO Controller");
+		addLinks(giftCertificateDtoCreated);
 		return giftCertificateDtoCreated;
 	}
 //	@PostMapping
@@ -75,8 +78,6 @@ public class GiftCertificateController {
 //		return giftCertificateDtoCreated;
 //	}
 
-
-
 	/**
      * Gets gift certificates by params, processes GET requests at /gift-certificates
      *
@@ -85,18 +86,12 @@ public class GiftCertificateController {
      */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public PageDto<GiftCertificateDto> getGiftCertificates(@RequestParam Map<String, String> params) {
+	public PageDto<GiftCertificateDto> getAllGiftCertificates(@Valid @RequestParam Map<String, String> params) {
 		PageDto<GiftCertificateDto> pageDto = giftCertificateService.find(params);
-//		pageDto.getPage().forEach(this::addLinks);
-		
-		log.info("GET mapping. Controller is worcking");
+		pageDto.getContent().forEach(this::addLinks);
+		log.info("FIND all Gift Certificate DTO Controller");
 		return pageDto;
-	}
-	
-	
-	
-	
-	
+	}	
 	
 	/**
      * Gets gift certificate by id, processes GET requests at /gift-certificates/{id}
@@ -108,23 +103,28 @@ public class GiftCertificateController {
 	@ResponseStatus(HttpStatus.OK)
 	public GiftCertificateDto getGiftCertificateById(@Positive @PathVariable long id) {
 		GiftCertificateDto giftCertificateDto = giftCertificateService.findById(id);
+		addLinks(giftCertificateDto);
+		log.info("FIND Gift Certificate DTO by id Controller");
 		return giftCertificateDto;
 	}
 
-//	 /**
-//     * Updates gift certificate, processes PUT requests at /gift-certificates/{id}
-//     *
-//     * @param id is the gift certificate id
-//     * @param giftCertificate {@link GiftCertificate} data for updating gift certificate
-//     * @return {@link GiftCertificate} updated gift certificate
-//     */
-//    @PutMapping("/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public GiftCertificate updateGiftCertificate(@PathVariable long id, 
-//    		@RequestBody GiftCertificate giftCertificate) {
-//        giftCertificate.setId(id);
-//        return giftCertificateService.update(giftCertificate);
-//    }
+	 /**
+     * Updates gift certificate, processes PUT requests at /gift-certificates/{id}
+     *
+     * @param id is the gift certificate id
+     * @param giftCertificate {@link GiftCertificate} data for updating gift certificate
+     * @return {@link GiftCertificate} updated gift certificate
+     */
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public GiftCertificateDto updateGiftCertificate(@Positive @PathVariable long id, 
+    		@RequestBody GiftCertificateDto giftCertificateDto) {
+        giftCertificateDto.setId(id);
+        GiftCertificateDto giftCertificateDtoUpdated = giftCertificateService.update(giftCertificateDto);
+        addLinks(giftCertificateDtoUpdated);
+		log.info("UPDATE Gift Certificate DTO Controller");
+        return giftCertificateDtoUpdated;
+    }
 	
     /**
      * Deletes gift certificate by id, processes DELETE requests at /gift-certificates/{id}
@@ -133,24 +133,19 @@ public class GiftCertificateController {
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteGiftCertificate(@PathVariable long id) {
+    public ResponseEntity<Void> deleteGiftCertificate(@Positive @PathVariable long id) {
         giftCertificateService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
-//    private void addLinks (GiftCertificateDto giftCertificateDto){
-//        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
-//        		.getGiftCertificateById(giftCertificateDto.getId())).withSelfRel());
-//        
-//        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
-//        		.updateGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel(UPDATE));
-//        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
-//        		.deleteGiftCertificate(giftCertificateDto.getId())).withRel(DELETE));
-//        giftCertificateDto.getTags().forEach(tagDto ->
-//                tagDto.add(linkTo(methodOn(TagController.class).getTagById(tagDto.getId())).withSelfRel()));
-//    }
-    
-    
-    
-    
-    
+    private void addLinks (GiftCertificateDto giftCertificateDto){
+        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
+        		.getGiftCertificateById(giftCertificateDto.getId())).withSelfRel());
+        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
+        		.updateGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel(UPDATE));
+        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
+        		.deleteGiftCertificate(giftCertificateDto.getId())).withRel(DELETE));
+        giftCertificateDto.getTags().forEach(tagDto ->
+                tagDto.add(linkTo(methodOn(TagController.class).getTagById(tagDto.getId())).withSelfRel()));
+    }  
 }

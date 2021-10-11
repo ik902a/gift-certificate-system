@@ -3,29 +3,28 @@ package com.epam.esm.exceptionhandler;
 import java.util.List;
 
 /**
- * The {@code IncorrectData} class describes the entity incorrect data for response
+ * The {@code IncorrectData} class describes the entity error data for response
  * 
  * @author Ihar Klepcha
-
  */
-public class IncorrectData {
+public class ErrorData {
     private List<String> errorMessage;
     private String errorCode;
     
 	/**
-	 * Constructs a new incorrect data
+	 * Constructs a new error data
 	 */
-	public IncorrectData() {
+	public ErrorData() {
 		super();
 	}
 	
 	/**
-	 * Constructs a new incorrect date with the specified
+	 * Constructs a new error date with the specified
 	 * 
 	 * @param errorMessage {@link String} error message
 	 * @param errorCode {@link String} error code
 	 */
-	public IncorrectData(List<String> errorMessage, String errorCode) {
+	public ErrorData(List<String> errorMessage, String errorCode) {
 		super();
 		this.errorMessage = errorMessage;
 		this.errorCode = errorCode;
