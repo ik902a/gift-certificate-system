@@ -53,4 +53,6 @@ public interface BaseDao<T extends AbstractEntity> {
 	 * @return boolean true if the record has been deleted, else false
 	 */
 	boolean delete(long id);
+	
+	long getTotalNumber(Map<String, String> params);
 }

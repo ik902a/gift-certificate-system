@@ -146,4 +146,14 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public long getTotalNumber(Map<String, String> params) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<GiftCertificate> criteriaQuery = GiftCertificateQueryBuilder
+				.buildQuery(params, criteriaBuilder);
+		return entityManager.createQuery(criteriaQuery)
+				.getResultStream()
+				.count();
+	}
 }

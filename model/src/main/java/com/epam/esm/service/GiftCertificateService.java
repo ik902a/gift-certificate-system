@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.PageDto;
 import com.epam.esm.entity.GiftCertificate;
 
 /**
@@ -28,7 +29,7 @@ public interface GiftCertificateService {
 	 * @param params {@link Map} of {@link String} and {@link String} parameters
 	 * @return {@link List} of {@link GiftCertificate} received from database
 	 */
-	List<GiftCertificateDto> find(Map<String, String> params);
+	PageDto<GiftCertificateDto> find(Map<String, String> params);
 
 	/**
 	 * Finds gift certificate by id

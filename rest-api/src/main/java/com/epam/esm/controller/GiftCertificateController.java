@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.service.GiftCertificateService;
@@ -84,12 +85,18 @@ public class GiftCertificateController {
      */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<GiftCertificateDto> getGiftCertificates(@RequestParam Map<String, String> params) {
-		List<GiftCertificateDto> giftCertificatesDto = giftCertificateService.find(params);
+	public PageDto<GiftCertificateDto> getGiftCertificates(@RequestParam Map<String, String> params) {
+		PageDto<GiftCertificateDto> pageDto = giftCertificateService.find(params);
+//		pageDto.getPage().forEach(this::addLinks);
+		
 		log.info("GET mapping. Controller is worcking");
-		log.info("FIND GiftCertificate DTO Controller {}", giftCertificatesDto.get(0).toString());
-		return giftCertificatesDto;
+		return pageDto;
 	}
+	
+	
+	
+	
+	
 	
 	/**
      * Gets gift certificate by id, processes GET requests at /gift-certificates/{id}
@@ -129,4 +136,21 @@ public class GiftCertificateController {
     public void deleteGiftCertificate(@PathVariable long id) {
         giftCertificateService.delete(id);
     }
+    
+//    private void addLinks (GiftCertificateDto giftCertificateDto){
+//        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
+//        		.getGiftCertificateById(giftCertificateDto.getId())).withSelfRel());
+//        
+//        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
+//        		.updateGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel(UPDATE));
+//        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
+//        		.deleteGiftCertificate(giftCertificateDto.getId())).withRel(DELETE));
+//        giftCertificateDto.getTags().forEach(tagDto ->
+//                tagDto.add(linkTo(methodOn(TagController.class).getTagById(tagDto.getId())).withSelfRel()));
+//    }
+    
+    
+    
+    
+    
 }

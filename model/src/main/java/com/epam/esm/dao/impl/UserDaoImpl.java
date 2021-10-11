@@ -60,4 +60,10 @@ public class UserDaoImpl implements UserDao {
 		return false;
 	}
 
+	@Override
+	public long getTotalNumber(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

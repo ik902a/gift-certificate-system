@@ -75,6 +75,12 @@ public class TagDaoImpl implements TagDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public long getTotalNumber(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 	

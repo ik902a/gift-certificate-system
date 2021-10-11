@@ -61,4 +61,10 @@ public class OrderDaoImpl implements OrderDao {
 	public void createGiftCertificateOrder(GiftCertificateOrder giftCertificateOrder) {
 		entityManager.persist(giftCertificateOrder);
 	}
+
+	@Override
+	public long getTotalNumber(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

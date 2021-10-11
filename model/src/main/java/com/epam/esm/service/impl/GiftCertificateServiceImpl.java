@@ -19,13 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 //import com.epam.esm.exception.InvalidDataException;
 //import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.GiftCertificateService;
-//import com.epam.esm.validator.GiftCertificateValidator;
+
 
 /**
  * The {@code GiftCertificateServiceImpl} class is responsible for operations with gift certificate
@@ -71,19 +72,18 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
 	@Override
 	@Transactional
-	public List<GiftCertificateDto> find(Map<String, String> params) {
+	public PageDto<GiftCertificateDto> find(Map<String, String> params) {
 		log.info("FIND GiftCertificate BY PARAMS Service {}", params);
 		List<GiftCertificate> giftCertificateList = giftCertificateDao.find(params);
-		log.info("FIND GiftCertificate Service {}", giftCertificateList.get(0).toString());
-		
 	    List<GiftCertificateDto> giftCertificateDtoList = giftCertificateList.stream()
                 .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
                 .collect(Collectors.toList());
-	    log.info("FIND GiftCertificate DTO Service {}", giftCertificateDtoList.get(0).toString());
 	    
-		return giftCertificateDtoList;
+	    long totalNumberPositions = giftCertificateDao.getTotalNumber(params);
+        return new PageDto<>(giftCertificateDtoList, totalNumberPositions);
 //		return addTags(giftCertificateList);//TODO Deprecate
 	}
+	
 
 	
 	@Override

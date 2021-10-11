@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Component
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
 	private long id;
