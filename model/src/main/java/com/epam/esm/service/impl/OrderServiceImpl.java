@@ -1,10 +1,14 @@
 package com.epam.esm.service.impl;
 
+import static com.epam.esm.exception.ErrorCode.*;
+import static com.epam.esm.exception.ErrorMessageKey.*;
+
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -25,6 +29,7 @@ import com.epam.esm.entity.GiftCertificateOrder;
 import com.epam.esm.entity.GiftCertificateOrderKey;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
+import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
 
@@ -60,14 +65,23 @@ public class OrderServiceImpl implements OrderService {
 
 	private Order buildOrder(OrderDataDto orderDataDto) {
 		Order order = new Order();
-		User user = userDao.findEntityById(orderDataDto.getUserId());
+		Optional<User> userOptional = userDao.findEntityById(orderDataDto.getUserId());
+		User user = userOptional.orElseThrow(
+			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+					, orderDataDto.getUserId()
+					, USER_INCORRECT.getErrorCode()));
 		order.setUser(user);
 		BigDecimal cost = BigDecimal.ZERO;
 		Iterator<Map.Entry<Long, Integer>> giftCertificates = orderDataDto.getGiftCertificateMap().entrySet()
 				.iterator();
 		while (giftCertificates.hasNext()) {
 			Map.Entry<Long, Integer> giftCertificateData = giftCertificates.next();
-			GiftCertificate giftCertificate = giftCertificateDao.findEntityById(giftCertificateData.getKey());
+			Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityById(
+					giftCertificateData.getKey());
+			GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
+					() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+							, giftCertificateData.getKey()
+							, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
 			int quantity = giftCertificateData.getValue();
 			order.addGiftCertificateOrder(new GiftCertificateOrder(order, giftCertificate, quantity));
 			cost = cost.add(giftCertificate.getPrice());
@@ -78,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
 		return order;
 	}
 
-	private void addGiftCertificateOrderData(Order order) {
+	private void addGiftCertificateOrderData(Order order) {//TODO incorrect adding
 		order.getGiftCertificateOrderList().stream()
 			.forEach(giftCertificateOrder -> { giftCertificateOrder.setId(
 					new GiftCertificateOrderKey(order.getId(), giftCertificateOrder.getGiftCertificate().getId()));
@@ -90,7 +104,6 @@ public class OrderServiceImpl implements OrderService {
 			.map(giftCertificateOrder -> modelMapper.map(
 					giftCertificateOrder.getGiftCertificate(), GiftCertificateDto.class))
 			.collect(Collectors.toList());
-		
 //		for (GiftCertificateOrder giftCertificateOrder : order.getGiftCertificateOrderList()) {
 //			GiftCertificate giftCertificate = giftCertificateOrder.getGiftCertificate();
 //			GiftCertificateDto giftCertificateDto = modelMapper.map(giftCertificate, GiftCertificateDto.class));
@@ -103,7 +116,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public OrderDto findById(long id) {
 		log.info("FIND Order BY ID Service id={}", id);
-		Order order = orderDao.findEntityById(id);
+		Optional<Order> orderOptional = orderDao.findEntityById(id);
+		Order order = orderOptional.orElseThrow(
+				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+						, id
+						, ORDER_INCORRECT.getErrorCode()));
 		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
 		orderDto.setGiftCertificates(addGiftCertificatesDto(order));
 		return orderDto;

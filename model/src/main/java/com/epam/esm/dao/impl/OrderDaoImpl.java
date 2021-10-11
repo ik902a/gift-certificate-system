@@ -39,11 +39,10 @@ public class OrderDaoImpl implements OrderDao {
 		return null;
 	}
 
-//	@Override
-//	public Order findEntityById(long id) {
-//		Order order = entityManager.find(Order.class, id);
-//		return order;
-//	}
+	@Override
+	public Optional<Order> findEntityById(long id) {
+		return Optional.ofNullable(entityManager.find(Order.class, id));
+	}
 
 	@Override
 	public Optional<Order> findEntityByName(String name) {
@@ -67,10 +66,10 @@ public class OrderDaoImpl implements OrderDao {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	@Override
-	public Optional<Order> findEntityById(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public long getTotalNumber(Map<String, String> params) {
+//        return entityManager.createQuery(FIND_ALL_TAGS, Tag.class)
+//        		.getResultStream()
+//				.count();
+//	}
 }
