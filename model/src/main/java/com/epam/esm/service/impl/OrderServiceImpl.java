@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
 		log.info("CREATE Order Service {}", orderDataDto);
 		Order order = buildOrder(orderDataDto);
 		order = orderDao.create(order);
-		addGiftCertificateOrderData(order);
+//		addGiftCertificateOrderData(order);
 		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
 		orderDto.setGiftCertificates(addGiftCertificatesDto(order));
 		return orderDto;
@@ -86,7 +86,9 @@ public class OrderServiceImpl implements OrderService {
 			order.addGiftCertificateOrder(new GiftCertificateOrder(order, giftCertificate, quantity));
 			cost = cost.add(giftCertificate.getPrice());
 		}
+		log.info("CREATE GCOrder Service {}------", order.getGiftCertificateOrderList().get(0).getOrder().getCost());
 		order.setCost(cost);
+		log.info("CREATE GCOrder Service {}------", order.getGiftCertificateOrderList().get(0).getOrder().getCost());
 		ZonedDateTime currentDate = ZonedDateTime.now();
 		order.setDate(currentDate);
 		return order;

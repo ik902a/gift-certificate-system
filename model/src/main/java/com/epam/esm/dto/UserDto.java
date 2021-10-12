@@ -1,5 +1,6 @@
 package com.epam.esm.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -14,17 +15,24 @@ public class UserDto extends RepresentationModel<UserDto> {
     @Size(max = 45)
     private String login;
 	@Valid
-	private List<OrderDto> orders;
+	private List<OrderForUserDto> orders;
 	
 	public UserDto() {
 		super();
 	}
 
-	public UserDto(long id, String login, List<OrderDto> orders) {
+	public UserDto(long id, String login, List<OrderForUserDto> orders) {
 		super();
 		this.id = id;
 		this.login = login;
 		this.orders = orders;
+	}
+	
+	public void addOrder(OrderForUserDto order) {
+		if (orders == null) {
+			orders = new ArrayList<>();
+		}
+		orders.add(order);
 	}
 
 	public long getId() {
@@ -43,11 +51,11 @@ public class UserDto extends RepresentationModel<UserDto> {
 		this.login = login;
 	}
 
-	public List<OrderDto> getOrders() {
+	public List<OrderForUserDto> getOrders() {
 		return orders;
 	}
 
-	public void setOrders(List<OrderDto> orders) {
+	public void setOrders(List<OrderForUserDto> orders) {
 		this.orders = orders;
 	}
 
@@ -88,7 +96,7 @@ public class UserDto extends RepresentationModel<UserDto> {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nUserDTO{ id=").append(id);
+		sb.append("\nUserForUserDTO{ id=").append(id);
 		sb.append(", login=").append(login);
 		sb.append(", ").append(orders).append(" }");
 		return sb.toString();

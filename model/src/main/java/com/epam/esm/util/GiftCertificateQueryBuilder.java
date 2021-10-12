@@ -50,7 +50,6 @@ public class GiftCertificateQueryBuilder {
 			predicateList.add(addDescription(params.get(DESCRIPTION.toString().toLowerCase()), criteriaBuilder,
 					giftCertificateRoot));
 		}
-
 		criteriaQuery.select(giftCertificateRoot).where(predicateList.toArray(new Predicate[] {}));
 		Order order = addSort(params, criteriaBuilder, giftCertificateRoot);
 		criteriaQuery.orderBy(order);
@@ -90,3 +89,5 @@ public class GiftCertificateQueryBuilder {
 		return order;
 	}
 }
+
+

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.esm.dao.UserDao;
+import com.epam.esm.dto.OrderForUserDto;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.User;
@@ -41,11 +42,20 @@ public class UserServiceImpl implements UserService {
 	public PageDto<UserDto> find(Map<String, String> params) {
 		log.info("FIND User BY PARAMS Service {}", params);
 		List<User> userList = userDao.find(params);
-	    List<UserDto> userDtoList = userList.stream()
-                .map(user -> modelMapper.map(user, UserDto.class))
+		List<UserDto> userDtoList = userList.stream()
+                .map(user -> convertToDto(user))
                 .collect(Collectors.toList());
 	    long totalPositions = userDao.getTotalNumber(params);
 		return new PageDto<>(userDtoList, totalPositions);
+	}
+
+	private UserDto convertToDto(User user) {
+		UserDto userDto = modelMapper.map(user, UserDto.class);
+		List<OrderForUserDto> orderForUserDtoList = user.getOrderList().stream()
+				.map(order -> modelMapper.map(order, OrderForUserDto.class))
+				.collect(Collectors.toList());
+				userDto.setOrders(orderForUserDtoList);
+		return userDto;
 	}
 
 	@Override
@@ -57,7 +67,7 @@ public class UserServiceImpl implements UserService {
 			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
 					, id
 					, USER_INCORRECT.getErrorCode()));
-		return modelMapper.map(user, UserDto.class);
+		return convertToDto(user);
 	}
 
 	@Override

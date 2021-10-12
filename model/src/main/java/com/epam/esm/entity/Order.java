@@ -100,55 +100,9 @@ public class Order extends AbstractEntity {
 		this.giftCertificateOrderList = giftCertificateOrderList;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cost == null) ? 0 : cost.hashCode());
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
-		result = prime * result + ((giftCertificateOrderList == null) ? 0 : giftCertificateOrderList.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Order other = (Order) obj;
-		if (cost == null) {
-			if (other.cost != null)
-				return false;
-		} else if (!cost.equals(other.cost))
-			return false;
-		if (date == null) {
-			if (other.date != null)
-				return false;
-		} else if (!date.equals(other.date))
-			return false;
-		if (giftCertificateOrderList == null) {
-			if (other.giftCertificateOrderList != null)
-				return false;
-		} else if (!giftCertificateOrderList.equals(other.giftCertificateOrderList))
-			return false;
-		if (id != other.id)
-			return false;
-		if (user == null) {
-			if (other.user != null)
-				return false;
-		} else if (!user.equals(other.user))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Order [id=" + id + ", date=" + date + ", cost=" + cost + ", user=" + user
-				+ ", giftCertificateOrderList=" + giftCertificateOrderList + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Order [id=" + id + ", date=" + date + ", cost=" + cost + ", user=" + user
+//				+ ", giftCertificateOrderList=" + giftCertificateOrderList + "]";
+//	}
 }

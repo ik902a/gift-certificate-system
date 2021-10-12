@@ -63,7 +63,7 @@ public class UserController {
 		addLinks(userDto);
 		log.info("FIND User DTO by id Controller");
 		return userDto;
-	}
+	}	
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
