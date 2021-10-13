@@ -98,6 +98,14 @@ public class TagController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
+    @GetMapping("/popular")
+    @ResponseStatus(HttpStatus.OK)
+    public TagDto getMostPopularTagOfUserWithHighestCostOfAllOrders() {
+        TagDto tagDto = tagService.findMostPopularTagOfUserWithHighestCostOfAllOrders();
+        addLinks(tagDto);
+        return tagDto;
+    }
+	
     private void addLinks(TagDto tagDto) {
         tagDto.add(linkTo(methodOn(TagController.class).getTagById(tagDto.getId())).withSelfRel());
         tagDto.add(linkTo(methodOn(TagController.class).deleteTag(tagDto.getId())).withRel(DELETE));

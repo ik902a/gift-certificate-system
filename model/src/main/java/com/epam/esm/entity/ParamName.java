@@ -9,6 +9,7 @@ public enum ParamName {
 	TAG, 
 	NAME, 
 	DESCRIPTION,
+	LOGIN,
 	OFFSET,
 	LIMIT,
 	SORT_BY,

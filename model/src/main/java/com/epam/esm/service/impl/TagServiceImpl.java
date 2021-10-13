@@ -86,4 +86,15 @@ public class TagServiceImpl implements TagService {
 					, TAG_INCORRECT.getErrorCode());
 		}
 	}
+
+	@Override
+	public TagDto findMostPopularTagOfUserWithHighestCostOfAllOrders() {
+		Optional<Tag> tagOptional = tagDao.findMostPopularTagOfUserWithHighestCostOfAllOrders();
+		Tag tag = tagOptional.orElseThrow(
+				() -> new ResourceNotExistException(NOT_FOUND_POPULAR_TAG.getErrorMessageKey()
+						, TAG_INCORRECT.getErrorCode()));
+		return modelMapper.map(tag, TagDto.class);
+	}
+	
+
 }

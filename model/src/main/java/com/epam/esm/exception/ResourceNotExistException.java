@@ -20,6 +20,11 @@ public class ResourceNotExistException extends RuntimeException {
 		this.incorrectParameter = incorrectParameter;
 		this.errorCode = errorCode;
 	}
+	
+	public ResourceNotExistException(String message, String errorCode) {
+		super(message);
+		this.errorCode = errorCode;
+	}
 
 	@Override
 	public String getMessage() {

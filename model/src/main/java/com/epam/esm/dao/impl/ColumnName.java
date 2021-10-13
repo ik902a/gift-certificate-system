@@ -17,6 +17,9 @@ public class ColumnName {
 	//tags
 	public static final String TAGS_ID = "id";
 	public static final String TAGS_NAME = "name";
+	//users
+	public static final String USERS_ID = "id";
+	public static final String USERS_LOGIN = "login";
 
 	private ColumnName() {
 	}

@@ -6,12 +6,15 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 import org.springframework.stereotype.Repository;
 
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.entity.User;
 import com.epam.esm.util.PaginationParamExtractor;
+import com.epam.esm.util.UserQueryBuilder;
 
 /**
  * The {@code UserDaoImpl} class works with users table in database
@@ -27,9 +30,11 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public List<User> find(Map<String, String> params) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<User> criteriaQuery = UserQueryBuilder.buildQuery(params, criteriaBuilder);
 		int offset = PaginationParamExtractor.getOffset(params);
 		int limit = PaginationParamExtractor.getLimit(params);
-        return entityManager.createQuery(FIND_ALL_USERS, User.class)
+        return entityManager.createQuery(criteriaQuery)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();

@@ -43,4 +43,6 @@ public interface TagService {
 	 * @param id {@link long} tag id
 	 */
 	void delete(long id);
+
+	TagDto findMostPopularTagOfUserWithHighestCostOfAllOrders();
 }

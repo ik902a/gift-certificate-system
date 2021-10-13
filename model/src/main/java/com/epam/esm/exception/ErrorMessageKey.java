@@ -9,6 +9,7 @@ public enum ErrorMessageKey {
 	
 	
 	RESOURCE_NOT_FOUND_BY_ID ("message.resource_not_found_by_id"),
+	NOT_FOUND_POPULAR_TAG("message.not_found_popular_tag"),
 //	INCORRECT_ID ("message.incorrect_id"),
 //	INCORRECT_NAME ("message.incorrect_name"),
 //	NAME_EXIST ("message.name_exist"),
@@ -19,8 +20,8 @@ public enum ErrorMessageKey {
 //	METHOD_NOT_ALLOWED ("message.method_not_allowed"),
 //	INCORRECT_PARAM_FORMAT ("message.incorrect_param_format"),
 //	INCORRECT_PARAM("message.incorrect_param"),
-//	INCORRECT_SORT_PARAM("message.incorrect_sort_param"),
-//	INCORRECT_ORDER_PARAM("message.incorrect_order_param"),
+	INCORRECT_SORT_PARAM("message.incorrect_sort_param"),
+	INCORRECT_ORDER_PARAM("message.incorrect_order_param"),
 	INTERNAL_SERVER_ERROR ("message.internal_server_error");
 	
 	private final String errorMessageKey;
