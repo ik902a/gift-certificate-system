@@ -45,7 +45,9 @@ public class UserServiceImpl implements UserService {
 		List<UserDto> userDtoList = userList.stream()
                 .map(user -> convertToDto(user))
                 .collect(Collectors.toList());
+		log.info("i'm here Service {}-------------", params);
 	    long totalPositions = userDao.getTotalNumber(params);
+	    log.info("i'm here Service {}-------------", params);
 		return new PageDto<>(userDtoList, totalPositions);
 	}
 

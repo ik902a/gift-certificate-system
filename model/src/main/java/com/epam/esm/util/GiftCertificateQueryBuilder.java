@@ -3,8 +3,10 @@ package com.epam.esm.util;
 import static com.epam.esm.entity.ParamName.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -32,6 +34,7 @@ public class GiftCertificateQueryBuilder {
 	public static Logger log = LogManager.getLogger();
 	private static final String TAGS = "tags";
 	private static final String PERCENT = "%";
+	private static final String SEPARATOR = ",";
 
 	public static CriteriaQuery<GiftCertificate> buildQuery(Map<String, String> params,
 			CriteriaBuilder criteriaBuilder) {
@@ -39,7 +42,7 @@ public class GiftCertificateQueryBuilder {
 		Root<GiftCertificate> giftCertificateRoot = criteriaQuery.from(GiftCertificate.class);
 		List<Predicate> predicateList = new ArrayList<>();
 		if (params.containsKey(TAG.toString().toLowerCase())) {
-			predicateList.add(addTags(params.get(TAG.toString().toLowerCase()), criteriaBuilder, giftCertificateRoot));
+			predicateList.addAll(addTags(params.get(TAG.toString().toLowerCase()), criteriaBuilder, giftCertificateRoot));
 		}
 		if (params.containsKey(NAME.toString().toLowerCase())) {
 			predicateList.add(addName(params.get(NAME.toString().toLowerCase()), criteriaBuilder, giftCertificateRoot));
@@ -55,15 +58,16 @@ public class GiftCertificateQueryBuilder {
 		return criteriaQuery;
 	}
 
-	private static Predicate addTags(String tag, CriteriaBuilder criteriaBuilder,
-			Root<GiftCertificate> giftCertificateRoot) {
-		Join<GiftCertificate, Tag> tagTable = giftCertificateRoot.join(TAGS);
-		Predicate predicate = criteriaBuilder.equal(tagTable.get(ColumnName.TAGS_NAME), tag);
-		return predicate;
+	private static List<Predicate> addTags(String tag, CriteriaBuilder criteriaBuilder
+			, Root<GiftCertificate> giftCertificateRoot) {
+		List<String> tagNameList = Arrays.asList(tag.split(SEPARATOR));
+		return tagNameList.stream()
+				.map(name -> criteriaBuilder.equal(giftCertificateRoot.join(TAGS).get(ColumnName.TAGS_NAME), name))
+				.collect(Collectors.toList());
 	}
-
-	private static Predicate addName(String name, CriteriaBuilder criteriaBuilder,
-			Root<GiftCertificate> giftCertificateRoot) {
+	
+	private static Predicate addName(String name, CriteriaBuilder criteriaBuilder
+			, Root<GiftCertificate> giftCertificateRoot) {
 		return criteriaBuilder.like(giftCertificateRoot.get(ColumnName.GIFT_CERTIFICATES_NAME)
 				, PERCENT + name + PERCENT);
 	}
@@ -74,8 +78,8 @@ public class GiftCertificateQueryBuilder {
 				, PERCENT + description + PERCENT);
 	}
 
-	private static Order addSort(Map<String, String> params, CriteriaBuilder criteriaBuilder,
-			Root<GiftCertificate> giftCertificateRoot) {
+	private static Order addSort(Map<String, String> params, CriteriaBuilder criteriaBuilder
+			, Root<GiftCertificate> giftCertificateRoot) {
 		ParamValidator.validateSortParam(params);
 		String sortBy = params.getOrDefault(SORT_BY.toString().toLowerCase(), SortType.NAME.toString().toLowerCase());
 		String orderBy = params.getOrDefault(ORDER_BY.toString().toLowerCase(), OrderType.ASC.toString());

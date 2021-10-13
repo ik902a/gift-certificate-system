@@ -47,7 +47,9 @@ public class UserDaoImpl implements UserDao {
 	
 	@Override
 	public long getTotalNumber(Map<String, String> params) {
-		 return entityManager.createQuery(FIND_ALL_USERS, User.class)
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<User> criteriaQuery = UserQueryBuilder.buildQuery(params, criteriaBuilder);
+		 return entityManager.createQuery(criteriaQuery)
 	        		.getResultStream()
 					.count();
 	}

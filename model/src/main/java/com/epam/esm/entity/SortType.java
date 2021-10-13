@@ -6,5 +6,5 @@ package com.epam.esm.entity;
  * @author Ihar Klepcha
  */
 public enum SortType {
-	NAME, DATE
+	NAME, DATE, LOGIN, ID
 }

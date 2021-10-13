@@ -52,7 +52,7 @@ public class UserQueryBuilder {
 	
 	private static Order addSort(Map<String, String> params, CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
 		ParamValidator.validateSortParam(params);
-		String sortBy = params.getOrDefault(SORT_BY.toString().toLowerCase(), SortType.NAME.toString().toLowerCase());
+		String sortBy = params.getOrDefault(SORT_BY.toString().toLowerCase(), SortType.ID.toString().toLowerCase());
 		String orderBy = params.getOrDefault(ORDER_BY.toString().toLowerCase(), OrderType.ASC.toString());
 		return (OrderType.valueOf(orderBy) == OrderType.ASC)
 				? criteriaBuilder.asc(userRoot.get(sortBy))
