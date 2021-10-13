@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.ErrorMessageKey;
-//import com.epam.esm.exception.InvalidDataException;
+import com.epam.esm.exception.InvalidParamException;
 //import com.epam.esm.exception.ParamException;
 import com.epam.esm.exception.ResourceNotExistException;
 
@@ -54,6 +54,29 @@ public class RestExceptionHandler {
 		
 		ErrorData incorrectData = new ErrorData(List.of(message), code);
 		return new ResponseEntity<>(incorrectData, HttpStatus.NOT_FOUND);
+	}
+	
+	
+	/**
+	 * Handles InvalidDataException
+	 *
+	 * @param exception {@link InvalidDataException} exception
+	 * @param locale    {@link Locale} locale of HTTP request
+	 * @return {@link ResponseEntity} the response message
+	 */
+	@ExceptionHandler(InvalidParamException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<ErrorData> invalidParamExceptionHandler(InvalidParamException exception, 
+			Locale locale) {
+		List<String> messageList = new ArrayList<>();
+		List<String> errorKeysList = exception.getErrorMessageKeys();
+		for (String errorKey : errorKeysList) {
+			String message = messageSource.getMessage(errorKey, new String[] {}, locale);
+			messageList.add(message);
+		}
+		String code = HttpStatus.BAD_REQUEST.value() + exception.getErrorCode();
+		ErrorData incorrectData = new ErrorData(messageList, code);
+		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)

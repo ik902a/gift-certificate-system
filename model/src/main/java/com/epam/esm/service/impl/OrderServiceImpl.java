@@ -86,9 +86,7 @@ public class OrderServiceImpl implements OrderService {
 			order.addGiftCertificateOrder(new GiftCertificateOrder(order, giftCertificate, quantity));
 			cost = cost.add(giftCertificate.getPrice());
 		}
-		log.info("CREATE GCOrder Service {}------", order.getGiftCertificateOrderList().get(0).getOrder().getCost());
 		order.setCost(cost);
-		log.info("CREATE GCOrder Service {}------", order.getGiftCertificateOrderList().get(0).getOrder().getCost());
 		ZonedDateTime currentDate = ZonedDateTime.now();
 		order.setDate(currentDate);
 		return order;

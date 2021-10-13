@@ -24,11 +24,11 @@ public class TagDaoImpl implements TagDao {
 	private static final String FIND_ALL_TAGS = "FROM Tag";
 	private static final String FIND_TAG_BY_NAME = "FROM Tag WHERE name=:name";
 	private static final String DELETE_TAG = "DELETE FROM Tag WHERE id=:id";
-	private static final String FIND_MOST_POPULAR_TAG = "SELECT t.id, t.name FROM tag t " +
-            "JOIN gift_certificates_tags gct ON t.id = gct.tag_id " +
-            "JOIN gift_certificates gc ON gct.gift_certificate_id = gc.id " +
-            "JOIN gift_certificates_orders gco ON gc.id = gco.gift_certificate_id " +
-            "JOIN orders o ON gco.order_id = o.id WHERE o.user_id = " +
+	private static final String FIND_MOST_POPULAR_TAG = "SELECT t.id, t.name FROM tags t " +
+            "JOIN gift_certificates_tags gct ON t.id=gct.tag_id " +
+            "JOIN gift_certificates gc ON gct.gift_certificate_id=gc.id " +
+            "JOIN gift_certificates_orders gco ON gc.id=gco.gift_certificate_id " +
+            "JOIN orders o ON gco.order_id=o.id WHERE o.user_id=" +
             "(SELECT user_id FROM orders GROUP BY user_id ORDER BY sum(cost) DESC LIMIT 1) " +
             "GROUP BY t.id ORDER BY count(*) DESC LIMIT 1";
 	@PersistenceContext
@@ -84,9 +84,10 @@ public class TagDaoImpl implements TagDao {
 				.count();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<Tag> findMostPopularTagOfUserWithHighestCostOfAllOrders() {
-		return entityManager.createQuery(FIND_MOST_POPULAR_TAG, Tag.class)
+		return entityManager.createNativeQuery(FIND_MOST_POPULAR_TAG, Tag.class)
                 .getResultStream()
                 .findFirst();
 	}

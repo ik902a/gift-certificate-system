@@ -88,9 +88,3 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 				.count();
 	}
 }
-
-//private static final String SQL_CREATE_GIFT_CERTIFICATE_TAG = "INSERT INTO gift_certificates_tags "
-//		+ "(gift_certificate_id, tag_id) VALUES (?,?)";
-//private static final String SQL_DELETE_GIFT_CERTIFICATE_TAG = "DELETE FROM gift_certificates_tags "
-//		+ "WHERE gift_certificate_id=?";
-
