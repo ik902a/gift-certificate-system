@@ -24,7 +24,6 @@ import com.epam.esm.util.UserQueryBuilder;
  */
 @Repository
 public class UserDaoImpl implements UserDao {
-	private static final String FIND_ALL_USERS = "FROM User";
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -49,7 +48,7 @@ public class UserDaoImpl implements UserDao {
 	public long getTotalNumber(Map<String, String> params) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<User> criteriaQuery = UserQueryBuilder.buildQuery(params, criteriaBuilder);
-		 return entityManager.createQuery(criteriaQuery)
+		return entityManager.createQuery(criteriaQuery)
 	        		.getResultStream()
 					.count();
 	}

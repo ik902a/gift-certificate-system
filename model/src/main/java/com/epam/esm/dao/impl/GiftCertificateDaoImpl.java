@@ -57,12 +57,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
 	@Override
 	public Optional<GiftCertificate> findEntityByName(String name) {
-		Optional<GiftCertificate> giftCertificate = entityManager
+		return entityManager
 				.createQuery(FIND_GIFT_CERTIFICATE_BY_NAME, GiftCertificate.class)
 				.setParameter(ColumnName.GIFT_CERTIFICATES_NAME, name)
 				.getResultStream()
 				.findFirst();
-		return giftCertificate;
 	}
 
 	@Override

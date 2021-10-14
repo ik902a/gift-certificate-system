@@ -11,6 +11,6 @@ import com.epam.esm.entity.Order;
  */
 public interface OrderDao extends BaseDao<Order> {
 	
-	void createGiftCertificateOrder(GiftCertificateOrder giftCertificateOrder);
+	void createGiftCertificateOrder(GiftCertificateOrder giftCertificateOrder);// TODO 
 	
 }

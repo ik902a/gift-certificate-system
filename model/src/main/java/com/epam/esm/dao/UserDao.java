@@ -9,5 +9,4 @@ import com.epam.esm.entity.User;
  * @see BaseDao
  */
 public interface UserDao extends BaseDao<User> {
-
 }

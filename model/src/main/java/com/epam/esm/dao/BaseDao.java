@@ -54,5 +54,11 @@ public interface BaseDao<T extends AbstractEntity> {
 	 */
 	boolean delete(long id);
 	
+	/**
+	 * Gets number of entities in query
+	 * 
+	 * @param  params {@link Map} of {@link String} and {@link String} parameters for searching
+	 * @return number entities received from database
+	 */
 	long getTotalNumber(Map<String, String> params);
 }

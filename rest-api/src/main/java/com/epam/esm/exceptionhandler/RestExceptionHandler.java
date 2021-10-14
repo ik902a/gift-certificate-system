@@ -58,7 +58,7 @@ public class RestExceptionHandler {
 	
 	
 	/**
-	 * Handles InvalidDataException
+	 * Handles InvalidParamException
 	 *
 	 * @param exception {@link InvalidDataException} exception
 	 * @param locale    {@link Locale} locale of HTTP request

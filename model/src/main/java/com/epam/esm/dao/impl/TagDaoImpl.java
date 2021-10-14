@@ -72,7 +72,7 @@ public class TagDaoImpl implements TagDao {
 	}
 
 	@Override
-	public List<Tag> findEntityByGiftCertificate(long giftCertificateId) {
+	public List<Tag> findEntityByGiftCertificate(long giftCertificateId) {//TODO
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -91,12 +91,8 @@ public class TagDaoImpl implements TagDao {
                 .getResultStream()
                 .findFirst();
 	}
-	
-//	private static final String SQL_CREATE_TAG = "INSERT INTO tags (name) VALUES (?)";
-//	private static final String SQL_FIND_ALL_TAGS = "SELECT id, name FROM tags";
-
-//	private static final String SQL_DELETE_TAG = "DELETE FROM tags WHERE id=?";
-//	private static final String SQL_FIND_TAG_BY_GIFT_CERTIFICATE = "SELECT id, name FROM tags WHERE id IN "
-//			+ "(SELECT tag_id FROM gift_certificates_tags gct "
-//			+ "JOIN gift_certificates gc ON gct.gift_certificate_id = gc.id WHERE gc.id=?)";	
 }
+
+//private static final String SQL_FIND_TAG_BY_GIFT_CERTIFICATE = "SELECT id, name FROM tags WHERE id IN "
+//+ "(SELECT tag_id FROM gift_certificates_tags gct "
+//+ "JOIN gift_certificates gc ON gct.gift_certificate_id = gc.id WHERE gc.id=?)";	

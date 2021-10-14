@@ -34,35 +34,32 @@ public class OrderDaoImpl implements OrderDao {
 	}
 
 	@Override
-	public List<Order> find(Map<String, String> params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Optional<Order> findEntityById(long id) {
 		return Optional.ofNullable(entityManager.find(Order.class, id));
 	}
 
 	@Override
 	public Optional<Order> findEntityByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("operation not supported for class " + this.getClass().getName());
+	}
+	
+	@Override
+	public List<Order> find(Map<String, String> params) {
+		throw new UnsupportedOperationException("operation not supported for class " + this.getClass().getName());
 	}
 
 	@Override
 	public boolean delete(long id) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new UnsupportedOperationException("operation not supported for class " + this.getClass().getName());
 	}
 
 	@Override
-	public void createGiftCertificateOrder(GiftCertificateOrder giftCertificateOrder) {
+	public void createGiftCertificateOrder(GiftCertificateOrder giftCertificateOrder) {//TODO
 		entityManager.persist(giftCertificateOrder);
 	}
 
 	@Override
-	public long getTotalNumber(Map<String, String> params) {
+	public long getTotalNumber(Map<String, String> params) {// TODO
 		// TODO Auto-generated method stub
 		return 0;
 	}
