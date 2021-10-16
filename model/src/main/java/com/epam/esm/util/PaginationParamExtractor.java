@@ -2,7 +2,6 @@ package com.epam.esm.util;
 
 import java.util.Map;
 
-import com.epam.esm.entity.ParamName;
 import com.epam.esm.validator.ParamValidator;
 
 public class PaginationParamExtractor {

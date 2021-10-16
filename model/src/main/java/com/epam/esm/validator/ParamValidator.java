@@ -10,10 +10,10 @@ import java.util.Map;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.epam.esm.entity.OrderType;
-import com.epam.esm.entity.ParamName;
-import com.epam.esm.entity.SortType;
 import com.epam.esm.exception.InvalidParamException;
+import com.epam.esm.util.OrderType;
+import com.epam.esm.util.ParamName;
+import com.epam.esm.util.SortType;
 
 /**
  * The {@code ParamValidator} class validates sort parameters

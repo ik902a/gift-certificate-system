@@ -63,7 +63,8 @@ public class TagServiceImpl implements TagService {
 				.map(tag -> modelMapper.map(tag, TagDto.class))
 				.collect(Collectors.toList());
 		long totalPositions = tagDao.getTotalNumber(params);
-		return new PageDto<>(tagDtoList, totalPositions);
+		return null;//TODO
+//				new PageDto<>(tagDtoList, totalPositions);
 	}
 	
 	@Override

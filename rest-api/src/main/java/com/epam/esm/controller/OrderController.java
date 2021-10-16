@@ -69,8 +69,8 @@ public class OrderController {
 		orderDto.add(linkTo(methodOn(OrderController.class).getOrderById(orderDto.getId())).withSelfRel());
 		orderDto.getUser().add(
 				linkTo(methodOn(UserController.class).getUserById(orderDto.getUser().getId())).withSelfRel());
-		orderDto.getGiftCertificates().forEach(giftCertificateDto -> giftCertificateDto.add(
-				linkTo(methodOn(GiftCertificateController.class).getGiftCertificateById(
-						giftCertificateDto.getId())).withSelfRel()));
+//		orderDto.getGiftCertificates().forEach(giftCertificateDto -> giftCertificateDto.add(
+//				linkTo(methodOn(GiftCertificateController.class).getGiftCertificateById(
+//						giftCertificateDto.getId())).withSelfRel()));
 	}
 }

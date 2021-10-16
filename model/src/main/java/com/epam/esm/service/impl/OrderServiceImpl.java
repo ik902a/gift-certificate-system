@@ -57,9 +57,9 @@ public class OrderServiceImpl implements OrderService {
 		log.info("CREATE Order Service {}", orderDataDto);
 		Order order = buildOrder(orderDataDto);
 		order = orderDao.create(order);
-//		addGiftCertificateOrderData(order);
+		addGiftCertificateOrderData(order);
 		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
-		orderDto.setGiftCertificates(addGiftCertificatesDto(order));
+//		orderDto.setGiftCertificates(addGiftCertificatesDto(order));
 		return orderDto;
 	}
 
@@ -84,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
 							, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
 			int quantity = giftCertificateData.getValue();
 			order.addGiftCertificateOrder(new GiftCertificateOrder(order, giftCertificate, quantity));
-			cost = cost.add(giftCertificate.getPrice());
+			cost = cost.add(giftCertificate.getPrice().multiply(new BigDecimal(quantity)));
 		}
 		order.setCost(cost);
 		ZonedDateTime currentDate = ZonedDateTime.now();
@@ -99,18 +99,18 @@ public class OrderServiceImpl implements OrderService {
 			orderDao.createGiftCertificateOrder(giftCertificateOrder); });		
 	}
 	
-	private List<GiftCertificateDto> addGiftCertificatesDto(Order order) {
-		List<GiftCertificateDto> giftCertificateList = order.getGiftCertificateOrderList().stream()
-			.map(giftCertificateOrder -> modelMapper.map(
-					giftCertificateOrder.getGiftCertificate(), GiftCertificateDto.class))
-			.collect(Collectors.toList());
-//		for (GiftCertificateOrder giftCertificateOrder : order.getGiftCertificateOrderList()) {
-//			GiftCertificate giftCertificate = giftCertificateOrder.getGiftCertificate();
-//			GiftCertificateDto giftCertificateDto = modelMapper.map(giftCertificate, GiftCertificateDto.class));
-//			orderDto.addGiftCertificate(giftCertificateDto);
-//		}
-		return giftCertificateList;
-	}
+//	private List<GiftCertificateDto> addGiftCertificatesDto(Order order) {
+//		List<GiftCertificateDto> giftCertificateList = order.getGiftCertificateOrderList().stream()
+//			.map(giftCertificateOrder -> modelMapper.map(
+//					giftCertificateOrder.getGiftCertificate(), GiftCertificateDto.class))
+//			.collect(Collectors.toList());
+////		for (GiftCertificateOrder giftCertificateOrder : order.getGiftCertificateOrderList()) {
+////			GiftCertificate giftCertificate = giftCertificateOrder.getGiftCertificate();
+////			GiftCertificateDto giftCertificateDto = modelMapper.map(giftCertificate, GiftCertificateDto.class));
+////			orderDto.addGiftCertificate(giftCertificateDto);
+////		}
+//		return giftCertificateList;
+//	}
 	
 	@Transactional
 	@Override
@@ -122,7 +122,11 @@ public class OrderServiceImpl implements OrderService {
 						, id
 						, ORDER_INCORRECT.getErrorCode()));
 		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
-		orderDto.setGiftCertificates(addGiftCertificatesDto(order));
+		log.info("FIND Order BY ID Service GCO={}"
+				, order.getGiftCertificateOrderList().get(0).getGiftCertificate().getDescription());
+		log.info("FIND Order BY ID Service GCO={}"
+				, orderDto.getGiftCertificateOrderList().get(0).getGiftCertificate().getDescription());
+//		orderDto.setGiftCertificates(addGiftCertificatesDto(order));
 		return orderDto;
 	}
 }

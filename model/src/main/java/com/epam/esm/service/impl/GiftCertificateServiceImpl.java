@@ -25,6 +25,7 @@ import com.epam.esm.entity.Tag;
 //import com.epam.esm.exception.InvalidDataException;
 import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.util.PaginationParamExtractor;
 
 
 /**
@@ -74,8 +75,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	    List<GiftCertificateDto> giftCertificateDtoList = giftCertificateList.stream()
                 .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
                 .collect(Collectors.toList());
+	    int offset = PaginationParamExtractor.getOffset(params);
+		int limit = PaginationParamExtractor.getLimit(params);
+		log.info("Service offset={}, limit={}", offset, limit);
 	    long totalPositions = giftCertificateDao.getTotalNumber(params);
-        return new PageDto<>(giftCertificateDtoList, totalPositions);
+	    long totalPages = totalPositions/limit;
+	    long pageNumber = offset/limit + 1;
+	    log.info("Service page={}", pageNumber);
+        return new PageDto<>(giftCertificateDtoList, totalPages, pageNumber, offset, limit);
 	}
 	
 	@Override

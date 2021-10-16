@@ -1,8 +1,8 @@
 package com.epam.esm.util;
 
-import static com.epam.esm.entity.ParamName.LOGIN;
-import static com.epam.esm.entity.ParamName.ORDER_BY;
-import static com.epam.esm.entity.ParamName.SORT_BY;
+import static com.epam.esm.util.ParamName.LOGIN;
+import static com.epam.esm.util.ParamName.ORDER_BY;
+import static com.epam.esm.util.ParamName.SORT_BY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.epam.esm.dao.impl.ColumnName;
-import com.epam.esm.entity.OrderType;
-import com.epam.esm.entity.SortType;
 import com.epam.esm.entity.User;
 import com.epam.esm.validator.ParamValidator;
 

@@ -1,4 +1,4 @@
-package com.epam.esm.entity;
+package com.epam.esm.util;
 
 /**
  * The {@code ParamName} enum describes all name of possible parameters

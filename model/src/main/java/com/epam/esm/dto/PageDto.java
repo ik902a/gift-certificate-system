@@ -2,6 +2,10 @@ package com.epam.esm.dto;
 
 import java.util.List;
 
+import org.springframework.hateoas.RepresentationModel;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * The {@code PageDto} class is implementation of pattern DTO for transmission page
  * entity between service and controller.
@@ -9,9 +13,14 @@ import java.util.List;
  * @param <T> the entity which presents on page
  * @author Ihar Klepcha
  */
-public class PageDto<T> {
+public class PageDto<T> extends RepresentationModel<TagDto> {
 	private List<T> content;
-    private long totalPosition;
+    private long totalPages;
+    private long pageNumber;
+    @JsonIgnore
+    private long offset;
+    @JsonIgnore
+    private long limit;
     
     /**
 	 * Constructs a new Page DTO
@@ -26,26 +35,58 @@ public class PageDto<T> {
 	 * @param content {@link List} of {@link T} list entities
 	 * @param totalPosition contains number total positions
 	 */
-	public PageDto(List<T> content, long totalPosition) {
+	public PageDto(List<T> content, long totalPages, long pageNumber, long offset, long limit) {
 		super();
 		this.content = content;
-		this.totalPosition = totalPosition;
+		this.totalPages = totalPages;
+		this.pageNumber = pageNumber;
+		this.offset = offset;
+		this.limit = limit;
 	}
+
 
 	public List<T> getContent() {
 		return content;
 	}
 
+
+
 	public void setContent(List<T> content) {
 		this.content = content;
 	}
 
-	public long getTotalPosition() {
-		return totalPosition;
+	public long getTotalPages() {
+		return totalPages;
 	}
 
-	public void setTotalPosition(long totalPosition) {
-		this.totalPosition = totalPosition;
+	public void setTotalPages(long totalPages) {
+		this.totalPages = totalPages;
+	}
+
+	public long getPageNumber() {
+		return pageNumber;
+	}
+
+	public void setPageNumber(long page) {
+		this.pageNumber = page;
+	}
+
+	
+	
+	public long getOffset() {
+		return offset;
+	}
+
+	public void setOffset(long offset) {
+		this.offset = offset;
+	}
+
+	public long getLimit() {
+		return limit;
+	}
+
+	public void setLimit(long limit) {
+		this.limit = limit;
 	}
 
 	@Override
@@ -53,7 +94,7 @@ public class PageDto<T> {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + (int) (totalPosition ^ (totalPosition >>> 32));
+		result = prime * result + (int) (totalPages ^ (totalPages >>> 32));
 		return result;
 	}
 
@@ -71,7 +112,7 @@ public class PageDto<T> {
 				return false;
 		} else if (!content.equals(other.content))
 			return false;
-		if (totalPosition != other.totalPosition)
+		if (totalPages != other.totalPages)
 			return false;
 		return true;
 	}
@@ -80,7 +121,7 @@ public class PageDto<T> {
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("\nPage DTO{ content=").append(content);
-		sb.append(", totalPosition=").append(totalPosition).append(" }");
+		sb.append(", totalPosition=").append(totalPages).append(" }");
 		return sb.toString();
 	} 
 }

@@ -2,17 +2,23 @@ package com.epam.esm.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.PageDto;
@@ -42,6 +49,8 @@ public class GiftCertificateController {
 	public static Logger log = LogManager.getLogger();
     private static final String DELETE = "delete";
     private static final String UPDATE = "update";
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 	@Autowired
 	private GiftCertificateService giftCertificateService;
 	
@@ -89,9 +98,28 @@ public class GiftCertificateController {
 	public PageDto<GiftCertificateDto> getAllGiftCertificates(@Valid @RequestParam Map<String, String> params) {
 		PageDto<GiftCertificateDto> pageDto = giftCertificateService.find(params);
 		pageDto.getContent().forEach(this::addLinks);
+		addLinkOnPagedResourceRetrieval(pageDto, params);
 		log.info("FIND all Gift Certificate DTO Controller");
-		return pageDto;
+		return  pageDto;
 	}	
+//	@GetMapping
+//	@ResponseStatus(HttpStatus.OK)
+//	public List<GiftCertificateDto> getAllGiftCertificates(@Valid @RequestParam Map<String, String> params
+//			, UriComponentsBuilder uriBuilder, HttpServletResponse response) {
+//		
+//		PageDto<GiftCertificateDto> pageDto = giftCertificateService.find(params);
+//		pageDto.getContent().forEach(this::addLinks);
+//		
+//		eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<GiftCertificate>(
+//			      GiftCertificateController.class, uriBuilder, response, pageDto.getTotalPages(), pageDto.getPage()
+//			      , pageDto.getSize()));
+//
+//		log.info("FIND all Gift Certificate DTO Controller");
+//		return pageDto.getContent();
+//	}	
+
+	
+	
 	
 	/**
      * Gets gift certificate by id, processes GET requests at /gift-certificates/{id}
@@ -145,7 +173,28 @@ public class GiftCertificateController {
         		.updateGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel(UPDATE));
         giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
         		.deleteGiftCertificate(giftCertificateDto.getId())).withRel(DELETE));
-        giftCertificateDto.getTags().forEach(tagDto ->
-                tagDto.add(linkTo(methodOn(TagController.class).getTagById(tagDto.getId())).withSelfRel()));
     }  
+
+	private void addLinkOnPagedResourceRetrieval(PageDto<GiftCertificateDto> page, Map<String, String> params) {
+		if (hasNextPage(page.getPageNumber(), page.getTotalPages())) {
+			params.put("offset", String.valueOf(page.getOffset() + page.getLimit()));
+			page.add(linkTo(methodOn(GiftCertificateController.class)
+					.getAllGiftCertificates(params)).withRel("next"));
+		}
+		if (hasPreviousPage(page.getPageNumber())) {
+			params.put("offset", String.valueOf(page.getOffset() - page.getLimit()));
+			page.add(linkTo(methodOn(GiftCertificateController.class)
+					.getAllGiftCertificates(params)).withRel("prev"));
+		}
+	}
+
+	boolean hasNextPage(long page, long totalPages) {
+		log.info("hasNextPage page={}, total={}", page, totalPages);
+		return page < totalPages - 1;
+	}
+
+	boolean hasPreviousPage(long page) {
+		log.info("hasPreviousPage page={}", page);
+		return page > 0;
+	}
 }

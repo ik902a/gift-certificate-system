@@ -48,7 +48,8 @@ public class UserServiceImpl implements UserService {
 		log.info("i'm here Service {}-------------", params);
 	    long totalPositions = userDao.getTotalNumber(params);
 	    log.info("i'm here Service {}-------------", params);
-		return new PageDto<>(userDtoList, totalPositions);
+		return null;//TODO
+//				new PageDto<>(userDtoList, totalPositions);
 	}
 
 	private UserDto convertToDto(User user) {

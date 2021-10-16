@@ -1,6 +1,6 @@
 package com.epam.esm.util;
 
-import static com.epam.esm.entity.ParamName.*;
+import static com.epam.esm.util.ParamName.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,8 +20,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.epam.esm.dao.impl.ColumnName;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.OrderType;
-import com.epam.esm.entity.SortType;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.validator.ParamValidator;
 
@@ -81,7 +79,7 @@ public class GiftCertificateQueryBuilder {
 	private static Order addSort(Map<String, String> params, CriteriaBuilder criteriaBuilder
 			, Root<GiftCertificate> giftCertificateRoot) {
 		ParamValidator.validateSortParam(params);
-		String sortBy = params.getOrDefault(SORT_BY.toString().toLowerCase(), SortType.NAME.toString().toLowerCase());
+		String sortBy = params.getOrDefault(SORT_BY.toString().toLowerCase(), SortType.ID.toString().toLowerCase());
 		String orderBy = params.getOrDefault(ORDER_BY.toString().toLowerCase(), OrderType.ASC.toString());
 		return (OrderType.valueOf(orderBy) == OrderType.ASC)
 				? criteriaBuilder.asc(giftCertificateRoot.get(sortBy))
