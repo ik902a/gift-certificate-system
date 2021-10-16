@@ -1,7 +1,5 @@
 package com.epam.esm.controller;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.UserDto;
+import com.epam.esm.hateoas.UserHateoas;
 import com.epam.esm.service.UserService;
 
 @Validated
@@ -45,10 +44,11 @@ public class UserController {
 	@ResponseStatus(HttpStatus.OK)
 	public PageDto<UserDto> getAllUsers(@RequestParam Map<String, String> params) {
 		PageDto<UserDto> pageDto = userService.find(params);
-		pageDto.getContent().forEach(this::addLinks);
+		pageDto.getContent().forEach(UserHateoas::addLinks);
+		UserHateoas.addLinkOnPagedResourceRetrieval(pageDto, params);
 		log.info("FIND User DTO Controller");
 		return pageDto;
-	}
+	}	
 
 	/**
 	 * Gets user by id, processes GET requests at /users/{id}
@@ -60,7 +60,7 @@ public class UserController {
 	@ResponseStatus(HttpStatus.OK)
 	public UserDto getUserById(@Positive @PathVariable long id) {
 		UserDto userDto = userService.findById(id);
-		addLinks(userDto);
+		UserHateoas.addLinks(userDto);
 		log.info("FIND User DTO by id Controller");
 		return userDto;
 	}	
@@ -71,11 +71,5 @@ public class UserController {
 		UserDto userDtoCreated = userService.create(userDto);
 		log.info("Controller CREATE User is worcking");
 		return userDtoCreated;
-	}
-
-	private void addLinks(UserDto userDto) {
-		userDto.add(linkTo(methodOn(UserController.class).getUserById(userDto.getId())).withSelfRel());
-		userDto.getOrders().forEach(orderDto -> orderDto
-				.add(linkTo(methodOn(OrderController.class).getOrderById(orderDto.getId())).withSelfRel()));
 	}
 }

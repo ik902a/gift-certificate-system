@@ -44,12 +44,9 @@ public class PageDto<T> extends RepresentationModel<TagDto> {
 		this.limit = limit;
 	}
 
-
 	public List<T> getContent() {
 		return content;
 	}
-
-
 
 	public void setContent(List<T> content) {
 		this.content = content;
@@ -71,8 +68,6 @@ public class PageDto<T> extends RepresentationModel<TagDto> {
 		this.pageNumber = page;
 	}
 
-	
-	
 	public long getOffset() {
 		return offset;
 	}
@@ -92,8 +87,11 @@ public class PageDto<T> extends RepresentationModel<TagDto> {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result + (int) (limit ^ (limit >>> 32));
+		result = prime * result + (int) (offset ^ (offset >>> 32));
+		result = prime * result + (int) (pageNumber ^ (pageNumber >>> 32));
 		result = prime * result + (int) (totalPages ^ (totalPages >>> 32));
 		return result;
 	}
@@ -102,7 +100,7 @@ public class PageDto<T> extends RepresentationModel<TagDto> {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -111,6 +109,12 @@ public class PageDto<T> extends RepresentationModel<TagDto> {
 			if (other.content != null)
 				return false;
 		} else if (!content.equals(other.content))
+			return false;
+		if (limit != other.limit)
+			return false;
+		if (offset != other.offset)
+			return false;
+		if (pageNumber != other.pageNumber)
 			return false;
 		if (totalPages != other.totalPages)
 			return false;
@@ -121,7 +125,8 @@ public class PageDto<T> extends RepresentationModel<TagDto> {
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("\nPage DTO{ content=").append(content);
-		sb.append(", totalPosition=").append(totalPages).append(" }");
+		sb.append(", totalPages=").append(totalPages);
+		sb.append(", pageNumber=").append(pageNumber).append(" }");
 		return sb.toString();
 	} 
 }

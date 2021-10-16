@@ -1,24 +1,16 @@
 package com.epam.esm.controller;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.hateoas.GiftCertificateHateoas;
 import com.epam.esm.service.GiftCertificateService;
 
 /**
@@ -47,10 +39,6 @@ import com.epam.esm.service.GiftCertificateService;
 @RequestMapping("/gift-certificates")
 public class GiftCertificateController {
 	public static Logger log = LogManager.getLogger();
-    private static final String DELETE = "delete";
-    private static final String UPDATE = "update";
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
 	@Autowired
 	private GiftCertificateService giftCertificateService;
 	
@@ -72,7 +60,7 @@ public class GiftCertificateController {
 	public GiftCertificateDto createGiftCertificate(@Valid @RequestBody GiftCertificateDto giftCertificateDto) {
 		GiftCertificateDto giftCertificateDtoCreated = giftCertificateService.create(giftCertificateDto);
 		log.info("CREATE GiftCertificate DTO Controller");
-		addLinks(giftCertificateDtoCreated);
+		GiftCertificateHateoas.addLinks(giftCertificateDtoCreated);
 		return giftCertificateDtoCreated;
 	}
 //	@PostMapping
@@ -97,8 +85,8 @@ public class GiftCertificateController {
 	@ResponseStatus(HttpStatus.OK)
 	public PageDto<GiftCertificateDto> getAllGiftCertificates(@Valid @RequestParam Map<String, String> params) {
 		PageDto<GiftCertificateDto> pageDto = giftCertificateService.find(params);
-		pageDto.getContent().forEach(this::addLinks);
-		addLinkOnPagedResourceRetrieval(pageDto, params);
+		pageDto.getContent().forEach(GiftCertificateHateoas::addLinks);
+		GiftCertificateHateoas.addLinkOnPagedResourceRetrieval(pageDto, params);
 		log.info("FIND all Gift Certificate DTO Controller");
 		return  pageDto;
 	}	
@@ -118,9 +106,6 @@ public class GiftCertificateController {
 //		return pageDto.getContent();
 //	}	
 
-	
-	
-	
 	/**
      * Gets gift certificate by id, processes GET requests at /gift-certificates/{id}
      *
@@ -131,7 +116,7 @@ public class GiftCertificateController {
 	@ResponseStatus(HttpStatus.OK)
 	public GiftCertificateDto getGiftCertificateById(@Positive @PathVariable long id) {
 		GiftCertificateDto giftCertificateDto = giftCertificateService.findById(id);
-		addLinks(giftCertificateDto);
+		GiftCertificateHateoas.addLinks(giftCertificateDto);
 		log.info("FIND Gift Certificate DTO by id Controller");
 		return giftCertificateDto;
 	}
@@ -149,7 +134,7 @@ public class GiftCertificateController {
     		@RequestBody GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setId(id);
         GiftCertificateDto giftCertificateDtoUpdated = giftCertificateService.update(giftCertificateDto);
-        addLinks(giftCertificateDtoUpdated);
+        GiftCertificateHateoas.addLinks(giftCertificateDtoUpdated);
 		log.info("UPDATE Gift Certificate DTO Controller");
         return giftCertificateDtoUpdated;
     }
@@ -165,36 +150,4 @@ public class GiftCertificateController {
         giftCertificateService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    
-    private void addLinks (GiftCertificateDto giftCertificateDto){
-        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
-        		.getGiftCertificateById(giftCertificateDto.getId())).withSelfRel());
-        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
-        		.updateGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel(UPDATE));
-        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
-        		.deleteGiftCertificate(giftCertificateDto.getId())).withRel(DELETE));
-    }  
-
-	private void addLinkOnPagedResourceRetrieval(PageDto<GiftCertificateDto> page, Map<String, String> params) {
-		if (hasNextPage(page.getPageNumber(), page.getTotalPages())) {
-			params.put("offset", String.valueOf(page.getOffset() + page.getLimit()));
-			page.add(linkTo(methodOn(GiftCertificateController.class)
-					.getAllGiftCertificates(params)).withRel("next"));
-		}
-		if (hasPreviousPage(page.getPageNumber())) {
-			params.put("offset", String.valueOf(page.getOffset() - page.getLimit()));
-			page.add(linkTo(methodOn(GiftCertificateController.class)
-					.getAllGiftCertificates(params)).withRel("prev"));
-		}
-	}
-
-	boolean hasNextPage(long page, long totalPages) {
-		log.info("hasNextPage page={}, total={}", page, totalPages);
-		return page < totalPages - 1;
-	}
-
-	boolean hasPreviousPage(long page) {
-		log.info("hasPreviousPage page={}", page);
-		return page > 0;
-	}
 }

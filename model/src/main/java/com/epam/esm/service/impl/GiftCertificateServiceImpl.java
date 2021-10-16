@@ -48,8 +48,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	@Transactional
 	public GiftCertificateDto create(GiftCertificateDto giftCertificateDto) {
 		log.info("CREATE GiftCertificate Service {}", giftCertificateDto);
-//		GiftCertificateValidator.validateGiftCertificate(giftCertificate);
-//		throwErrorIfCertificateExist(giftCertificate.getName());
 		ZonedDateTime currentDate = ZonedDateTime.now();
 		giftCertificateDto.setCreateDate(currentDate);
 		giftCertificateDto.setLastUpdateDate(currentDate);
@@ -75,16 +73,21 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	    List<GiftCertificateDto> giftCertificateDtoList = giftCertificateList.stream()
                 .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
                 .collect(Collectors.toList());
-	    int offset = PaginationParamExtractor.getOffset(params);
-		int limit = PaginationParamExtractor.getLimit(params);
-		log.info("Service offset={}, limit={}", offset, limit);
-	    long totalPositions = giftCertificateDao.getTotalNumber(params);
-	    long totalPages = totalPositions/limit;
-	    long pageNumber = offset/limit + 1;
-	    log.info("Service page={}", pageNumber);
-        return new PageDto<>(giftCertificateDtoList, totalPages, pageNumber, offset, limit);
+	    return buildPage(giftCertificateDtoList, params);
 	}
 	
+	private PageDto<GiftCertificateDto> buildPage(List<GiftCertificateDto> giftCertificateDtoList
+			, Map<String, String> params) {
+		int offset = PaginationParamExtractor.getOffset(params);
+		int limit = PaginationParamExtractor.getLimit(params);
+		log.info("Service offset={}, limit={}", offset, limit);
+		long totalPositions = giftCertificateDao.getTotalNumber(params);
+		long totalPages = totalPositions / limit;
+		long pageNumber = offset / limit + 1;
+		log.info("Service page={}", pageNumber);
+      return new PageDto<>(giftCertificateDtoList, totalPages, pageNumber, offset, limit);
+	}
+
 	@Override
 	@Transactional
 	public GiftCertificateDto findById(long id) {
@@ -126,17 +129,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 //		return giftCertificate;
 //		return addTags(giftCertificate);
 //	}
-
-	@Override
-	@Transactional
-	public void delete(long id) {
-		log.info("DELETE GiftCertificate Service id={}", id);
-		if (!giftCertificateDao.delete(id)) {
-		throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-				, id
-				, GIFT_CERTIFICATE_INCORRECT.getErrorCode());
-		}
-	}
 	
 	private GiftCertificateDto updateFields(GiftCertificateDto giftCertificateOldDto
 			, GiftCertificateDto giftCertificateDto) {
@@ -159,6 +151,17 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		giftCertificateDto.setLastUpdateDate(ZonedDateTime.now());
 		giftCertificateDto.setId(giftCertificateOldDto.getId());
 		return giftCertificateDto;
+	}
+	
+	@Override
+	@Transactional
+	public void delete(long id) {
+		log.info("DELETE GiftCertificate Service id={}", id);
+		if (!giftCertificateDao.delete(id)) {
+		throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+				, id
+				, GIFT_CERTIFICATE_INCORRECT.getErrorCode());
+		}
 	}
 }
 

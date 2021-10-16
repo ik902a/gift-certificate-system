@@ -1,7 +1,5 @@
 package com.epam.esm.controller;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.TagDto;
+import com.epam.esm.hateoas.TagHateoas;
 import com.epam.esm.service.TagService;
 
 /**
@@ -38,7 +37,6 @@ import com.epam.esm.service.TagService;
 @RequestMapping("/tags")
 public class TagController {
 	public static Logger log = LogManager.getLogger();
-    private static final String DELETE = "delete";
 	@Autowired
 	private TagService tagService;
 
@@ -53,7 +51,7 @@ public class TagController {
 	public TagDto createTag(@Valid @RequestBody TagDto tagDto) {
 		TagDto tagDtoCreated = tagService.create(tagDto);
 		log.info("CREATE Tag DTO Controller");
-		addLinks(tagDtoCreated);
+		TagHateoas.addLinks(tagDtoCreated);
 		return tagDtoCreated;
 	}
 
@@ -67,10 +65,11 @@ public class TagController {
 	public PageDto<TagDto> getAllTags(@Valid @RequestParam Map<String, String> params) {
 		PageDto<TagDto> pageDto = tagService.find(params);
 		log.info("FIND all Tag DTO Controller");
-		pageDto.getContent().forEach(this::addLinks);
+		pageDto.getContent().forEach(TagHateoas::addLinks);
+		TagHateoas.addLinkOnPagedResourceRetrieval(pageDto, params);
 		return pageDto;
 	}
-	
+
 	/**
      * Gets tag by id, processes GET requests at /tags/{id}
      *
@@ -81,7 +80,7 @@ public class TagController {
 	@ResponseStatus(HttpStatus.OK)
 	public TagDto getTagById(@Positive @PathVariable long id) {
 		TagDto tagDto = tagService.findById(id);
-		addLinks(tagDto);
+		TagHateoas.addLinks(tagDto);
 		log.info("FIND Tag DTO by id Controller");
 		return tagDto;
 	}
@@ -102,12 +101,7 @@ public class TagController {
     @ResponseStatus(HttpStatus.OK)
     public TagDto getMostPopularTagOfUserWithHighestCostOfAllOrders() {
         TagDto tagDto = tagService.findMostPopularTagOfUserWithHighestCostOfAllOrders();
-        addLinks(tagDto);
+        TagHateoas.addLinks(tagDto);
         return tagDto;
-    }
-	
-    private void addLinks(TagDto tagDto) {
-        tagDto.add(linkTo(methodOn(TagController.class).getTagById(tagDto.getId())).withSelfRel());
-        tagDto.add(linkTo(methodOn(TagController.class).deleteTag(tagDto.getId())).withRel(DELETE));
     }
 }

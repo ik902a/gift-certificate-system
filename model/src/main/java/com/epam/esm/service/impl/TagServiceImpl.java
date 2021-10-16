@@ -19,7 +19,7 @@ import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.TagService;
-//import com.epam.esm.validator.TagValidator;
+import com.epam.esm.util.PaginationParamExtractor;
 
 /**
  * The {@code TagServiceImpl} class is responsible for operations with the car
@@ -41,19 +41,6 @@ public class TagServiceImpl implements TagService {
 		tag = tagDao.create(tag);
 		return modelMapper.map(tag, TagDto.class);
 	}
-//	@Override
-//	@Transactional
-//	public Tag create(Tag tag) {
-//		String tagName = tag.getName();
-////		TagValidator.validateName(tagName);
-////		if (tagDao.findEntityByName(tagName).isPresent()) {
-////			throw new ResourceNotExistException(NAME_EXIST.getErrorMessageKey(), 
-////					tagName, 
-////					TAG_INCORRECT_DATA.getErrorCode());
-////		}
-//		tag = tagDao.create(tag);
-//		return tag;
-//	}
 
 	@Override
 	@Transactional
@@ -62,10 +49,17 @@ public class TagServiceImpl implements TagService {
 		List<TagDto> tagDtoList = tagList.stream()
 				.map(tag -> modelMapper.map(tag, TagDto.class))
 				.collect(Collectors.toList());
-		long totalPositions = tagDao.getTotalNumber(params);
-		return null;//TODO
-//				new PageDto<>(tagDtoList, totalPositions);
+		return buildPage(tagDtoList, params);
 	}
+
+	private PageDto<TagDto> buildPage(List<TagDto> tagDtoList, Map<String, String> params) {
+		int offset = PaginationParamExtractor.getOffset(params);
+		int limit = PaginationParamExtractor.getLimit(params);
+		long totalPositions = tagDao.getTotalNumber(params);
+		long totalPages = totalPositions / limit;
+		long pageNumber = offset / limit + 1;
+      return new PageDto<>(tagDtoList, totalPages, pageNumber, offset, limit);
+}
 	
 	@Override
 	@Transactional
@@ -96,6 +90,4 @@ public class TagServiceImpl implements TagService {
 						, TAG_INCORRECT.getErrorCode()));
 		return modelMapper.map(tag, TagDto.class);
 	}
-	
-
 }

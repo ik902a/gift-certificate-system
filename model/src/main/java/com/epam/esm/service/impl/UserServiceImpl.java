@@ -22,6 +22,7 @@ import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.User;
 import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.UserService;
+import com.epam.esm.util.PaginationParamExtractor;
 
 /**
  * The {@code UserServiceImpl} class is responsible for operations with user
@@ -45,13 +46,21 @@ public class UserServiceImpl implements UserService {
 		List<UserDto> userDtoList = userList.stream()
                 .map(user -> convertToDto(user))
                 .collect(Collectors.toList());
-		log.info("i'm here Service {}-------------", params);
-	    long totalPositions = userDao.getTotalNumber(params);
-	    log.info("i'm here Service {}-------------", params);
-		return null;//TODO
-//				new PageDto<>(userDtoList, totalPositions);
-	}
+		return buildPage(userDtoList, params);
 
+	}
+	
+	private PageDto<UserDto> buildPage(List<UserDto> userDtoList, Map<String, String> params) {
+		int offset = PaginationParamExtractor.getOffset(params);
+		int limit = PaginationParamExtractor.getLimit(params);
+		log.info("Service offset={}, limit={}", offset, limit);
+		long totalPositions = userDao.getTotalNumber(params);
+		long totalPages = totalPositions / limit;
+		long pageNumber = offset / limit + 1;
+		log.info("Service page={}", pageNumber);
+      return new PageDto<>(userDtoList, totalPages, pageNumber, offset, limit);
+	}
+	
 	private UserDto convertToDto(User user) {
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 		List<OrderForUserDto> orderForUserDtoList = user.getOrderList().stream()
