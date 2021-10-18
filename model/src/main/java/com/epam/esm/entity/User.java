@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * The {@code User} class describes the entity user
  * 
  * @author Ihar Klepcha
- * @see Entity
+ * @see AbstractEntity
  */
 @Entity
 @Table(name = "users")
@@ -29,24 +29,34 @@ public class User extends AbstractEntity {
     private String login;
     
     @OneToMany(mappedBy="user")
-    private List<Order> orderList;
+    private List<Order> orders;
     
+	/**
+	 * Constructs a new user
+	 */
 	public User() {
 		super();
 	}
 
-    public User(long id, String login, List<Order> orderList) {
+	/**
+	 * Constructs a new user with the specified
+	 * 
+	 * @param id is user id
+	 * @param login {@link String} login
+	 * @param orders {@link List} of {@link Order} is list of orders
+	 */
+    public User(long id, String login, List<Order> orders) {
 		super();
 		this.id = id;
 		this.login = login;
-		this.orderList = orderList;
+		this.orders = orders;
 	}
 
 	public void addOrder(Order order) {
-        if (orderList == null) {
-            orderList = new ArrayList<>();
+        if (orders == null) {
+            orders = new ArrayList<>();
         }
-        orderList.add(order);
+        orders.add(order);
         order.setUser(this);
     }
 	
@@ -66,12 +76,12 @@ public class User extends AbstractEntity {
 		this.login = login;
 	}
 
-	public List<Order> getOrderList() {
-		return orderList;
+	public List<Order> getOrders() {
+		return orders;
 	}
 
-	public void setOrderList(List<Order> orderList) {
-		this.orderList = orderList;
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
 
 	@Override

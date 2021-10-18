@@ -13,6 +13,11 @@ import com.epam.esm.controller.UserController;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.UserDto;
 
+/**
+ * The {@code UserHateoas} class makes HATEOAS for users
+ * 
+ * @author Ihar Klepcha
+ */
 public class UserHateoas {
 	public static Logger log = LogManager.getLogger();
 	

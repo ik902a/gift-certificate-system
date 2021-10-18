@@ -7,7 +7,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 /**
  * The {@code TagDto} class is implementation of pattern DTO for transmission tag
- * entity between service and controller.
+ * entity between service and controller
  *
  * @author Ihar Klepcha
  * @see RepresentationModel
@@ -18,10 +18,19 @@ public class TagDto extends RepresentationModel<TagDto> {
     @Size(max = 45)
     private String name;
     
+    /**
+	 * Constructs a new Tag DTO
+	 */
 	public TagDto() {
 		super();
 	}
 
+	/**
+	 * Constructs a new tag DTO with the specified
+	 * 
+	 * @param tag id
+	 * @param name {@link String} name
+	 */
 	public TagDto(long id, String name) {
 		super();
 		this.id = id;

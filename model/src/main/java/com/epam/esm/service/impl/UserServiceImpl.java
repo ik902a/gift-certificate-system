@@ -44,10 +44,9 @@ public class UserServiceImpl implements UserService {
 		log.info("FIND User BY PARAMS Service {}", params);
 		List<User> userList = userDao.find(params);
 		List<UserDto> userDtoList = userList.stream()
-                .map(user -> convertToDto(user))
-                .collect(Collectors.toList());
+				.map(user -> convertToDto(user))
+				.collect(Collectors.toList());
 		return buildPage(userDtoList, params);
-
 	}
 	
 	private PageDto<UserDto> buildPage(List<UserDto> userDtoList, Map<String, String> params) {
@@ -55,7 +54,7 @@ public class UserServiceImpl implements UserService {
 		int limit = PaginationParamExtractor.getLimit(params);
 		log.info("Service offset={}, limit={}", offset, limit);
 		long totalPositions = userDao.getTotalNumber(params);
-		long totalPages = totalPositions / limit;
+		long totalPages = (long) Math.ceil((double) totalPositions / limit);
 		long pageNumber = offset / limit + 1;
 		log.info("Service page={}", pageNumber);
       return new PageDto<>(userDtoList, totalPages, pageNumber, offset, limit);
@@ -63,7 +62,7 @@ public class UserServiceImpl implements UserService {
 	
 	private UserDto convertToDto(User user) {
 		UserDto userDto = modelMapper.map(user, UserDto.class);
-		List<OrderForUserDto> orderForUserDtoList = user.getOrderList().stream()
+		List<OrderForUserDto> orderForUserDtoList = user.getOrders().stream()
 				.map(order -> modelMapper.map(order, OrderForUserDto.class))
 				.collect(Collectors.toList());
 				userDto.setOrders(orderForUserDtoList);

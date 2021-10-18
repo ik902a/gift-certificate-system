@@ -81,13 +81,4 @@ public class TagDaoImplTest {
 	public void deleteNegativeTest() {
 		assertFalse(tagDao.delete(42));
 	}
-	
-	@Test
-	public void findEntityByGiftCertificatePositiveTest() {
-		Tag tag1 = new Tag(1L, "tag1");
-		Tag tag3 = new Tag(3L, "tag3");
-		
-		List<Tag> actual = tagDao.findEntityByGiftCertificate(2);
-		assertEquals(List.of(tag1, tag3), actual);
-	}
 }

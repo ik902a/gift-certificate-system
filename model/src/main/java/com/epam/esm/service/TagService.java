@@ -3,8 +3,7 @@ package com.epam.esm.service;
 import java.util.Map;
 
 import com.epam.esm.dto.PageDto;
-import com.epam.esm.dto.TagDto;
-import com.epam.esm.entity.Tag;
+import com.epam.esm.dto.TagDto;;
 
 /**
  * The {@code TagService} interface for operations with the tag
@@ -16,8 +15,8 @@ public interface TagService {
 	/**
 	 * Creates tag in database
 	 * 
-	 * @param tag {@link Tag} tag
-	 * @return {@link Tag} received from database
+	 * @param tag {@link TagDto} tag
+	 * @return {@link TagDto} received from database
 	 */
 	TagDto create(TagDto tagdto);
 
@@ -25,24 +24,29 @@ public interface TagService {
 	 * Finds all tags
 	 * 
 	 * @param params {@link Map} of {@link String} and {@link String} parameters
-	 * @return {@link PageDto} of {@link Tag} received from database
+	 * @return {@link PageDto} of {@link TagDto} received from database
 	 */
 	PageDto<TagDto> find(Map<String, String> params);
 
 	/**
 	 * Finds tag by id
 	 * 
-	 * @param id {@link long} tag id
-	 * @return {@link Tag} received from database
+	 * @param id is tag id
+	 * @return {@link TagDto} received from database
 	 */
 	TagDto findById(long id);
 
 	/**
-	 * deletes tag
+	 * Deletes tag
 	 * 
-	 * @param id {@link long} tag id
+	 * @param id is tag id
 	 */
 	void delete(long id);
 
+	/**
+	 * Finds the most widely used tag of a user with the highest cost of all orders
+	 * 
+	 * @return {@link TagDto} received from database
+	 */
 	TagDto findMostPopularTagOfUserWithHighestCostOfAllOrders();
 }

@@ -70,12 +70,6 @@ public class TagDaoImpl implements TagDao {
 	        .executeUpdate();
 	return row > 0;
 	}
-
-	@Override
-	public List<Tag> findEntityByGiftCertificate(long giftCertificateId) {//TODO
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	public long getTotalNumber(Map<String, String> params) {
@@ -92,7 +86,3 @@ public class TagDaoImpl implements TagDao {
                 .findFirst();
 	}
 }
-
-//private static final String SQL_FIND_TAG_BY_GIFT_CERTIFICATE = "SELECT id, name FROM tags WHERE id IN "
-//+ "(SELECT tag_id FROM gift_certificates_tags gct "
-//+ "JOIN gift_certificates gc ON gct.gift_certificate_id = gc.id WHERE gc.id=?)";	

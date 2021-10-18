@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * The {@code Tag} class describes the entity tag
  * 
  * @author Ihar Klepcha
- * @see Entity
+ * @see AbstractEntity
  */
 @Entity
 @Table(name="tags")
@@ -57,11 +57,11 @@ public class Tag extends AbstractEntity {
 		this.name = name;
 	}
 
-//	@Override
-//	public String toString() {
-//		final StringBuilder sb = new StringBuilder();
-//		sb.append("\nTag{ id=").append(id);
-//		sb.append(", name=").append(name).append(" }");
-//		return sb.toString();
-//	}    
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("\nTag{ id=").append(id);
+		sb.append(", name=").append(name).append(" }");
+		return sb.toString();
+	}    
 }

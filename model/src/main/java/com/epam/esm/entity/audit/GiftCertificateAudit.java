@@ -14,6 +14,11 @@ import com.epam.esm.entity.GiftCertificate;
  */
 public class GiftCertificateAudit {
 	
+	/**
+	 * Adds date before creating certificate
+	 * 
+	 * @param giftCertificate {@link GiftCertificate} gift certificate
+	 */
     @PrePersist
     public void beforeCreateGiftCertificate(GiftCertificate giftCertificate) {
         ZonedDateTime currentDate = ZonedDateTime.now();
@@ -21,9 +26,13 @@ public class GiftCertificateAudit {
         giftCertificate.setLastUpdateDate(currentDate);
     }
 
+	/**
+	 * Adds date before update certificate
+	 * 
+	 * @param giftCertificate {@link GiftCertificate} gift certificate
+	 */
     @PreUpdate
     public void beforeUpdateGiftCertificate(GiftCertificate giftCertificate) {
         giftCertificate.setLastUpdateDate(ZonedDateTime.now());
     }
-
 }

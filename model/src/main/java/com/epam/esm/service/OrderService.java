@@ -2,7 +2,6 @@ package com.epam.esm.service;
 
 import com.epam.esm.dto.OrderDataDto;
 import com.epam.esm.dto.OrderDto;
-import com.epam.esm.dto.UserDto;
 
 /**
  * The {@code OrderService} interface for operations with the order

@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * The {@code GiftCertificateOrder} class describes the connection gift certificate and order
  * 
  * @author Ihar Klepcha
- * @see Entity
+ * @see AbstractEntity
  */
 @Entity
 @Table(name="gift_certificates_orders")
@@ -21,24 +21,32 @@ public class GiftCertificateOrder extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
     @EmbeddedId
     GiftCertificateOrderKey id;
-    
     @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("orderId")
     @JoinColumn(name = "order_id")
     Order order;
-    
     @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("giftCertificateId")
     @JoinColumn(name = "gift_certificate_id")
     GiftCertificate giftCertificate;
-    
     @Column(name = "quantity")
     int quantity;
 
+	/**
+	 * Constructs a new gift certificate order
+	 */
 	public GiftCertificateOrder() {
 		super();
 	}
 
+	/**
+	 * Constructs a new gift certificate order with the specified
+	 * 
+	 * @param id is embedded gift certificate order id
+	 * @param order {@link Order} order
+	 * @param giftCertificate {@link GiftCertificete} gift certificate
+	 * @param quantity is quantity orders
+	 */
 	public GiftCertificateOrder(GiftCertificateOrderKey id, Order order, GiftCertificate giftCertificate,
 			int quantity) {
 		super();
@@ -48,6 +56,13 @@ public class GiftCertificateOrder extends AbstractEntity {
 		this.quantity = quantity;
 	}
 	
+	/**
+	 * Constructs a new gift certificate order with the specified
+	 * 
+	 * @param order {@link Order} order
+	 * @param giftCertificate {@link GiftCertificete} gift certificate
+	 * @param quantity is quantity orders
+	 */
 	public GiftCertificateOrder(Order order, GiftCertificate giftCertificate, int quantity) {
 		super();
 		this.order = order;

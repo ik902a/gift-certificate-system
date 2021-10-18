@@ -11,9 +11,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * entity between service and controller.
  *
  * @param <T> the entity which presents on page
+ * @see RepresentationModel
  * @author Ihar Klepcha
  */
-public class PageDto<T> extends RepresentationModel<TagDto> {
+public class PageDto<T> extends RepresentationModel<PageDto<T>> {
 	private List<T> content;
     private long totalPages;
     private long pageNumber;
@@ -30,10 +31,13 @@ public class PageDto<T> extends RepresentationModel<TagDto> {
 	}
 
 	/**
-	 * Constructs a new tag with the specified
+	 * Constructs a new Page with the specified
 	 * 
 	 * @param content {@link List} of {@link T} list entities
-	 * @param totalPosition contains number total positions
+	 * @param totalPages contains number total pages
+	 * @param numberPages contains number of pages
+	 * @param offset contains offset for pagination
+	 * @param limit contains limit content for pagination
 	 */
 	public PageDto(List<T> content, long totalPages, long pageNumber, long offset, long limit) {
 		super();

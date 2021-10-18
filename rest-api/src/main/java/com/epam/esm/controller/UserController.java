@@ -25,6 +25,11 @@ import com.epam.esm.dto.UserDto;
 import com.epam.esm.hateoas.UserHateoas;
 import com.epam.esm.service.UserService;
 
+/**
+ * The {@code UserController} class contains endpoint of the API
+ * 
+ * @author Ihar Klepcha
+ */
 @Validated
 @RestController
 @RequestMapping("/users")
@@ -36,13 +41,12 @@ public class UserController {
 	/**
 	 * Gets users by params, processes GET requests at /users
 	 *
-	 * @param params {@link Map} of {@link String} and {@link String} data for
-	 *               searching users
+	 * @param params {@link Map} of {@link String} and {@link String} data for searching users
 	 * @return {@link List} of {@link UserDto} founded users
 	 */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public PageDto<UserDto> getAllUsers(@RequestParam Map<String, String> params) {
+	public PageDto<UserDto> getAllUsers(@Valid @RequestParam Map<String, String> params) {
 		PageDto<UserDto> pageDto = userService.find(params);
 		pageDto.getContent().forEach(UserHateoas::addLinks);
 		UserHateoas.addLinkOnPagedResourceRetrieval(pageDto, params);

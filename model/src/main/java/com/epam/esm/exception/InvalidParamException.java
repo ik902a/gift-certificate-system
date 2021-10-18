@@ -6,14 +6,28 @@ import java.util.List;
  * The {@code InvalidDataException} class describes the exception
  * 
  * @author Ihar Klepcha
- * @see RuntimeException
+ * @see GiftCertificateSystemException
  */
-public class InvalidParamException extends RuntimeException {
+public class InvalidParamException extends GiftCertificateSystemException {
 	private static final long serialVersionUID = 1L;
 	private List<String> errorMessageKeys;
 	private String incorrectParameter;
 	private String errorCode;
 
+	/**
+	 * Constructs a new invalid parameter exception
+	 */
+	public InvalidParamException() {
+		super();
+	}
+
+	/**
+	 * Constructs a new resource exception with the specified
+	 * 
+	 * @param errorMessageKeys {@link List} of{@link String} keys for message
+	 * @param incorrectParameter is incorrect value
+	 * @param errorCode {@link String} custom code error
+	 */
 	public InvalidParamException(List<String> errorMessageKeys, String incorrectParameter, String errorCode) {
 		super();
 		this.errorMessageKeys = errorMessageKeys;
@@ -21,6 +35,12 @@ public class InvalidParamException extends RuntimeException {
 		this.errorCode = errorCode;
 	}
 	
+	/**
+	 * Constructs a new parameter exception with the specified
+	 * 
+	 * @param errorMessageKeys {@link List} of{@link String} keys for message
+	 * @param errorCode {@link String} custom code error
+	 */
 	public InvalidParamException(List<String> errorMessageKeys, String errorCode) {
 		super();
 		this.errorMessageKeys = errorMessageKeys;

@@ -21,7 +21,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.ErrorMessageKey;
 import com.epam.esm.exception.InvalidParamException;
-//import com.epam.esm.exception.ParamException;
 import com.epam.esm.exception.ResourceNotExistException;
 
 /**
@@ -33,7 +32,6 @@ import com.epam.esm.exception.ResourceNotExistException;
  */
 @RestControllerAdvice
 public class RestExceptionHandler {
-//extends ResponseEntityExceptionHandler 
 	@Autowired
 	private MessageSource messageSource;
 	
@@ -79,6 +77,12 @@ public class RestExceptionHandler {
 		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
 	}
 
+	/**
+	 * Handles MethodArgumentNotValidException
+	 *
+	 * @param exception {@link MethodArgumentNotValidException} exception
+	 * @return {@link ResponseEntity} the response message
+	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<ErrorData> methodExceptionHandler(MethodArgumentNotValidException exception) {
@@ -93,6 +97,12 @@ public class RestExceptionHandler {
 		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
 	}
 
+	/**
+	 * Handles ConstraintViolationException
+	 *
+	 * @param exception {@link ConstraintViolationException} exception
+	 * @return {@link ResponseEntity} the response message
+	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<ErrorData> constraintExceptionHandler(ConstraintViolationException exception) {
@@ -103,6 +113,12 @@ public class RestExceptionHandler {
 		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
 	}
 	
+	/**
+	 * Handles MethodArgumentTypeMismatchException
+	 *
+	 * @param exception {@link MethodArgumentTypeMismatchException} exception
+	 * @return {@link ResponseEntity} the response message
+	 */
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<ErrorData> argumentTypeMismatchExceptionHandler(
@@ -114,6 +130,12 @@ public class RestExceptionHandler {
 		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
 	}
 	
+	/**
+	 * Handles UnsupportedOperationException
+	 *
+	 * @param exception {@link UnsupportedOperationException} exception
+	 * @return {@link ResponseEntity} the response message
+	 */
 	@ExceptionHandler(UnsupportedOperationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<ErrorData> unsupportedOperationExceptionHandler(UnsupportedOperationException exception) {
@@ -140,46 +162,4 @@ public class RestExceptionHandler {
 		ErrorData incorrectData = new ErrorData(List.of(errorMessage), errorCode);
 		return new ResponseEntity<>(incorrectData, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-//
-//	/**
-//	 * Handles InvalidDataException
-//	 *
-//	 * @param exception {@link InvalidDataException} exception
-//	 * @param locale    {@link Locale} locale of HTTP request
-//	 * @return {@link ResponseEntity} the response message
-//	 */
-//	@ExceptionHandler(InvalidDataException.class)
-//	@ResponseStatus(HttpStatus.BAD_REQUEST)
-//	public List<ResponseEntity<IncorrectData>> invalidDataExceptionHandler(InvalidDataException exception, 
-//			Locale locale) {
-//		List<ResponseEntity<IncorrectData>> responseList = new ArrayList<>();
-//		List<String> errorKeysList = exception.getErrorMessageKeys();
-//		for (String errorKey : errorKeysList) {
-//			String errorMessage = messageSource.getMessage(errorKey, 
-//					new String[] { exception.getIncorrectParameter() },
-//					locale);
-//			String errorCode = HttpStatus.BAD_REQUEST.value() + exception.getErrorCode();
-//			IncorrectData incorrectData = new IncorrectData(errorMessage, errorCode);
-//			ResponseEntity<IncorrectData> responseEntity = new ResponseEntity<>(incorrectData, 
-//					HttpStatus.BAD_REQUEST);
-//			responseList.add(responseEntity);
-//		}
-//		return responseList;
-//	}
-//
-//	/**
-//	 * Handles ParamException
-//	 *
-//	 * @param exception {@link ParamException} exception
-//	 * @param locale    {@link Locale} locale of HTTP request
-//	 * @return {@link ResponseEntity} the response message
-//	 */
-//	@ExceptionHandler(ParamException.class)
-//	@ResponseStatus(HttpStatus.BAD_REQUEST)
-//	public ResponseEntity<IncorrectData> paramExceptionHandler(ParamException exception, Locale locale) {
-//		String errorMessage = messageSource.getMessage(exception.getMessage(), new String[] {}, locale);
-//		String errorCode = HttpStatus.BAD_REQUEST.value() + exception.getErrorCode();
-//		IncorrectData incorrectData = new IncorrectData(errorMessage, errorCode);
-//		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
-//	}
 }

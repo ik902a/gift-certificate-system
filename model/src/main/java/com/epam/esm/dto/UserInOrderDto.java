@@ -2,14 +2,30 @@ package com.epam.esm.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 
+/**
+ * The {@code UserInOrderDto} class is implementation of pattern DTO for transmission user
+ * entity in order between service and controller
+ *
+ * @author Ihar Klepcha
+ * @see RepresentationModel
+ */
 public class UserInOrderDto extends RepresentationModel<UserInOrderDto> {
 	private long id;
     private String login;
     
+    /**
+	 * Constructs a new User in order DTO
+	 */
 	public UserInOrderDto() {
 		super();
 	}
 	
+	/**
+	 * Constructs a new user in order DTO with the specified
+	 * 
+	 * @param id is user id
+	 * @param login {@link String} login
+	 */
 	public UserInOrderDto(long id, String login) {
 		super();
 		this.id = id;
@@ -62,6 +78,9 @@ public class UserInOrderDto extends RepresentationModel<UserInOrderDto> {
 	
 	@Override
 	public String toString() {
-		return "UserInOrderDto [id=" + id + ", login=" + login + "]";
+		final StringBuilder sb = new StringBuilder();
+		sb.append("\nUserInOrderDto{ id=").append(id);
+		sb.append(", login=").append(login).append(" }");
+		return sb.toString();
 	}
 }

@@ -13,6 +13,11 @@ import com.epam.esm.controller.TagController;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.TagDto;
 
+/**
+ * The {@code TagHateoas} class makes HATEOAS for tags
+ * 
+ * @author Ihar Klepcha
+ */
 public class TagHateoas {
 	public static Logger log = LogManager.getLogger();
     

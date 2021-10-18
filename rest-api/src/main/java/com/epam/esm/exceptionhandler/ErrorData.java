@@ -3,7 +3,7 @@ package com.epam.esm.exceptionhandler;
 import java.util.List;
 
 /**
- * The {@code IncorrectData} class describes the entity error data for response
+ * The {@code ErrorData} class describes the entity error data for response
  * 
  * @author Ihar Klepcha
  */

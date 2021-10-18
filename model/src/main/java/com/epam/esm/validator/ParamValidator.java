@@ -64,6 +64,11 @@ public class ParamValidator {
 		}
 	}
 
+	/**
+	 * Checks pagination parameters
+	 * 
+	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 */
 	public static void validatePaginationParam(Map<String, String> params) {
 		List<String> errorMessageKeys = new ArrayList<>();
 		if (params.containsKey(ParamName.OFFSET.toString().toLowerCase())) {
@@ -77,6 +82,12 @@ public class ParamValidator {
 		}
 	}
 
+	/**
+	 * Checks offset
+	 * 
+	 * @param offset {@link String} offset value
+	 * @param params {@link List} of {@link String} keys for error message
+	 */
 	public static void validateOffset(String offset, List<String> errorMessageKeys) {
 		if (NumberUtils.isParsable(offset)) {
 			if (Integer.parseInt(offset) < 0) {
@@ -87,6 +98,12 @@ public class ParamValidator {
 		}
 	}
 	
+	/**
+	 * Checks limit
+	 * 
+	 * @param limit {@link String} limit value 
+	 * @param params {@link List} of {@link String} keys for error message
+	 */
 	public static void validateLimit(String limit, List<String> errorMessageKeys) {
 		if (NumberUtils.isParsable(limit)) {
 			if (Integer.parseInt(limit) < 0) {

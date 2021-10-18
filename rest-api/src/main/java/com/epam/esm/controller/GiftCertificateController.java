@@ -1,6 +1,5 @@
 package com.epam.esm.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.PageDto;
-import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.hateoas.GiftCertificateHateoas;
 import com.epam.esm.service.GiftCertificateService;
 
@@ -63,23 +61,12 @@ public class GiftCertificateController {
 		GiftCertificateHateoas.addLinks(giftCertificateDtoCreated);
 		return giftCertificateDtoCreated;
 	}
-//	@PostMapping
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public GiftCertificateDto createGiftCertificate(
-//			@Valid @RequestBody GiftCertificateDto giftCertificateDto, Errors errors) {
-//		if (errors.hasErrors()) {
-//			return giftCertificateDto;
-//			}
-//		GiftCertificateDto giftCertificateDtoCreated = giftCertificateService.create(giftCertificateDto);
-//		log.info("Controller CREATE GiftCertificate is worcking");
-//		return giftCertificateDtoCreated;
-//	}
 
 	/**
      * Gets gift certificates by params, processes GET requests at /gift-certificates
      *
      * @param params {@link Map} of {@link String} and {@link String} data for searching gift certificates
-     * @return {@link List} of {@link GiftCertificate} founded gift certificates
+     * @return pageDto {@link PageDto} of {@link GiftCertificateDto} founded gift certificates
      */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
@@ -89,22 +76,7 @@ public class GiftCertificateController {
 		GiftCertificateHateoas.addLinkOnPagedResourceRetrieval(pageDto, params);
 		log.info("FIND all Gift Certificate DTO Controller");
 		return  pageDto;
-	}	
-//	@GetMapping
-//	@ResponseStatus(HttpStatus.OK)
-//	public List<GiftCertificateDto> getAllGiftCertificates(@Valid @RequestParam Map<String, String> params
-//			, UriComponentsBuilder uriBuilder, HttpServletResponse response) {
-//		
-//		PageDto<GiftCertificateDto> pageDto = giftCertificateService.find(params);
-//		pageDto.getContent().forEach(this::addLinks);
-//		
-//		eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<GiftCertificate>(
-//			      GiftCertificateController.class, uriBuilder, response, pageDto.getTotalPages(), pageDto.getPage()
-//			      , pageDto.getSize()));
-//
-//		log.info("FIND all Gift Certificate DTO Controller");
-//		return pageDto.getContent();
-//	}	
+	}
 
 	/**
      * Gets gift certificate by id, processes GET requests at /gift-certificates/{id}
@@ -125,8 +97,8 @@ public class GiftCertificateController {
      * Updates gift certificate, processes PUT requests at /gift-certificates/{id}
      *
      * @param id is the gift certificate id
-     * @param giftCertificate {@link GiftCertificate} data for updating gift certificate
-     * @return {@link GiftCertificate} updated gift certificate
+     * @param giftCertificate {@link GiftCertificateDto} data for updating gift certificate
+     * @return {@link GiftCertificateDto} updated gift certificate
      */
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

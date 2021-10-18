@@ -56,7 +56,7 @@ public class TagServiceImpl implements TagService {
 		int offset = PaginationParamExtractor.getOffset(params);
 		int limit = PaginationParamExtractor.getLimit(params);
 		long totalPositions = tagDao.getTotalNumber(params);
-		long totalPages = totalPositions / limit;
+		long totalPages = (long) Math.ceil((double) totalPositions / limit);
 		long pageNumber = offset / limit + 1;
       return new PageDto<>(tagDtoList, totalPages, pageNumber, offset, limit);
 }

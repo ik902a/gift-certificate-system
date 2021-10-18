@@ -4,18 +4,29 @@ import java.util.Map;
 
 import javax.validation.constraints.Positive;
 
-import org.springframework.stereotype.Component;
-
-@Component
+/**
+ * The {@code OrderDataDto} class has information for making order
+ *
+ * @author Ihar Klepcha
+ */
 public class OrderDataDto {
 	@Positive
 	long userId;
 	Map<@Positive Long, @Positive Integer> giftCertificateMap;
 	
+    /**
+	 * Constructs a new Order data DTO
+	 */
 	public OrderDataDto() {
 		super();
 	}
 
+	/**
+	 * Constructs a new order data DTO with the specified
+	 * 
+	 * @param userId is user id
+	 * @param giftCertificateMap {@link Map} of {@link Map} and {@link Map} data for creating order
+	 */
 	public OrderDataDto(long userId, Map<Long, Integer> giftCertificateMap) {
 		super();
 		this.userId = userId;
@@ -68,6 +79,9 @@ public class OrderDataDto {
 
 	@Override
 	public String toString() {
-		return "OrderDto [userId=" + userId + ", giftCertificateMap=" + giftCertificateMap + "]";
+		final StringBuilder sb = new StringBuilder();
+		sb.append("\nOrder Data DTO{ userId=").append(userId);
+		sb.append(", map=").append(giftCertificateMap).append(" }");
+		return sb.toString();
 	}
 }

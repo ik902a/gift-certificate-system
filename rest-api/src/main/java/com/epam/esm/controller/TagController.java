@@ -1,6 +1,5 @@
 package com.epam.esm.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -43,8 +42,8 @@ public class TagController {
     /**
      * Creates new tag, processes POST requests at /tags
      *
-     * @param tagDto {@link TagDto} tagDTO
-     * @return {@link TagDto} created tagDTO
+     * @param tagDto {@link TagDto} tag
+     * @return {@link TagDto} created tag
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -58,7 +57,7 @@ public class TagController {
 	/**
      * Gets tags, processes GET requests at /tags
      *
-     * @return {@link List} of {@link Tag} founded tags
+     * @return {@link PageDto} of {@link TagDto} founded tags
      */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
@@ -74,7 +73,7 @@ public class TagController {
      * Gets tag by id, processes GET requests at /tags/{id}
      *
      * @param id is the tag id
-     * @return {@link Tag} founded tag
+     * @return {@link TagDto} founded tag
      */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
@@ -97,6 +96,11 @@ public class TagController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
+	/**
+     * Gets the most widely used tag of a user with the highest cost of all orders.
+     *
+     * @return {@link TagDto} founded tag
+     */
     @GetMapping("/popular")
     @ResponseStatus(HttpStatus.OK)
     public TagDto getMostPopularTagOfUserWithHighestCostOfAllOrders() {

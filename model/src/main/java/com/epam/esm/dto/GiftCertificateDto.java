@@ -15,6 +15,8 @@ import javax.validation.constraints.Size;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.epam.esm.entity.GiftCertificateOrder;
+import com.epam.esm.entity.Tag;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -48,10 +50,26 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     @Valid
     private List<TagDto> tags;
     
+    /**
+	 * Constructs a new Gift Certificate DTO
+	 */
 	public GiftCertificateDto() {
 		super();
 	}
 
+	/**
+	 * Constructs a new gift certificate DTO with the specified
+	 * 
+	 * @param id is gift certificate id
+	 * @param name {@link String} name
+	 * @param description {@link String} description
+	 * @param price {@link BigDecimal} price
+	 * @param duration is duration
+	 * @param createDate {@link ZonedDateTime} create date
+	 * @param lastUodateDate {@link ZonedDateTime} last update date
+	 * @param tags {@link List} of ({@link Tag} list tags
+	 * @param giftCertificateOrderList {@link List} of ({@link GiftCertificateOrder} list giftCertificateOrder
+	 */
     public GiftCertificateDto(long id, String name, String description, BigDecimal price, int duration, 
     		ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<TagDto> tags) {
 		super();

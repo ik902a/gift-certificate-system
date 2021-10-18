@@ -4,6 +4,11 @@ import java.util.Map;
 
 import com.epam.esm.validator.ParamValidator;
 
+/**
+ * The {@code PaginationParamExtractor} class extracts pagination data
+ * 
+ * @author Ihar Klepcha
+ */
 public class PaginationParamExtractor {
 	private static final String DEFAULT_OFFSET = "0";
 	private static final String DEFAULT_LIMIT = "5";

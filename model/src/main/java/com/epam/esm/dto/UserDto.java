@@ -9,6 +9,13 @@ import javax.validation.constraints.Size;
 
 import org.springframework.hateoas.RepresentationModel;
 
+/**
+ * The {@code UserDto} class is implementation of pattern DTO for transmission user
+ * entity between service and controller
+ *
+ * @author Ihar Klepcha
+ * @see RepresentationModel
+ */
 public class UserDto extends RepresentationModel<UserDto> {
 	private long id;
 	@NotBlank
@@ -17,10 +24,20 @@ public class UserDto extends RepresentationModel<UserDto> {
 	@Valid
 	private List<OrderForUserDto> orders;
 	
+    /**
+	 * Constructs a new User DTO
+	 */
 	public UserDto() {
 		super();
 	}
 
+	/**
+	 * Constructs a new user DTO with the specified
+	 * 
+	 * @param id is user id
+	 * @param login {@link String} login
+	 * @param orders {@link List} of {@link OrderForUserDto} is list orders
+	 */
 	public UserDto(long id, String login, List<OrderForUserDto> orders) {
 		super();
 		this.id = id;

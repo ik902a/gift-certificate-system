@@ -24,6 +24,7 @@ import com.epam.esm.entity.Order;
 @Repository
 public class OrderDaoImpl implements OrderDao {
 	public static Logger log = LogManager.getLogger();
+	private static final String FIND_ALL_ORDERS = "FROM Order";
 	@PersistenceContext
 	private EntityManager entityManager;
 	
@@ -39,6 +40,18 @@ public class OrderDaoImpl implements OrderDao {
 	}
 
 	@Override
+	public long getTotalNumber(Map<String, String> params) {
+        return entityManager.createQuery(FIND_ALL_ORDERS, Order.class)
+        		.getResultStream()
+				.count();
+	}
+	
+	@Override
+	public void createGiftCertificateOrder(GiftCertificateOrder giftCertificateOrder) {//TODO
+		entityManager.persist(giftCertificateOrder);
+	}
+	
+	@Override
 	public Optional<Order> findEntityByName(String name) {
 		throw new UnsupportedOperationException("operation not supported for class " + this.getClass().getName());
 	}
@@ -52,21 +65,4 @@ public class OrderDaoImpl implements OrderDao {
 	public boolean delete(long id) {
 		throw new UnsupportedOperationException("operation not supported for class " + this.getClass().getName());
 	}
-
-	@Override
-	public void createGiftCertificateOrder(GiftCertificateOrder giftCertificateOrder) {//TODO
-		entityManager.persist(giftCertificateOrder);
-	}
-
-	@Override
-	public long getTotalNumber(Map<String, String> params) {// TODO
-		// TODO Auto-generated method stub
-		return 0;
-	}
-//	@Override
-//	public long getTotalNumber(Map<String, String> params) {
-//        return entityManager.createQuery(FIND_ALL_TAGS, Tag.class)
-//        		.getResultStream()
-//				.count();
-//	}
 }

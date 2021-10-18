@@ -13,6 +13,11 @@ import com.epam.esm.controller.GiftCertificateController;
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.PageDto;
 
+/**
+ * The {@code GiftCertificateHateoas} class makes HATEOAS for gift сertificates
+ * 
+ * @author Ihar Klepcha
+ */
 public class GiftCertificateHateoas {
 	public static Logger log = LogManager.getLogger();
     

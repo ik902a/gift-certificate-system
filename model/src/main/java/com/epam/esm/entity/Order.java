@@ -22,7 +22,7 @@ import com.epam.esm.entity.audit.OrderAudit;
  * The {@code Order} class describes the entity order
  * 
  * @author Ihar Klepcha
- * @see Entity
+ * @see AbstractEntity
  */
 @Entity
 @Table(name="orders")
@@ -45,10 +45,23 @@ public class Order extends AbstractEntity {
 	@OneToMany(mappedBy="order")    
 	private List<GiftCertificateOrder> giftCertificateOrderList;
 	
+	/**
+	 * Constructs a new order
+	 */
 	public Order() {
 		super();
 	}
 
+	/**
+	 * Constructs a new order with the specified
+	 * 
+	 * @param id is order id
+	 * @param date {@link ZonedDateTime} creating date
+	 * @param cost {@link BigDecimal} cost order
+	 * @param user {@link UserInOrder} is user owner order
+	 * @param giftCertificateOrderList {@link List} of {@link GiftCertificateOrder} is list 
+	 * gift certificates
+	 */
 	public Order(long id, ZonedDateTime date, BigDecimal cost, User user,
 			List<GiftCertificateOrder> giftCertificateOrderList) {
 		super();
@@ -106,10 +119,13 @@ public class Order extends AbstractEntity {
 	public void setGiftCertificateOrderList(List<GiftCertificateOrder> giftCertificateOrderList) {
 		this.giftCertificateOrderList = giftCertificateOrderList;
 	}
-
-//	@Override
-//	public String toString() {
-//		return "Order [id=" + id + ", date=" + date + ", cost=" + cost + ", user=" + user
-//				+ ", giftCertificateOrderList=" + giftCertificateOrderList + "]";
-//	}
+	
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("\nOrder{ id=").append(id);
+		sb.append(", date=").append(date);
+		sb.append(", cost=").append(cost).append(" }");
+		return sb.toString();
+	}
 }

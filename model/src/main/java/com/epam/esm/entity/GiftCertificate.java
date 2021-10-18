@@ -23,7 +23,7 @@ import com.epam.esm.entity.audit.GiftCertificateAudit;
  * The {@code GiftCertificate} class describes the entity gift certificate
  * 
  * @author Ihar Klepcha
- * @see Entity
+ * @see AbstractEntity
  */
 @Entity
 @Table(name="gift_certificates")
@@ -176,17 +176,17 @@ public class GiftCertificate extends AbstractEntity {
 		this.giftCertificateOrderList = giftCertificateOrderList;
 	}
 
-//	@Override
-//	public String toString() {
-//		final StringBuilder sb = new StringBuilder();
-//		sb.append("\nGift certificate{ ID=").append(id);
-//		sb.append(", name=").append(name);
-//		sb.append(", description=").append(description);
-//		sb.append(", price=").append(price);
-//		sb.append(", duration= ").append(duration);
-//		sb.append(", create_date=").append(createDate);
-//		sb.append(", last_update_date=").append(lastUpdateDate);
-//		sb.append(", tags=").append(tags).append(" }");
-//		return sb.toString();
-//	}
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("\nGift certificate{ ID=").append(id);
+		sb.append(", name=").append(name);
+		sb.append(", description=").append(description);
+		sb.append(", price=").append(price);
+		sb.append(", duration= ").append(duration);
+		sb.append(", create_date=").append(createDate);
+		sb.append(", last_update_date=").append(lastUpdateDate);
+		sb.append(", tags=").append(tags).append(" }");
+		return sb.toString();
+	}
 }

@@ -13,6 +13,11 @@ import com.epam.esm.entity.Order;
  */
 public class OrderAudit {
 
+	/**
+	 * Adds date before creating order
+	 * 
+	 * @param order {@link Order} order
+	 */
     @PrePersist
     public void beforeCreateOrder(Order order) {
         order.setDate(ZonedDateTime.now());
