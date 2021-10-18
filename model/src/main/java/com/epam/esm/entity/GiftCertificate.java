@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.epam.esm.entity.audit.GiftCertificateAudit;
+
 /**
  * The {@code GiftCertificate} class describes the entity gift certificate
  * 
@@ -24,6 +27,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="gift_certificates")
+@EntityListeners(GiftCertificateAudit.class)
 public class GiftCertificate extends AbstractEntity {
 	private static final long serialVersionUID = 1L;	
 	@Id

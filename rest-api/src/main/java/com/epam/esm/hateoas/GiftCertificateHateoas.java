@@ -40,7 +40,7 @@ public class GiftCertificateHateoas {
 
 	private static boolean hasNextPage(long page, long totalPages) {
 		log.info("hasNextPage page={}, total={}", page, totalPages);
-		return page < totalPages - 1;
+		return page < totalPages;
 	}
 
 	private static boolean hasPreviousPage(long page) {

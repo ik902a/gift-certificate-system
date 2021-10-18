@@ -3,7 +3,6 @@ package com.epam.esm.service.impl;
 import static com.epam.esm.exception.ErrorCode.*;
 import static com.epam.esm.exception.ErrorMessageKey.*;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,9 +47,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	@Transactional
 	public GiftCertificateDto create(GiftCertificateDto giftCertificateDto) {
 		log.info("CREATE GiftCertificate Service {}", giftCertificateDto);
-		ZonedDateTime currentDate = ZonedDateTime.now();
-		giftCertificateDto.setCreateDate(currentDate);
-		giftCertificateDto.setLastUpdateDate(currentDate);
+//		ZonedDateTime currentDate = ZonedDateTime.now();
+//		giftCertificateDto.setCreateDate(currentDate);
+//		giftCertificateDto.setLastUpdateDate(currentDate);
 		GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
 		if (giftCertificate.getTags() != null) {
 			createNewTag(giftCertificate);
@@ -82,8 +81,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		int limit = PaginationParamExtractor.getLimit(params);
 		log.info("Service offset={}, limit={}", offset, limit);
 		long totalPositions = giftCertificateDao.getTotalNumber(params);
-		long totalPages = totalPositions / limit;
-		long pageNumber = offset / limit + 1;
+		long totalPages = (long) Math.ceil(totalPositions / limit);
+		long pageNumber = (long) Math.ceil(offset / limit);
 		log.info("Service page={}", pageNumber);
       return new PageDto<>(giftCertificateDtoList, totalPages, pageNumber, offset, limit);
 	}
@@ -148,7 +147,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             giftCertificateDto.setTags(giftCertificateOldDto.getTags());
         }
 		giftCertificateDto.setCreateDate(giftCertificateOldDto.getCreateDate());
-		giftCertificateDto.setLastUpdateDate(ZonedDateTime.now());
+//		giftCertificateDto.setLastUpdateDate(ZonedDateTime.now());
 		giftCertificateDto.setId(giftCertificateOldDto.getId());
 		return giftCertificateDto;
 	}

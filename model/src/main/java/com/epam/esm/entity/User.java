@@ -11,6 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * The {@code User} class describes the entity user
+ * 
+ * @author Ihar Klepcha
+ * @see Entity
+ */
 @Entity
 @Table(name = "users")
 public class User extends AbstractEntity {

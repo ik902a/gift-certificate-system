@@ -126,7 +126,9 @@ public class PageDto<T> extends RepresentationModel<TagDto> {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("\nPage DTO{ content=").append(content);
 		sb.append(", totalPages=").append(totalPages);
-		sb.append(", pageNumber=").append(pageNumber).append(" }");
+		sb.append(", pageNumber=").append(pageNumber);
+		sb.append(", offset=").append(offset);
+		sb.append(", limit=").append(limit).append(" }");
 		return sb.toString();
 	} 
 }

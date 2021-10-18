@@ -9,6 +9,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
+/**
+ * The {@code GiftCertificateOrder} class describes the connection gift certificate and order
+ * 
+ * @author Ihar Klepcha
+ * @see Entity
+ */
 @Entity
 @Table(name="gift_certificates_orders")
 public class GiftCertificateOrder extends AbstractEntity {

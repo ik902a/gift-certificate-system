@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,8 +16,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.epam.esm.entity.audit.OrderAudit;
+
+/**
+ * The {@code Order} class describes the entity order
+ * 
+ * @author Ihar Klepcha
+ * @see Entity
+ */
 @Entity
 @Table(name="orders")
+@EntityListeners(OrderAudit.class)
 public class Order extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 	@Id
