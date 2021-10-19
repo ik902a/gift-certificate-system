@@ -32,6 +32,13 @@ public class GiftCertificateQueryBuilder {
 	private static final String PERCENT = "%";
 	private static final String SEPARATOR = ",";
 
+	/**
+	 * Builds query
+	 * 
+	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
+	 * @return {@link CriteriaQuery} of {@link GiftCertificate} query
+	 */
 	public static CriteriaQuery<GiftCertificate> buildQuery(Map<String, String> params,
 			CriteriaBuilder criteriaBuilder) {
 		CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
@@ -54,6 +61,14 @@ public class GiftCertificateQueryBuilder {
 		return criteriaQuery;
 	}
 
+	/**
+	 * Adds tag names to searching query
+	 * 
+	 * @param tag {@link String} tag name
+	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
+	 * @param giftCertificateRoot {@link Root} of {@link GiftCertificate} root of query
+	 * @return {@link List} of {@link Predicate} list of predicates
+	 */
 	private static List<Predicate> addTags(String tag, CriteriaBuilder criteriaBuilder
 			, Root<GiftCertificate> giftCertificateRoot) {
 		List<String> tagNameList = Arrays.asList(tag.split(SEPARATOR));
@@ -62,18 +77,42 @@ public class GiftCertificateQueryBuilder {
 				.collect(Collectors.toList());
 	}
 	
+	/**
+	 * Adds name to searching query
+	 * 
+	 * @param name {@link String} gift certificate name
+	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
+	 * @param giftCertificateRoot {@link Root} of {@link GiftCertificate} root of query
+	 * @return {@link Predicate} predicate
+	 */
 	private static Predicate addName(String name, CriteriaBuilder criteriaBuilder
 			, Root<GiftCertificate> giftCertificateRoot) {
 		return criteriaBuilder.like(giftCertificateRoot.get(ColumnName.GIFT_CERTIFICATES_NAME)
 				, PERCENT + name + PERCENT);
 	}
 
+	/**
+	 * Adds description to searching query
+	 * 
+	 * @param description {@link String} gift certificate description
+	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
+	 * @param giftCertificateRoot {@link Root} of {@link GiftCertificate} root of query
+	 * @return {@link Predicate} predicate
+	 */
 	private static Predicate addDescription(String description, CriteriaBuilder criteriaBuilder,
 			Root<GiftCertificate> giftCertificateRoot) {
 		return criteriaBuilder.like(giftCertificateRoot.get(ColumnName.GIFT_CERTIFICATES_DESCRIPTION)
 				, PERCENT + description + PERCENT);
 	}
 
+	/**
+	 * Adds sort type to query
+	 * 
+	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
+	 * @param giftCertificateRoot {@link Root} of {@link GiftCertificate} root of query
+	 * @return {@link Order} order
+	 */
 	private static Order addSort(Map<String, String> params, CriteriaBuilder criteriaBuilder
 			, Root<GiftCertificate> giftCertificateRoot) {
 		ParamValidator.validateSortParam(params);

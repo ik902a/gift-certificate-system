@@ -30,6 +30,13 @@ public class UserQueryBuilder {
 	public static Logger log = LogManager.getLogger();
 	private static final String PERCENT = "%";
 	
+	/**
+	 * Builds query
+	 * 
+	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
+	 * @return {@link CriteriaQuery} of {@link User} query
+	 */
 	public static CriteriaQuery<User> buildQuery(Map<String, String> params, CriteriaBuilder criteriaBuilder) {
 		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 		Root<User> userRoot = criteriaQuery.from(User.class);
@@ -44,10 +51,26 @@ public class UserQueryBuilder {
 		return criteriaQuery;
 	}
 
+	/**
+	 * Adds login to searching query
+	 * 
+	 * @param name {@link String} gift certificate name
+	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
+	 * @param giftCertificateRoot {@link Root} of {@link User} root of query
+	 * @return {@link Predicate} predicate
+	 */
 	private static Predicate addLogin(String login, CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
 		return criteriaBuilder.like(userRoot.get(ColumnName.USERS_LOGIN), PERCENT + login + PERCENT);
 	}
 	
+	/**
+	 * Adds sort type to query
+	 * 
+	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
+	 * @param giftCertificateRoot {@link Root} of {@link User} root of query
+	 * @return {@link Order} order
+	 */
 	private static Order addSort(Map<String, String> params, CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
 		ParamValidator.validateSortParam(params);
 		String sortBy = params.getOrDefault(SORT_BY.toString().toLowerCase(), SortType.ID.toString().toLowerCase());

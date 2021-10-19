@@ -17,6 +17,11 @@ import com.epam.esm.dto.OrderDto;
 public class OrderHateoas {
 	public static Logger log = LogManager.getLogger();
 
+	/**
+	 * Adds HATEOAS links
+	 * 
+	 * @param orderDto {@link OrderDto} order
+	 */
 	public static void addLinks(OrderDto orderDto) {
 		orderDto.add(linkTo(methodOn(OrderController.class).getOrderById(orderDto.getId())).withSelfRel());
 	}

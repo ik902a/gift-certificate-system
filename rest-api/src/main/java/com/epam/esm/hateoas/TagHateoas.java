@@ -21,11 +21,22 @@ import com.epam.esm.dto.TagDto;
 public class TagHateoas {
 	public static Logger log = LogManager.getLogger();
     
+	/**
+	 * Adds HATEOAS links
+	 * 
+	 * @param tagDto {@link TagDto} tag
+	 */
     public static void addLinks(TagDto tagDto) {
         tagDto.add(linkTo(methodOn(TagController.class).getTagById(tagDto.getId())).withSelfRel());
         tagDto.add(linkTo(methodOn(TagController.class).deleteTag(tagDto.getId())).withRel(DELETE));
     }
     
+	/**
+	 * Adds HATEOAS links to page
+	 * 
+	 * @param page {@link PageDto} of {@link TagDto} page
+	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 */
 	public static void addLinkOnPagedResourceRetrieval(PageDto<TagDto> page, Map<String, String> params) {
 		if (hasNextPage(page.getPageNumber(), page.getTotalPages())) {
 			params.put(OFFSET, String.valueOf(page.getOffset() + page.getLimit()));

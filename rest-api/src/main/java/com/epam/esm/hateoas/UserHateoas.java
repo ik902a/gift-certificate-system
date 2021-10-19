@@ -21,10 +21,21 @@ import com.epam.esm.dto.UserDto;
 public class UserHateoas {
 	public static Logger log = LogManager.getLogger();
 	
+	/**
+	 * Adds HATEOAS links
+	 * 
+	 * @param userDto {@link UserDto} user
+	 */
 	public static void addLinks(UserDto userDto) {
 		userDto.add(linkTo(methodOn(UserController.class).getUserById(userDto.getId())).withSelfRel());
 	}
 
+	/**
+	 * Adds HATEOAS links to page
+	 * 
+	 * @param page {@link PageDto} of {@link UserDto} page
+	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 */
     public static void addLinkOnPagedResourceRetrieval(PageDto<UserDto> page, Map<String, String> params) {
 		if (hasNextPage(page.getPageNumber(), page.getTotalPages())) {
 			params.put(OFFSET, String.valueOf(page.getOffset() + page.getLimit()));

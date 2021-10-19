@@ -21,6 +21,11 @@ import com.epam.esm.dto.PageDto;
 public class GiftCertificateHateoas {
 	public static Logger log = LogManager.getLogger();
     
+	/**
+	 * Adds HATEOAS links
+	 * 
+	 * @param giftCertificateDto {@link GiftCertificateDto} gift certificate
+	 */
     public static void addLinks (GiftCertificateDto giftCertificateDto){
         giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
         		.getGiftCertificateById(giftCertificateDto.getId())).withSelfRel());
@@ -30,6 +35,12 @@ public class GiftCertificateHateoas {
         		.deleteGiftCertificate(giftCertificateDto.getId())).withRel(DELETE));
     }  
 
+	/**
+	 * Adds HATEOAS links to page
+	 * 
+	 * @param page {@link PageDto} of {@link GiftCertificateDto} page
+	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 */
     public static void addLinkOnPagedResourceRetrieval(PageDto<GiftCertificateDto> page, Map<String, String> params) {
 		if (hasNextPage(page.getPageNumber(), page.getTotalPages())) {
 			params.put(OFFSET, String.valueOf(page.getOffset() + page.getLimit()));
