@@ -41,8 +41,8 @@ public class UserQueryBuilder {
 		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 		Root<User> userRoot = criteriaQuery.from(User.class);
 		List<Predicate> predicateList = new ArrayList<>();
-		if (params.containsKey(LOGIN.toString().toLowerCase())) {
-			predicateList.add(addLogin(params.get(LOGIN.toString().toLowerCase()), criteriaBuilder, userRoot));
+		if (params.containsKey(LOGIN)) {
+			predicateList.add(addLogin(params.get(LOGIN), criteriaBuilder, userRoot));
 		}
 		criteriaQuery.select(userRoot).where(predicateList.toArray(new Predicate[] {}));
 		Order order = addSort(params, criteriaBuilder, userRoot);
@@ -73,8 +73,8 @@ public class UserQueryBuilder {
 	 */
 	private static Order addSort(Map<String, String> params, CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
 		ParamValidator.validateSortParam(params);
-		String sortBy = params.getOrDefault(SORT_BY.toString().toLowerCase(), SortType.ID.toString().toLowerCase());
-		String orderBy = params.getOrDefault(ORDER_BY.toString().toLowerCase(), OrderType.ASC.toString());
+		String sortBy = params.getOrDefault(SORT_BY, SortType.ID.toString().toLowerCase());
+		String orderBy = params.getOrDefault(ORDER_BY, OrderType.ASC.toString());
 		return (OrderType.valueOf(orderBy) == OrderType.ASC)
 				? criteriaBuilder.asc(userRoot.get(sortBy))
 				: criteriaBuilder.desc(userRoot.get(sortBy));

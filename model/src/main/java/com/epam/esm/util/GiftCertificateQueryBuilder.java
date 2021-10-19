@@ -44,14 +44,14 @@ public class GiftCertificateQueryBuilder {
 		CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
 		Root<GiftCertificate> giftCertificateRoot = criteriaQuery.from(GiftCertificate.class);
 		List<Predicate> predicateList = new ArrayList<>();
-		if (params.containsKey(TAG.toString().toLowerCase())) {
-			predicateList.addAll(addTags(params.get(TAG.toString().toLowerCase()), criteriaBuilder, giftCertificateRoot));
+		if (params.containsKey(TAG)) {
+			predicateList.addAll(addTags(params.get(TAG), criteriaBuilder, giftCertificateRoot));
 		}
-		if (params.containsKey(NAME.toString().toLowerCase())) {
-			predicateList.add(addName(params.get(NAME.toString().toLowerCase()), criteriaBuilder, giftCertificateRoot));
+		if (params.containsKey(NAME)) {
+			predicateList.add(addName(params.get(NAME), criteriaBuilder, giftCertificateRoot));
 		}
-		if (params.containsKey(DESCRIPTION.toString().toLowerCase())) {
-			predicateList.add(addDescription(params.get(DESCRIPTION.toString().toLowerCase()), criteriaBuilder,
+		if (params.containsKey(DESCRIPTION)) {
+			predicateList.add(addDescription(params.get(DESCRIPTION), criteriaBuilder,
 					giftCertificateRoot));
 		}
 		criteriaQuery.select(giftCertificateRoot).where(predicateList.toArray(new Predicate[] {}));
@@ -116,8 +116,8 @@ public class GiftCertificateQueryBuilder {
 	private static Order addSort(Map<String, String> params, CriteriaBuilder criteriaBuilder
 			, Root<GiftCertificate> giftCertificateRoot) {
 		ParamValidator.validateSortParam(params);
-		String sortBy = params.getOrDefault(SORT_BY.toString().toLowerCase(), SortType.ID.toString().toLowerCase());
-		String orderBy = params.getOrDefault(ORDER_BY.toString().toLowerCase(), OrderType.ASC.toString());
+		String sortBy = params.getOrDefault(SORT_BY, SortType.ID.toString().toLowerCase());
+		String orderBy = params.getOrDefault(ORDER_BY, OrderType.ASC.toString());
 		return (OrderType.valueOf(orderBy) == OrderType.ASC)
 				? criteriaBuilder.asc(giftCertificateRoot.get(sortBy))
 				: criteriaBuilder.desc(giftCertificateRoot.get(sortBy));

@@ -1,17 +1,20 @@
 package com.epam.esm.util;
 
 /**
- * The {@code ParamName} enum describes all name of possible parameters
+ * The {@code ParamName} class describes all name of possible parameters
  * 
  * @author Ihar Klepcha
  */
-public enum ParamName {
-	TAG, 
-	NAME, 
-	DESCRIPTION,
-	LOGIN,
-	OFFSET,
-	LIMIT,
-	SORT_BY,
-	ORDER_BY
+public class ParamName {
+	public static final String TAG = "tag";
+	public static final String NAME = "name";
+	public static final String DESCRIPTION = "description";
+	public static final String LOGIN = "login";
+	public static final String OFFSET = "offset";
+	public static final String LIMIT = "limit";
+	public static final String SORT_BY = "sort_by";
+	public static final String ORDER_BY = "order_by";
+    
+	private ParamName() {
+	}
 }

@@ -9,7 +9,7 @@ import org.springframework.hateoas.RepresentationModel;
  * @author Ihar Klepcha
  * @see RepresentationModel
  */
-public class UserInOrderDto extends RepresentationModel<UserInOrderDto> {
+public class UserInOrderDto {//TODO Depricate
 	private long id;
     private String login;
     

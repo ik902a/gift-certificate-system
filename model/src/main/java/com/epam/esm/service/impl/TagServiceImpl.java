@@ -2,6 +2,8 @@ package com.epam.esm.service.impl;
 
 import static com.epam.esm.exception.ErrorCode.*;
 import static com.epam.esm.exception.ErrorMessageKey.*;
+import static com.epam.esm.util.ParamName.LIMIT;
+import static com.epam.esm.util.ParamName.OFFSET;
 
 import java.util.List;
 import java.util.Map;
@@ -53,8 +55,8 @@ public class TagServiceImpl implements TagService {
 	}
 
 	private PageDto<TagDto> buildPage(List<TagDto> tagDtoList, Map<String, String> params) {
-		int offset = PaginationParamExtractor.getOffset(params);
-		int limit = PaginationParamExtractor.getLimit(params);
+		int offset = Integer.parseInt(params.get(OFFSET));
+		int limit = Integer.parseInt(params.get(LIMIT));
 		long totalPositions = tagDao.getTotalNumber(params);
 		long totalPages = (long) Math.ceil((double) totalPositions / limit);
 		long pageNumber = offset / limit + 1;

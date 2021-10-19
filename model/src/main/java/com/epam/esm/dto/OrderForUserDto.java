@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * @see RepresentationModel
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OrderForUserDto extends RepresentationModel<OrderForUserDto> {
+public class OrderForUserDto{//TODO Depricate
 	private long id;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	private ZonedDateTime date;

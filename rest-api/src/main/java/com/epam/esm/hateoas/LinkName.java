@@ -12,6 +12,7 @@ public class LinkName {
 	public static final String PREV = "prev";
     //link param 
 	public static final String OFFSET = "offset";
+	public static final String LIMIT = "limit";
     
 	private LinkName() {
 	}

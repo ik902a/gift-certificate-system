@@ -16,13 +16,13 @@ import org.springframework.hateoas.RepresentationModel;
  * @author Ihar Klepcha
  * @see RepresentationModel
  */
-public class UserDto extends RepresentationModel<UserDto> {
+public class UserDto {
 	private long id;
 	@NotBlank
     @Size(max = 45)
     private String login;
 	@Valid
-	private List<OrderForUserDto> orders;
+	private List<OrderDto> orders;
 	
     /**
 	 * Constructs a new User DTO
@@ -38,14 +38,14 @@ public class UserDto extends RepresentationModel<UserDto> {
 	 * @param login {@link String} login
 	 * @param orders {@link List} of {@link OrderForUserDto} is list orders
 	 */
-	public UserDto(long id, String login, List<OrderForUserDto> orders) {
+	public UserDto(long id, String login, List<OrderDto> orders) {
 		super();
 		this.id = id;
 		this.login = login;
 		this.orders = orders;
 	}
 	
-	public void addOrder(OrderForUserDto order) {
+	public void addOrder(OrderDto order) {
 		if (orders == null) {
 			orders = new ArrayList<>();
 		}
@@ -68,11 +68,11 @@ public class UserDto extends RepresentationModel<UserDto> {
 		this.login = login;
 	}
 
-	public List<OrderForUserDto> getOrders() {
+	public List<OrderDto> getOrders() {
 		return orders;
 	}
 
-	public void setOrders(List<OrderForUserDto> orders) {
+	public void setOrders(List<OrderDto> orders) {
 		this.orders = orders;
 	}
 

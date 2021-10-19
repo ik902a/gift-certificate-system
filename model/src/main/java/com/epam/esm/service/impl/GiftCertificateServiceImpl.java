@@ -2,6 +2,8 @@ package com.epam.esm.service.impl;
 
 import static com.epam.esm.exception.ErrorCode.*;
 import static com.epam.esm.exception.ErrorMessageKey.*;
+import static com.epam.esm.util.ParamName.LIMIT;
+import static com.epam.esm.util.ParamName.OFFSET;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,6 @@ import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.GiftCertificateService;
-import com.epam.esm.util.PaginationParamExtractor;
 
 /**
  * The {@code GiftCertificateServiceImpl} class is responsible for operations with gift certificate
@@ -72,8 +73,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	
 	private PageDto<GiftCertificateDto> buildPage(List<GiftCertificateDto> giftCertificateDtoList
 			, Map<String, String> params) {
-		int offset = PaginationParamExtractor.getOffset(params);
-		int limit = PaginationParamExtractor.getLimit(params);
+		int offset = Integer.parseInt(params.get(OFFSET));
+		int limit = Integer.parseInt(params.get(LIMIT));
 		log.info("Service offset={}, limit={}", offset, limit);
 		long totalPositions = giftCertificateDao.getTotalNumber(params);
 		log.info("Service total={}", totalPositions);

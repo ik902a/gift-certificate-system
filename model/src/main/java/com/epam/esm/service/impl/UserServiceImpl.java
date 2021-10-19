@@ -2,6 +2,8 @@ package com.epam.esm.service.impl;
 
 import static com.epam.esm.exception.ErrorCode.*;
 import static com.epam.esm.exception.ErrorMessageKey.*;
+import static com.epam.esm.util.ParamName.LIMIT;
+import static com.epam.esm.util.ParamName.OFFSET;
 
 import java.util.List;
 import java.util.Map;
@@ -44,29 +46,20 @@ public class UserServiceImpl implements UserService {
 		log.info("FIND User BY PARAMS Service {}", params);
 		List<User> userList = userDao.find(params);
 		List<UserDto> userDtoList = userList.stream()
-				.map(user -> convertToDto(user))
+				.map(user -> modelMapper.map(user, UserDto.class))
 				.collect(Collectors.toList());
 		return buildPage(userDtoList, params);
 	}
 	
 	private PageDto<UserDto> buildPage(List<UserDto> userDtoList, Map<String, String> params) {
-		int offset = PaginationParamExtractor.getOffset(params);
-		int limit = PaginationParamExtractor.getLimit(params);
+		int offset = Integer.parseInt(params.get(OFFSET));
+		int limit = Integer.parseInt(params.get(LIMIT));
 		log.info("Service offset={}, limit={}", offset, limit);
 		long totalPositions = userDao.getTotalNumber(params);
 		long totalPages = (long) Math.ceil((double) totalPositions / limit);
 		long pageNumber = offset / limit + 1;
 		log.info("Service page={}", pageNumber);
       return new PageDto<>(userDtoList, totalPages, pageNumber, offset, limit);
-	}
-	
-	private UserDto convertToDto(User user) {
-		UserDto userDto = modelMapper.map(user, UserDto.class);
-		List<OrderForUserDto> orderForUserDtoList = user.getOrders().stream()
-				.map(order -> modelMapper.map(order, OrderForUserDto.class))
-				.collect(Collectors.toList());
-				userDto.setOrders(orderForUserDtoList);
-		return userDto;
 	}
 
 	@Override
@@ -78,7 +71,7 @@ public class UserServiceImpl implements UserService {
 			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
 					, id
 					, USER_INCORRECT.getErrorCode()));
-		return convertToDto(user);
+		return modelMapper.map(user, UserDto.class);
 	}
 
 	@Override

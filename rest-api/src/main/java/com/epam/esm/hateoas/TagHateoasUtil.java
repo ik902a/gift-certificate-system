@@ -12,13 +12,15 @@ import org.apache.logging.log4j.Logger;
 import com.epam.esm.controller.TagController;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.TagDto;
+import com.epam.esm.response.PageTagResponse;
+import com.epam.esm.response.TagResponse;
 
 /**
  * The {@code TagHateoas} class makes HATEOAS for tags
  * 
  * @author Ihar Klepcha
  */
-public class TagHateoas {
+public class TagHateoasUtil {
 	public static Logger log = LogManager.getLogger();
     
 	/**
@@ -26,9 +28,9 @@ public class TagHateoas {
 	 * 
 	 * @param tagDto {@link TagDto} tag
 	 */
-    public static void addLinks(TagDto tagDto) {
-        tagDto.add(linkTo(methodOn(TagController.class).getTagById(tagDto.getId())).withSelfRel());
-        tagDto.add(linkTo(methodOn(TagController.class).deleteTag(tagDto.getId())).withRel(DELETE));
+    public static void addLinks(TagResponse tag) {
+        tag.add(linkTo(methodOn(TagController.class).getTagById(tag.getId())).withSelfRel());
+        tag.add(linkTo(methodOn(TagController.class).deleteTag(tag.getId())).withRel(DELETE));
     }
     
 	/**
@@ -37,13 +39,15 @@ public class TagHateoas {
 	 * @param page {@link PageDto} of {@link TagDto} page
 	 * @param params {@link Map} of {@link String} and {@link String} parameters
 	 */
-	public static void addLinkOnPagedResourceRetrieval(PageDto<TagDto> page, Map<String, String> params) {
+	public static void addLinkOnPagedResourceRetrieval(PageTagResponse page, Map<String, String> params) {
+		int offset = Integer.parseInt(params.get(OFFSET));
+		int limit = Integer.parseInt(params.get(LIMIT));
 		if (hasNextPage(page.getPageNumber(), page.getTotalPages())) {
-			params.put(OFFSET, String.valueOf(page.getOffset() + page.getLimit()));
+			params.put(OFFSET, String.valueOf(offset + limit));
 			page.add(linkTo(methodOn(TagController.class).getAllTags(params)).withRel(NEXT));
 		}
 		if (hasPreviousPage(page.getPageNumber())) {
-			params.put(OFFSET, String.valueOf(page.getOffset() - page.getLimit()));
+			params.put(OFFSET, String.valueOf(offset - limit));
 			page.add(linkTo(methodOn(TagController.class).getAllTags(params)).withRel(PREV));
 		}
 	}

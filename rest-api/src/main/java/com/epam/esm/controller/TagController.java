@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.TagDto;
-import com.epam.esm.hateoas.TagHateoas;
+import com.epam.esm.hateoas.TagHateoasUtil;
+import com.epam.esm.response.PageTagResponse;
+import com.epam.esm.response.TagResponse;
 import com.epam.esm.service.TagService;
 
 /**
@@ -47,11 +49,12 @@ public class TagController {
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public TagDto createTag(@Valid @RequestBody TagDto tagDto) {
+	public TagResponse createTag(@Valid @RequestBody TagDto tagDto) {
 		TagDto tagDtoCreated = tagService.create(tagDto);
 		log.info("CREATE Tag DTO Controller");
-		TagHateoas.addLinks(tagDtoCreated);
-		return tagDtoCreated;
+		TagResponse response = TagResponse.valueOf(tagDtoCreated);
+		TagHateoasUtil.addLinks(response);
+		return response;
 	}
 
 	/**
@@ -61,12 +64,13 @@ public class TagController {
      */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public PageDto<TagDto> getAllTags(@Valid @RequestParam Map<String, String> params) {
+	public PageTagResponse getAllTags(@Valid @RequestParam Map<String, String> params) {
 		PageDto<TagDto> pageDto = tagService.find(params);
 		log.info("FIND all Tag DTO Controller");
-		pageDto.getContent().forEach(TagHateoas::addLinks);
-		TagHateoas.addLinkOnPagedResourceRetrieval(pageDto, params);
-		return pageDto;
+		PageTagResponse response = PageTagResponse.valueOf(pageDto);
+		response.getContent().forEach(TagHateoasUtil::addLinks);
+		TagHateoasUtil.addLinkOnPagedResourceRetrieval(response, params);
+		return response;
 	}
 
 	/**
@@ -77,11 +81,12 @@ public class TagController {
      */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public TagDto getTagById(@Positive @PathVariable long id) {
+	public TagResponse getTagById(@Positive @PathVariable long id) {
 		TagDto tagDto = tagService.findById(id);
-		TagHateoas.addLinks(tagDto);
+		TagResponse response = TagResponse.valueOf(tagDto);
+		TagHateoasUtil.addLinks(response);
 		log.info("FIND Tag DTO by id Controller");
-		return tagDto;
+		return response;
 	}
 
 	/**
@@ -103,9 +108,10 @@ public class TagController {
      */
     @GetMapping("/popular")
     @ResponseStatus(HttpStatus.OK)
-    public TagDto getMostPopularTagOfUserWithHighestCostOfAllOrders() {
+    public TagResponse getMostPopularTagOfUserWithHighestCostOfAllOrders() {
         TagDto tagDto = tagService.findMostPopularTagOfUserWithHighestCostOfAllOrders();
-        TagHateoas.addLinks(tagDto);
-        return tagDto;
+        TagResponse response = TagResponse.valueOf(tagDto);
+        TagHateoasUtil.addLinks(response);
+        return response;
     }
 }

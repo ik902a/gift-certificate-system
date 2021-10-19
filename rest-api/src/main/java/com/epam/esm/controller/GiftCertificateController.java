@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.PageDto;
-import com.epam.esm.hateoas.GiftCertificateHateoas;
+import com.epam.esm.hateoas.GiftCertificateHateoasUtil;
+import com.epam.esm.response.GiftCertificateResponse;
+import com.epam.esm.response.PageGiftCertificateResponse;
 import com.epam.esm.service.GiftCertificateService;
 
 /**
@@ -55,11 +57,12 @@ public class GiftCertificateController {
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public GiftCertificateDto createGiftCertificate(@Valid @RequestBody GiftCertificateDto giftCertificateDto) {
+	public GiftCertificateResponse createGiftCertificate(@Valid @RequestBody GiftCertificateDto giftCertificateDto) {
 		GiftCertificateDto giftCertificateDtoCreated = giftCertificateService.create(giftCertificateDto);
-		log.info("CREATE GiftCertificate DTO Controller");
-		GiftCertificateHateoas.addLinks(giftCertificateDtoCreated);
-		return giftCertificateDtoCreated;
+		log.info("CREATE GiftCertificate Controller");
+		GiftCertificateResponse response = GiftCertificateResponse.valueOf(giftCertificateDtoCreated);
+		GiftCertificateHateoasUtil.addLinks(response);
+		return response;
 	}
 
 	/**
@@ -70,12 +73,14 @@ public class GiftCertificateController {
      */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public PageDto<GiftCertificateDto> getAllGiftCertificates(@Valid @RequestParam Map<String, String> params) {
+	public PageGiftCertificateResponse getAllGiftCertificates(@Valid @RequestParam Map<String, String> params) {
 		PageDto<GiftCertificateDto> pageDto = giftCertificateService.find(params);
-		pageDto.getContent().forEach(GiftCertificateHateoas::addLinks);
-		GiftCertificateHateoas.addLinkOnPagedResourceRetrieval(pageDto, params);
+		
+		PageGiftCertificateResponse response = PageGiftCertificateResponse.valueOf(pageDto);
+		response.getContent().forEach(GiftCertificateHateoasUtil::addLinks);
+		GiftCertificateHateoasUtil.addLinkOnPagedResourceRetrieval(response, params);
 		log.info("FIND all Gift Certificate DTO Controller");
-		return  pageDto;
+		return  response;
 	}
 
 	/**
@@ -86,11 +91,12 @@ public class GiftCertificateController {
      */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public GiftCertificateDto getGiftCertificateById(@Positive @PathVariable long id) {
+	public GiftCertificateResponse getGiftCertificateById(@Positive @PathVariable long id) {
 		GiftCertificateDto giftCertificateDto = giftCertificateService.findById(id);
-		GiftCertificateHateoas.addLinks(giftCertificateDto);
+		GiftCertificateResponse response = GiftCertificateResponse.valueOf(giftCertificateDto);
+		GiftCertificateHateoasUtil.addLinks(response);
 		log.info("FIND Gift Certificate DTO by id Controller");
-		return giftCertificateDto;
+		return response;
 	}
 
 	 /**
@@ -102,13 +108,14 @@ public class GiftCertificateController {
      */
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDto updateGiftCertificate(@Positive @PathVariable long id, 
+    public GiftCertificateResponse updateGiftCertificate(@Positive @PathVariable long id, 
     		@RequestBody GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setId(id);
         GiftCertificateDto giftCertificateDtoUpdated = giftCertificateService.update(giftCertificateDto);
-        GiftCertificateHateoas.addLinks(giftCertificateDtoUpdated);
+        GiftCertificateResponse response = GiftCertificateResponse.valueOf(giftCertificateDtoUpdated);
+        GiftCertificateHateoasUtil.addLinks(response);
 		log.info("UPDATE Gift Certificate DTO Controller");
-        return giftCertificateDtoUpdated;
+        return response;
     }
 	
     /**

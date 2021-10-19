@@ -29,11 +29,11 @@ public class ParamValidator {
 	 */
 	public static void validateSortParam(Map<String, String> params) {
 		List<String> errorMessageKeys = new ArrayList<>();
-		if (params.containsKey(ParamName.SORT_BY.toString().toLowerCase())) {
-			validateSort(params.get(ParamName.SORT_BY.toString().toLowerCase()), errorMessageKeys);
+		if (params.containsKey(ParamName.SORT_BY)) {
+			validateSort(params.get(ParamName.SORT_BY), errorMessageKeys);
 		}
-		if (params.containsKey(ParamName.ORDER_BY.toString().toLowerCase())) {
-			validateOrder(params.get(ParamName.ORDER_BY.toString().toLowerCase()), errorMessageKeys);
+		if (params.containsKey(ParamName.ORDER_BY)) {
+			validateOrder(params.get(ParamName.ORDER_BY), errorMessageKeys);
 		}
 		if (!errorMessageKeys.isEmpty()) {
 			throw new InvalidParamException(errorMessageKeys, INCORRECT_PARAM.getErrorCode());
@@ -71,11 +71,11 @@ public class ParamValidator {
 	 */
 	public static void validatePaginationParam(Map<String, String> params) {
 		List<String> errorMessageKeys = new ArrayList<>();
-		if (params.containsKey(ParamName.OFFSET.toString().toLowerCase())) {
-			validateOffset(params.get(ParamName.OFFSET.toString().toLowerCase()), errorMessageKeys);
+		if (params.containsKey(ParamName.OFFSET)) {
+			validateOffset(params.get(ParamName.OFFSET), errorMessageKeys);
 		}
-		if (params.containsKey(ParamName.LIMIT.toString().toLowerCase())) {
-			validateLimit(params.get(ParamName.LIMIT.toString().toLowerCase()), errorMessageKeys);
+		if (params.containsKey(ParamName.LIMIT)) {
+			validateLimit(params.get(ParamName.LIMIT), errorMessageKeys);
 		}
 		if (!errorMessageKeys.isEmpty()) {
 			throw new InvalidParamException(errorMessageKeys, INCORRECT_PARAM.getErrorCode());

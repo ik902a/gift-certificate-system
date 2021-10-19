@@ -3,8 +3,6 @@ package com.epam.esm.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import org.springframework.hateoas.RepresentationModel;
-
 /**
  * The {@code TagDto} class is implementation of pattern DTO for transmission tag
  * entity between service and controller
@@ -12,7 +10,7 @@ import org.springframework.hateoas.RepresentationModel;
  * @author Ihar Klepcha
  * @see RepresentationModel
  */
-public class TagDto extends RepresentationModel<TagDto> {
+public class TagDto {
 	private long id;
 	@NotBlank
     @Size(max = 45)

@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * The {@code PageDto} class is implementation of pattern DTO for transmission page
  * entity between service and controller.
@@ -14,13 +12,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @see RepresentationModel
  * @author Ihar Klepcha
  */
-public class PageDto<T> extends RepresentationModel<PageDto<T>> {
+public class PageDto<T> {
 	private List<T> content;
     private long totalPages;
     private long pageNumber;
-    @JsonIgnore
     private long offset;
-    @JsonIgnore
     private long limit;
     
     /**

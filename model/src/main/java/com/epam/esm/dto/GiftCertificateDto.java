@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * @see RepresentationModel
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
+public class GiftCertificateDto {
 	private long id;
 	@NotBlank
     @Size(max = 45)
@@ -43,9 +43,7 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
 	@DecimalMax(value = "365")
 	@NotNull
     private int duration;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private ZonedDateTime createDate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private ZonedDateTime lastUpdateDate;
     @Valid
     private List<TagDto> tags;

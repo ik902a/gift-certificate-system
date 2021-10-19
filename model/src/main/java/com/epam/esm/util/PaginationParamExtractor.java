@@ -21,7 +21,8 @@ public class PaginationParamExtractor {
 	 */
 	public static int getOffset(Map<String, String> params) {
 		ParamValidator.validatePaginationParam(params);
-		return Integer.parseInt(params.getOrDefault(ParamName.OFFSET.toString().toLowerCase(), DEFAULT_OFFSET));
+		params.put(ParamName.OFFSET, params.getOrDefault(ParamName.OFFSET, DEFAULT_OFFSET));
+		return Integer.parseInt(params.get(ParamName.OFFSET));
 	}
 	
 	/**
@@ -32,6 +33,7 @@ public class PaginationParamExtractor {
 	 */
 	public static int getLimit(Map<String, String> params) {
 		ParamValidator.validatePaginationParam(params);
-		return Integer.parseInt(params.getOrDefault(ParamName.LIMIT.toString().toLowerCase(), DEFAULT_LIMIT));
+		params.put(ParamName.LIMIT, params.getOrDefault(ParamName.LIMIT, DEFAULT_LIMIT));
+		return Integer.parseInt(params.get(ParamName.LIMIT));
 	}
 }

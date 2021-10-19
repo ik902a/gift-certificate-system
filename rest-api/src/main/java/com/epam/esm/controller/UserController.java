@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.UserDto;
-import com.epam.esm.hateoas.UserHateoas;
+import com.epam.esm.hateoas.UserHateoasUtil;
+import com.epam.esm.response.GiftCertificateResponse;
+import com.epam.esm.response.UserResponse;
 import com.epam.esm.service.UserService;
 
 /**
@@ -38,21 +40,21 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	/**
-	 * Gets users by params, processes GET requests at /users
-	 *
-	 * @param params {@link Map} of {@link String} and {@link String} data for searching users
-	 * @return {@link List} of {@link UserDto} founded users
-	 */
-	@GetMapping
-	@ResponseStatus(HttpStatus.OK)
-	public PageDto<UserDto> getAllUsers(@Valid @RequestParam Map<String, String> params) {
-		PageDto<UserDto> pageDto = userService.find(params);
-		pageDto.getContent().forEach(UserHateoas::addLinks);
-		UserHateoas.addLinkOnPagedResourceRetrieval(pageDto, params);
-		log.info("FIND User DTO Controller");
-		return pageDto;
-	}	
+//	/**
+//	 * Gets users by params, processes GET requests at /users
+//	 *
+//	 * @param params {@link Map} of {@link String} and {@link String} data for searching users
+//	 * @return {@link List} of {@link UserDto} founded users
+//	 */
+//	@GetMapping
+//	@ResponseStatus(HttpStatus.OK)
+//	public PageDto<UserDto> getAllUsers(@Valid @RequestParam Map<String, String> params) {
+//		PageDto<UserDto> pageDto = userService.find(params);
+//		pageDto.getContent().forEach(UserHateoasUtil::addLinks);
+//		UserHateoasUtil.addLinkOnPagedResourceRetrieval(pageDto, params);
+//		log.info("FIND User DTO Controller");
+//		return pageDto;
+//	}	
 
 	/**
 	 * Gets user by id, processes GET requests at /users/{id}
@@ -62,18 +64,20 @@ public class UserController {
 	 */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public UserDto getUserById(@Positive @PathVariable long id) {
+	public UserResponse getUserById(@Positive @PathVariable long id) {
 		UserDto userDto = userService.findById(id);
-		UserHateoas.addLinks(userDto);
+		UserResponse response = UserResponse.valueOf(userDto);
+		UserHateoasUtil.addLinks(response);
 		log.info("FIND User DTO by id Controller");
-		return userDto;
+		return response;
 	}	
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public UserDto createUser(@RequestBody @Valid UserDto userDto) {
+	public UserResponse createUser(@RequestBody @Valid UserDto userDto) {
 		UserDto userDtoCreated = userService.create(userDto);
+		UserResponse response = UserResponse.valueOf(userDtoCreated);
 		log.info("Controller CREATE User is worcking");
-		return userDtoCreated;
+		return response;
 	}
 }

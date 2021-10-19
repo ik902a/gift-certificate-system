@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.esm.dto.OrderDataDto;
 import com.epam.esm.dto.OrderDto;
-import com.epam.esm.hateoas.OrderHateoas;
+import com.epam.esm.hateoas.OrderHateoasUtil;
+import com.epam.esm.response.OrderResponse;
 import com.epam.esm.service.OrderService;
 
 /**
@@ -42,11 +43,12 @@ public class OrderController {
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public OrderDto createOrder(@Valid @RequestBody OrderDataDto orderDataDto) {
+	public OrderResponse createOrder(@Valid @RequestBody OrderDataDto orderDataDto) {
 		OrderDto orderDtoCreated = orderService.create(orderDataDto);
-		OrderHateoas.addLinks(orderDtoCreated);
+		OrderResponse response = OrderResponse.valueOf(orderDtoCreated);
+		OrderHateoasUtil.addLinks(response);
 		log.info("Controller CREATE Order is worcking");
-		return orderDtoCreated;
+		return response;
 	}
 	
 	/**
@@ -57,10 +59,11 @@ public class OrderController {
 	 */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public OrderDto getOrderById(@Positive @PathVariable long id) {
+	public OrderResponse getOrderById(@Positive @PathVariable long id) {
 		OrderDto orderDto = orderService.findById(id);
-		OrderHateoas.addLinks(orderDto);
+		OrderResponse response = OrderResponse.valueOf(orderDto);
+		OrderHateoasUtil.addLinks(response);
 		log.info("FIND Order DTO by id Controller");
-		return orderDto;
+		return response;
 	}
 }
