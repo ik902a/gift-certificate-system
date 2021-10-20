@@ -18,13 +18,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.esm.dao.UserDao;
-import com.epam.esm.dto.OrderForUserDto;
+import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.User;
 import com.epam.esm.exception.ResourceNotExistException;
+import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
-import com.epam.esm.util.PaginationParamExtractor;
 
 /**
  * The {@code UserServiceImpl} class is responsible for operations with user
@@ -37,6 +37,8 @@ public class UserServiceImpl implements UserService {
 	public static Logger log = LogManager.getLogger();
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private OrderService orderService;
 	@Autowired
 	private ModelMapper modelMapper;
 
@@ -72,6 +74,15 @@ public class UserServiceImpl implements UserService {
 					, id
 					, USER_INCORRECT.getErrorCode()));
 		return modelMapper.map(user, UserDto.class);
+	}
+	
+	@Override
+	public PageDto<OrderDto> findOrdersByUser(long id, Map<String, String> params) {//TODO new method
+		log.info("FIND Order BY User Service userId={}", id);
+		User user = new User();
+		user.setId(id);
+		PageDto<OrderDto> pageOrder = orderService.findOrdersByUser(user, params);
+		return pageOrder;
 	}
 
 	@Override

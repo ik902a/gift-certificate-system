@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 import com.epam.esm.dao.OrderDao;
 import com.epam.esm.entity.GiftCertificateOrder;
 import com.epam.esm.entity.Order;
+import com.epam.esm.entity.User;
+import com.epam.esm.util.PaginationParamExtractor;
 
 /**
  * The {@code OrderDaoImpl} class works with orders table in database
@@ -25,6 +27,7 @@ import com.epam.esm.entity.Order;
 public class OrderDaoImpl implements OrderDao {
 	public static Logger log = LogManager.getLogger();
 	private static final String FIND_ALL_ORDERS = "FROM Order";
+	private static final String FIND_ORDER_BY_USER = "FROM Order WHERE user=:user_id";
 	@PersistenceContext
 	private EntityManager entityManager;
 	
@@ -42,6 +45,26 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public long getTotalNumber(Map<String, String> params) {
         return entityManager.createQuery(FIND_ALL_ORDERS, Order.class)
+        		.getResultStream()
+				.count();
+	}
+	
+	@Override
+	public List<Order> findOrdersByUser(User user, Map<String, String> params) {
+		int offset = PaginationParamExtractor.getOffset(params);
+		int limit = PaginationParamExtractor.getLimit(params);
+		log.info("FIND OrdersByUser DAO userID={}", user);
+		return entityManager.createQuery(FIND_ORDER_BY_USER, Order.class)
+				.setParameter(ColumnName.ORDERS_USER_ID, user)
+				.setFirstResult(offset)
+				.setMaxResults(limit)
+				.getResultList();
+	}
+	
+	@Override
+	public long getTotalNumberByUser(User user, Map<String, String> params) {
+        return entityManager.createQuery(FIND_ORDER_BY_USER, Order.class)
+				.setParameter(ColumnName.ORDERS_USER_ID, user)
         		.getResultStream()
 				.count();
 	}

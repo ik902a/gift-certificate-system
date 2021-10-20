@@ -28,7 +28,7 @@ import com.epam.esm.entity.GiftCertificate;
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 	public static Logger log = LogManager.getLogger();
 	private static final String FIND_GIFT_CERTIFICATE_BY_NAME = "FROM GiftCertificate WHERE name=:name";
-	private static final String DELETE_GIFT_CERTIFICATE = "DELETE GiftCertificate WHERE id = :id";
+	private static final String DELETE_GIFT_CERTIFICATE = "DELETE GiftCertificate WHERE id=:id";
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -57,8 +57,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
 	@Override
 	public Optional<GiftCertificate> findEntityByName(String name) {
-		return entityManager
-				.createQuery(FIND_GIFT_CERTIFICATE_BY_NAME, GiftCertificate.class)
+		return entityManager.createQuery(FIND_GIFT_CERTIFICATE_BY_NAME, GiftCertificate.class)
 				.setParameter(ColumnName.GIFT_CERTIFICATES_NAME, name)
 				.getResultStream()
 				.findFirst();

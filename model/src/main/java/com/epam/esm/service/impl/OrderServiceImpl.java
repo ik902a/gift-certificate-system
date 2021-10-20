@@ -2,11 +2,15 @@ package com.epam.esm.service.impl;
 
 import static com.epam.esm.exception.ErrorCode.*;
 import static com.epam.esm.exception.ErrorMessageKey.*;
+import static com.epam.esm.util.ParamName.LIMIT;
+import static com.epam.esm.util.ParamName.OFFSET;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +24,7 @@ import com.epam.esm.dao.OrderDao;
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.dto.OrderDataDto;
 import com.epam.esm.dto.OrderDto;
+import com.epam.esm.dto.PageDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.GiftCertificateOrder;
 import com.epam.esm.entity.GiftCertificateOrderKey;
@@ -103,5 +108,27 @@ public class OrderServiceImpl implements OrderService {
 						, ORDER_INCORRECT.getErrorCode()));
 		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
 		return orderDto;
+	}
+
+	@Override
+	@Transactional
+	public PageDto<OrderDto> findOrdersByUser(User user, Map<String, String> params) {
+		log.info("FIND User BY PARAMS Service {}", params);
+		List<Order> orderList = orderDao.findOrdersByUser(user, params);
+		List<OrderDto> orderDtoList = orderList.stream()
+				.map(order -> modelMapper.map(order, OrderDto.class))
+				.collect(Collectors.toList());
+		return buildPage(orderDtoList, user, params);
+	}
+	
+	private PageDto<OrderDto> buildPage(List<OrderDto> orderDtoList, User user, Map<String, String> params) {
+		int offset = Integer.parseInt(params.get(OFFSET));
+		int limit = Integer.parseInt(params.get(LIMIT));
+		log.info("Service offset={}, limit={}", offset, limit);
+		long totalPositions = orderDao.getTotalNumberByUser(user, params);
+		long totalPages = (long) Math.ceil((double) totalPositions / limit);
+		long pageNumber = offset / limit + 1;
+		log.info("Service page={}", pageNumber);
+      return new PageDto<>(orderDtoList, totalPages, pageNumber, offset, limit);
 	}
 }

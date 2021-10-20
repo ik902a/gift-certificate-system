@@ -20,10 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.UserDto;
+import com.epam.esm.hateoas.OrderHateoasUtil;
 import com.epam.esm.hateoas.UserHateoasUtil;
-import com.epam.esm.response.GiftCertificateResponse;
+import com.epam.esm.response.PageOrderResponse;
+import com.epam.esm.response.PageUserResponse;
 import com.epam.esm.response.UserResponse;
 import com.epam.esm.service.UserService;
 
@@ -40,21 +43,23 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-//	/**
-//	 * Gets users by params, processes GET requests at /users
-//	 *
-//	 * @param params {@link Map} of {@link String} and {@link String} data for searching users
-//	 * @return {@link List} of {@link UserDto} founded users
-//	 */
-//	@GetMapping
-//	@ResponseStatus(HttpStatus.OK)
-//	public PageDto<UserDto> getAllUsers(@Valid @RequestParam Map<String, String> params) {
-//		PageDto<UserDto> pageDto = userService.find(params);
-//		pageDto.getContent().forEach(UserHateoasUtil::addLinks);
-//		UserHateoasUtil.addLinkOnPagedResourceRetrieval(pageDto, params);
-//		log.info("FIND User DTO Controller");
-//		return pageDto;
-//	}	
+	/**
+	 * Gets users by params, processes GET requests at /users
+	 *
+	 * @param params {@link Map} of {@link String} and {@link String} data for searching users
+	 * @return {@link List} of {@link UserDto} founded users
+	 */
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public PageUserResponse getAllUsers(@Valid @RequestParam Map<String, String> params) {
+		PageDto<UserDto> pageDto = userService.find(params);
+		
+		PageUserResponse response = PageUserResponse.valueOf(pageDto);
+		response.getContent().forEach(UserHateoasUtil::addLinks);
+		UserHateoasUtil.addLinkOnPagedResourceRetrieval(response, params);
+		log.info("FIND User DTO Controller");
+		return response;
+	}	
 
 	/**
 	 * Gets user by id, processes GET requests at /users/{id}
@@ -71,6 +76,24 @@ public class UserController {
 		log.info("FIND User DTO by id Controller");
 		return response;
 	}	
+	
+	/**
+	 * Gets order by user id, processes GET requests at /users/{id}
+	 *
+	 * @param id is the user id
+	 * @return {@link UserDto} founded user
+	 */
+	@GetMapping("/{id}/orders")//TODO new method
+	@ResponseStatus(HttpStatus.OK)
+	public PageOrderResponse getOrdersByUser(@Positive @PathVariable long id, @Valid @RequestParam Map<String, String> params) {
+		PageDto<OrderDto> pageDto = userService.findOrdersByUser(id, params);
+		
+		PageOrderResponse response = PageOrderResponse.valueOf(pageDto);
+		response.getContent().forEach(OrderHateoasUtil::addLinks);
+		OrderHateoasUtil.addLinkOnPagedResourceRetrieval(response, id, params);
+		log.info("FIND User DTO by id Controller");
+		return response;
+	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
