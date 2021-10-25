@@ -4,15 +4,28 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.epam.esm.dto.GiftCertificateOrderDto;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode(callSuper=false)
 public class GiftCertificateOrderResponse extends RepresentationModel<GiftCertificateOrderResponse> {
 	GiftCertificateResponse giftCertificate;
     int quantity;
     
-	public GiftCertificateOrderResponse(GiftCertificateResponse giftCertificate, int quantity) {
-		super();
-		this.giftCertificate = giftCertificate;
-		this.quantity = quantity;
-	}
+//	public GiftCertificateOrderResponse(GiftCertificateResponse giftCertificate, int quantity) {
+//		super();
+//		this.giftCertificate = giftCertificate;
+//		this.quantity = quantity;
+//	}
 
     public static GiftCertificateOrderResponse valueOf(GiftCertificateOrderDto giftCertificateOrderDto) {
     	return new GiftCertificateOrderResponse(
@@ -20,20 +33,19 @@ public class GiftCertificateOrderResponse extends RepresentationModel<GiftCertif
     			, giftCertificateOrderDto.getQuantity());
 	}
 
-	public GiftCertificateResponse getGiftCertificate() {
-		return giftCertificate;
-	}
-
-	public void setGiftCertificate(GiftCertificateResponse giftCertificate) {
-		this.giftCertificate = giftCertificate;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-    
+//	public GiftCertificateResponse getGiftCertificate() {
+//		return giftCertificate;
+//	}
+//
+//	public void setGiftCertificate(GiftCertificateResponse giftCertificate) {
+//		this.giftCertificate = giftCertificate;
+//	}
+//
+//	public int getQuantity() {
+//		return quantity;
+//	}
+//
+//	public void setQuantity(int quantity) {
+//		this.quantity = quantity;
+//	}
 }

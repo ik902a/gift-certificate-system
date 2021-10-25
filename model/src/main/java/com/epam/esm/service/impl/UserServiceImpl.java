@@ -77,6 +77,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	@Transactional
 	public PageDto<OrderDto> findOrdersByUser(long id, Map<String, String> params) {//TODO new method
 		log.info("FIND Order BY User Service userId={}", id);
 		User user = new User();

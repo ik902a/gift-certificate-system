@@ -8,17 +8,30 @@ import org.springframework.hateoas.RepresentationModel;
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.PageDto;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode(callSuper=false)
 public class PageGiftCertificateResponse extends RepresentationModel<PageGiftCertificateResponse> {
 	private List<GiftCertificateResponse> content;
     private long totalPages;
     private long pageNumber;
     
-	public PageGiftCertificateResponse(List<GiftCertificateResponse> content, long totalPages, long pageNumber) {
-		super();
-		this.content = content;
-		this.totalPages = totalPages;
-		this.pageNumber = pageNumber;
-	}
+//	public PageGiftCertificateResponse(List<GiftCertificateResponse> content, long totalPages, long pageNumber) {
+//		super();
+//		this.content = content;
+//		this.totalPages = totalPages;
+//		this.pageNumber = pageNumber;
+//	}
 
     public static PageGiftCertificateResponse valueOf(PageDto<GiftCertificateDto> page) {
     	List<GiftCertificateResponse> contentResponse = page.getContent()
@@ -28,27 +41,27 @@ public class PageGiftCertificateResponse extends RepresentationModel<PageGiftCer
     	return new PageGiftCertificateResponse(contentResponse, page.getTotalPages(), page.getPageNumber());
 	}
 
-	public List<GiftCertificateResponse> getContent() {
-		return content;
-	}
-
-	public void setContent(List<GiftCertificateResponse> content) {
-		this.content = content;
-	}
-
-	public long getTotalPages() {
-		return totalPages;
-	}
-
-	public void setTotalPages(long totalPages) {
-		this.totalPages = totalPages;
-	}
-
-	public long getPageNumber() {
-		return pageNumber;
-	}
-
-	public void setPageNumber(long pageNumber) {
-		this.pageNumber = pageNumber;
-	}
+//	public List<GiftCertificateResponse> getContent() {
+//		return content;
+//	}
+//
+//	public void setContent(List<GiftCertificateResponse> content) {
+//		this.content = content;
+//	}
+//
+//	public long getTotalPages() {
+//		return totalPages;
+//	}
+//
+//	public void setTotalPages(long totalPages) {
+//		this.totalPages = totalPages;
+//	}
+//
+//	public long getPageNumber() {
+//		return pageNumber;
+//	}
+//
+//	public void setPageNumber(long pageNumber) {
+//		this.pageNumber = pageNumber;
+//	}
 }

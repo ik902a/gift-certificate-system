@@ -21,7 +21,7 @@ public class OrderDto {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	private ZonedDateTime date;
 	private BigDecimal cost;
-	private UserInOrderDto user;
+	private UserDto user;
 	private List<GiftCertificateOrderDto> giftCertificateOrderList;
 	
     /**
@@ -41,7 +41,7 @@ public class OrderDto {
 	 * @param giftCertificateOrderList {@link List} of {@link GiftCertificateOrderDto} is list 
 	 * gift certificates
 	 */
-	public OrderDto(long id, ZonedDateTime date, BigDecimal cost, UserInOrderDto user,
+	public OrderDto(long id, ZonedDateTime date, BigDecimal cost, UserDto user,
 			List<GiftCertificateOrderDto> giftCertificateOrderList) {
 		super();
 		this.id = id;
@@ -82,11 +82,11 @@ public class OrderDto {
 		this.cost = cost;
 	}
 
-	public UserInOrderDto getUser() {
+	public UserDto getUser() {
 		return user;
 	}
 
-	public void setUser(UserInOrderDto user) {
+	public void setUser(UserDto user) {
 		this.user = user;
 	}
 
