@@ -54,26 +54,26 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
-	public OrderDto create(OrderDataDto orderDataDto) {
-		log.info("CREATE Order Service {}", orderDataDto);
-		Order order = buildOrder(orderDataDto);
+	public OrderDto create(User user, Map<Long, Integer> orderData) {
+		log.info("CREATE Order Service {}", orderData);
+		Order order = buildOrder(user, orderData);
 		order = orderDao.create(order);
-		addGiftCertificateOrderData(order);//TODO incorrect adding
-		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
-		return orderDto;
+//		addGiftCertificateOrderData(order);//TODO incorrect adding
+
+		return modelMapper.map(order, OrderDto.class);
 	}
 
-	private Order buildOrder(OrderDataDto orderDataDto) {
+	private Order buildOrder(User user, Map<Long, Integer> orderData) {
 		Order order = new Order();
-		Optional<User> userOptional = userDao.findEntityById(orderDataDto.getUserId());
-		User user = userOptional.orElseThrow(
-			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-					, orderDataDto.getUserId()
-					, USER_INCORRECT.getErrorCode()));
+//		Optional<User> userOptional = userDao.findEntityById(orderDataDto.getUserId());
+//		User user = userOptional.orElseThrow(
+//			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+//					, orderDataDto.getUserId()
+//					, USER_INCORRECT.getErrorCode()));
+		
 		order.setUser(user);
 		BigDecimal cost = BigDecimal.ZERO;
-		Iterator<Map.Entry<Long, Integer>> giftCertificates = orderDataDto.getGiftCertificateMap().entrySet()
-				.iterator();
+		Iterator<Map.Entry<Long, Integer>> giftCertificates = orderData.entrySet().iterator();
 		while (giftCertificates.hasNext()) {
 			Map.Entry<Long, Integer> giftCertificateData = giftCertificates.next();
 			Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityById(
@@ -89,6 +89,44 @@ public class OrderServiceImpl implements OrderService {
 		order.setCost(cost);
 		return order;
 	}
+	
+//	@Override
+//	@Transactional
+//	public OrderDto create(OrderDataDto orderDataDto) {
+//		log.info("CREATE Order Service {}", orderDataDto);
+//		Order order = buildOrder(orderDataDto);
+//		order = orderDao.create(order);
+//		addGiftCertificateOrderData(order);//TODO incorrect adding
+//		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
+//		return orderDto;
+//	}
+//
+//	private Order buildOrder(OrderDataDto orderDataDto) {
+//		Order order = new Order();
+//		Optional<User> userOptional = userDao.findEntityById(orderDataDto.getUserId());
+//		User user = userOptional.orElseThrow(
+//			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+//					, orderDataDto.getUserId()
+//					, USER_INCORRECT.getErrorCode()));
+//		order.setUser(user);
+//		BigDecimal cost = BigDecimal.ZERO;
+//		Iterator<Map.Entry<Long, Integer>> giftCertificates = orderDataDto.getGiftCertificateMap().entrySet()
+//				.iterator();
+//		while (giftCertificates.hasNext()) {
+//			Map.Entry<Long, Integer> giftCertificateData = giftCertificates.next();
+//			Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityById(
+//					giftCertificateData.getKey());
+//			GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
+//					() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+//							, giftCertificateData.getKey()
+//							, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
+//			int quantity = giftCertificateData.getValue();
+//			order.addGiftCertificateOrder(new GiftCertificateOrder(order, giftCertificate, quantity));
+//			cost = cost.add(giftCertificate.getPrice().multiply(new BigDecimal(quantity)));
+//		}
+//		order.setCost(cost);
+//		return order;
+//	}
 
 	private void addGiftCertificateOrderData(Order order) {//TODO incorrect adding
 		order.getGiftCertificateOrderList().stream()
@@ -106,8 +144,7 @@ public class OrderServiceImpl implements OrderService {
 				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
 						, id
 						, ORDER_INCORRECT.getErrorCode()));
-		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
-		return orderDto;
+		return modelMapper.map(order, OrderDto.class);
 	}
 
 	@Override

@@ -30,40 +30,40 @@ import com.epam.esm.service.OrderService;
 @Validated
 @RestController
 @RequestMapping("/orders")
-public class OrderController {
+public class OrderController {// TODO Depricate
 	public static Logger log = LogManager.getLogger();
 	@Autowired
 	private OrderService orderService;
 
-    /**
-     * Creates new order, processes POST requests at /orders
-     *
-     * @param orderDto {@link OrderDto} order DTO
-     * @return {@link OrderDto} created order DTO
-     */
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public OrderResponse createOrder(@Valid @RequestBody OrderDataDto orderDataDto) {
-		OrderDto orderDtoCreated = orderService.create(orderDataDto);
-		OrderResponse response = OrderResponse.valueOf(orderDtoCreated);
-		OrderHateoasUtil.addLinks(response);
-		log.info("Controller CREATE Order is worcking");
-		return response;
-	}
+//    /**
+//     * Creates new order, processes POST requests at /orders
+//     *
+//     * @param orderDto {@link OrderDto} order DTO
+//     * @return {@link OrderDto} created order DTO
+//     */
+//	@PostMapping
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public OrderResponse createOrder(@Valid @RequestBody OrderDataDto orderDataDto) {
+//		OrderDto orderDtoCreated = orderService.create(orderDataDto);
+//		OrderResponse response = OrderResponse.valueOf(orderDtoCreated);
+//		OrderHateoasUtil.addLinks(response);
+//		log.info("Controller CREATE Order is worcking");
+//		return response;
+//	}
 	
-	/**
-	 * Gets order by id, processes GET requests at /orders/{id}
-	 *
-	 * @param id is the order id
-	 * @return {@link OrderDto} founded order
-	 */
-	@GetMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
-	public OrderResponse getOrderById(@Positive @PathVariable long id) {
-		OrderDto orderDto = orderService.findById(id);
-		OrderResponse response = OrderResponse.valueOf(orderDto);
-		OrderHateoasUtil.addLinks(response);
-		log.info("FIND Order DTO by id Controller");
-		return response;
-	}
+//	/**
+//	 * Gets order by id, processes GET requests at /orders/{id}
+//	 *
+//	 * @param id is the order id
+//	 * @return {@link OrderDto} founded order
+//	 */
+//	@GetMapping("/{id}")
+//	@ResponseStatus(HttpStatus.OK)
+//	public OrderResponse getOrderById(@Positive @PathVariable long id) {
+//		OrderDto orderDto = orderService.findById(id);
+//		OrderResponse response = OrderResponse.valueOf(orderDto);
+//		OrderHateoasUtil.addLinks(response);
+//		log.info("FIND Order DTO by id Controller");
+//		return response;
+//	}
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,7 +39,7 @@ public class Order extends AbstractEntity {
 	@Column(name="cost")
 	private BigDecimal cost;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	private User user;
 	
@@ -68,7 +69,7 @@ public class Order extends AbstractEntity {
 		this.id = id;
 		this.date = date;
 		this.cost = cost;
-		this.user = user;
+//		this.user = user;
 		this.giftCertificateOrderList = giftCertificateOrderList;
 	}
 

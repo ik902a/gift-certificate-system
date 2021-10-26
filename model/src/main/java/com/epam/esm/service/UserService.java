@@ -34,4 +34,8 @@ public interface UserService {
 	UserDto create(UserDto userDto);
 
 	PageDto<OrderDto> findOrdersByUser(long id, Map<String, String> params);
+
+	OrderDto createOrder(long userId, Map<Long, Integer> orderData);
+
+	OrderDto findOrderById(long id);
 }

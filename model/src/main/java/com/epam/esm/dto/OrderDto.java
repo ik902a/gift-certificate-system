@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * The {@code OrderDto} class is implementation of pattern DTO for transmission order
@@ -16,12 +17,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author Ihar Klepcha
  * @see RepresentationModel
  */
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class OrderDto {
 	private long id;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	private ZonedDateTime date;
 	private BigDecimal cost;
-	private UserDto user;
 	private List<GiftCertificateOrderDto> giftCertificateOrderList;
 	
     /**
@@ -47,7 +48,7 @@ public class OrderDto {
 		this.id = id;
 		this.date = date;
 		this.cost = cost;
-		this.user = user;
+//		this.user = user;
 		this.giftCertificateOrderList = giftCertificateOrderList;
 	}
 
@@ -82,13 +83,13 @@ public class OrderDto {
 		this.cost = cost;
 	}
 
-	public UserDto getUser() {
-		return user;
-	}
-
-	public void setUser(UserDto user) {
-		this.user = user;
-	}
+//	public UserDto getUser() {
+//		return user;
+//	}
+//
+//	public void setUser(UserDto user) {
+//		this.user = user;
+//	}
 
 	public List<GiftCertificateOrderDto> getGiftCertificateOrderList() {
 		return giftCertificateOrderList;
@@ -106,7 +107,7 @@ public class OrderDto {
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((giftCertificateOrderList == null) ? 0 : giftCertificateOrderList.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
+//		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
 
@@ -136,11 +137,11 @@ public class OrderDto {
 			return false;
 		if (id != other.id)
 			return false;
-		if (user == null) {
-			if (other.user != null)
-				return false;
-		} else if (!user.equals(other.user))
-			return false;
+//		if (user == null) {
+//			if (other.user != null)
+//				return false;
+//		} else if (!user.equals(other.user))
+//			return false;
 		return true;
 	}
 

@@ -29,7 +29,7 @@ public class OrderHateoasUtil {
 	 * @param orderDto {@link OrderDto} order
 	 */
 	public static void addLinks(OrderResponse order) {
-		order.add(linkTo(methodOn(OrderController.class).getOrderById(order.getId())).withSelfRel());
+		order.add(linkTo(methodOn(UserController.class).getOrderById(order.getId())).withSelfRel());
 	}
 	
 	public static void addLinkOnPagedResourceRetrieval(PageOrderResponse page, long id, Map<String, String> params) {

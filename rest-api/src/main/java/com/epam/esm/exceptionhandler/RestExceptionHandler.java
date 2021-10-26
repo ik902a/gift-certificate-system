@@ -6,6 +6,8 @@ import java.util.Locale;
 
 import javax.validation.ConstraintViolationException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,7 @@ import com.epam.esm.exception.ResourceNotExistException;
  */
 @RestControllerAdvice
 public class RestExceptionHandler {
+	public static Logger log = LogManager.getLogger();
 	@Autowired
 	private MessageSource messageSource;
 	
@@ -49,7 +52,7 @@ public class RestExceptionHandler {
 		String message = messageSource.getMessage(exception.getMessage(),
 				new String[] { String.valueOf(exception.getIncorrectParameter()) }, locale);
 		String code = HttpStatus.NOT_FOUND.value() + exception.getErrorCode();
-		
+//		log.info("ResourceNotExistException:{}", exception.getStackTrace());
 		ErrorData incorrectData = new ErrorData(List.of(message), code);
 		return new ResponseEntity<>(incorrectData, HttpStatus.NOT_FOUND);
 	}
@@ -108,6 +111,8 @@ public class RestExceptionHandler {
 	public ResponseEntity<ErrorData> constraintExceptionHandler(ConstraintViolationException exception) {
 		String message = exception.getLocalizedMessage();
 		String code = HttpStatus.BAD_REQUEST.value() + ErrorCode.INCORRECT_PARAM.getErrorCode();
+		
+		log.error(exception.getMessage(), exception);
 		
 		ErrorData incorrectData = new ErrorData(List.of(message), code);
 		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);

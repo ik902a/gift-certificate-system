@@ -18,11 +18,13 @@ public interface OrderService {
 	
 	/**
 	 * Creates order in database
+	 * @param user 
 	 * 
 	 * @param order {@link OrderDto} order DTO
 	 * @return {@link OrderDto} received from database
 	 */
-	OrderDto create(OrderDataDto orderDataDto);
+	OrderDto create(User user, Map<Long, Integer> orderData);
+//	OrderDto create(OrderDataDto orderDataDto);
 	
 	/**
 	 * Finds order by id

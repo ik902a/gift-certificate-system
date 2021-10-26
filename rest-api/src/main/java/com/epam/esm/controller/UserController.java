@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.epam.esm.dto.OrderDataDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.hateoas.OrderHateoasUtil;
 import com.epam.esm.hateoas.UserHateoasUtil;
+import com.epam.esm.response.OrderResponse;
 import com.epam.esm.response.PageOrderResponse;
 import com.epam.esm.response.PageUserResponse;
 import com.epam.esm.response.UserResponse;
@@ -77,13 +79,36 @@ public class UserController {
 		return response;
 	}	
 	
+    /**
+     * Creates new order, processes POST requests at /orders
+     *
+     * @param orderDto {@link OrderDto} order DTO
+     * @return {@link OrderDto} created order DTO
+     */
+	@PostMapping("/{id}/orders")// TODO new method
+	@ResponseStatus(HttpStatus.CREATED)
+	public OrderResponse createOrder(@Positive @PathVariable long id, 
+//			@Valid @RequestBody OrderDataDto orderDataDto) {
+			@RequestBody Map<Long, Integer> giftCertificateMap) {
+		log.info("Controller CREATE Order is worcking----------------------------------------");
+		
+		OrderDto orderDtoCreated = userService.createOrder(id, giftCertificateMap
+//				orderDataDto.getGiftCertificateMap()
+				);
+		
+		OrderResponse response = OrderResponse.valueOf(orderDtoCreated);
+		OrderHateoasUtil.addLinks(response);
+		log.info("Controller CREATE Order is worcking");
+		return response;
+	}
+	
 	/**
 	 * Gets order by user id, processes GET requests at /users/{id}
 	 *
 	 * @param id is the user id
 	 * @return {@link UserDto} founded user
 	 */
-	@GetMapping("/{id}/orders")//TODO new method
+	@GetMapping("/{id}/orders")// TODO new method
 	@ResponseStatus(HttpStatus.OK)
 	public PageOrderResponse getOrdersByUser(@Positive @PathVariable long id, @Valid @RequestParam Map<String, String> params) {
 		PageDto<OrderDto> pageDto = userService.findOrdersByUser(id, params);
@@ -92,6 +117,22 @@ public class UserController {
 		response.getContent().forEach(OrderHateoasUtil::addLinks);
 		OrderHateoasUtil.addLinkOnPagedResourceRetrieval(response, id, params);
 		log.info("FIND User DTO by id Controller");
+		return response;
+	}
+	
+	/**
+	 * Gets order by id, processes GET requests at /orders/{id}
+	 *
+	 * @param id is the order id
+	 * @return {@link OrderDto} founded order
+	 */
+	@GetMapping("/*/orders/{id}")
+	@ResponseStatus(HttpStatus.OK)// TODO new method
+	public OrderResponse getOrderById(@Positive @PathVariable long id) {
+		OrderDto orderDto = userService.findOrderById(id);
+		OrderResponse response = OrderResponse.valueOf(orderDto);
+		OrderHateoasUtil.addLinks(response);
+		log.info("FIND Order DTO by id Controller");
 		return response;
 	}
 

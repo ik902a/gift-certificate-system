@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.Positive;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -75,17 +77,32 @@ public class UserServiceImpl implements UserService {
 					, USER_INCORRECT.getErrorCode()));
 		return modelMapper.map(user, UserDto.class);
 	}
+
+	@Override
+	@Transactional
+	public OrderDto createOrder(long userId, Map<Long, Integer> orderData) {// TODO new method
+		log.info("CREATE Order BY User Service userId={}", userId);
+		User user = new User();
+		user.setId(userId);
+		OrderDto orderDto = orderService.create(user, orderData);
+		return orderDto;
+	}
 	
 	@Override
 	@Transactional
-	public PageDto<OrderDto> findOrdersByUser(long id, Map<String, String> params) {//TODO new method
+	public PageDto<OrderDto> findOrdersByUser(long id, Map<String, String> params) {// TODO new method
 		log.info("FIND Order BY User Service userId={}", id);
 		User user = new User();
 		user.setId(id);
 		PageDto<OrderDto> pageOrder = orderService.findOrdersByUser(user, params);
 		return pageOrder;
 	}
-
+	
+	@Override
+	public OrderDto findOrderById(long id) {// TODO new method
+		return orderService.findById(id);
+	}
+	
 	@Override
 	@Transactional
 	public UserDto create(UserDto userDto) {
@@ -94,4 +111,6 @@ public class UserServiceImpl implements UserService {
 		user = userDao.create(user);
 		return modelMapper.map(user, UserDto.class);
 	}
+
+
 }
