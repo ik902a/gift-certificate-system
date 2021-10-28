@@ -1,12 +1,11 @@
 package com.epam.esm.service.impl;
 
+import static com.epam.esm.dao.util.ParamName.LIMIT;
+import static com.epam.esm.dao.util.ParamName.OFFSET;
 import static com.epam.esm.exception.ErrorCode.*;
 import static com.epam.esm.exception.ErrorMessageKey.*;
-import static com.epam.esm.util.ParamName.LIMIT;
-import static com.epam.esm.util.ParamName.OFFSET;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,13 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.OrderDao;
-import com.epam.esm.dao.UserDao;
-import com.epam.esm.dto.OrderDataDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.GiftCertificateOrder;
-import com.epam.esm.entity.GiftCertificateOrderKey;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
 import com.epam.esm.exception.ResourceNotExistException;
@@ -46,93 +42,39 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderDao orderDao;
 	@Autowired
-	private UserDao userDao;
-	@Autowired
 	private GiftCertificateDao giftCertificateDao;
 	@Autowired
 	private ModelMapper modelMapper;
 
 	@Override
 	@Transactional
-	public OrderDto create(User user, Map<Long, Integer> orderData) {
-		log.info("CREATE Order Service {}", orderData);
-		Order order = buildOrder(user, orderData);
+	public OrderDto create(long userId, Map<String, Integer> giftCertificateMap) {
+		log.info("CREATE Order Service {}", giftCertificateMap);
+		Order order = buildOrder(userId, giftCertificateMap);
 		order = orderDao.create(order);
-//		addGiftCertificateOrderData(order);//TODO incorrect adding
-
 		return modelMapper.map(order, OrderDto.class);
 	}
 
-	private Order buildOrder(User user, Map<Long, Integer> orderData) {
+	private Order buildOrder(Long userId, Map<String, Integer> giftCertificateMap) {
 		Order order = new Order();
-//		Optional<User> userOptional = userDao.findEntityById(orderDataDto.getUserId());
-//		User user = userOptional.orElseThrow(
-//			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-//					, orderDataDto.getUserId()
-//					, USER_INCORRECT.getErrorCode()));
-		
+		User user = new User();
+		user.setId(userId);
 		order.setUser(user);
 		BigDecimal cost = BigDecimal.ZERO;
-		Iterator<Map.Entry<Long, Integer>> giftCertificates = orderData.entrySet().iterator();
-		while (giftCertificates.hasNext()) {
-			Map.Entry<Long, Integer> giftCertificateData = giftCertificates.next();
-			Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityById(
-					giftCertificateData.getKey());
+		for (Map.Entry<String, Integer> giftCertificateEntry : giftCertificateMap.entrySet()) {
+			String giftCertificateName = giftCertificateEntry.getKey();
+			Integer quantity = giftCertificateEntry.getValue();
+			Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityByName(giftCertificateName);
 			GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
-					() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-							, giftCertificateData.getKey()
-							, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
-			int quantity = giftCertificateData.getValue();
+							() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_NAME.getErrorMessageKey()
+									, giftCertificateName
+									, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
 			order.addGiftCertificateOrder(new GiftCertificateOrder(order, giftCertificate, quantity));
 			cost = cost.add(giftCertificate.getPrice().multiply(new BigDecimal(quantity)));
+
 		}
 		order.setCost(cost);
 		return order;
-	}
-	
-//	@Override
-//	@Transactional
-//	public OrderDto create(OrderDataDto orderDataDto) {
-//		log.info("CREATE Order Service {}", orderDataDto);
-//		Order order = buildOrder(orderDataDto);
-//		order = orderDao.create(order);
-//		addGiftCertificateOrderData(order);//TODO incorrect adding
-//		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
-//		return orderDto;
-//	}
-//
-//	private Order buildOrder(OrderDataDto orderDataDto) {
-//		Order order = new Order();
-//		Optional<User> userOptional = userDao.findEntityById(orderDataDto.getUserId());
-//		User user = userOptional.orElseThrow(
-//			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-//					, orderDataDto.getUserId()
-//					, USER_INCORRECT.getErrorCode()));
-//		order.setUser(user);
-//		BigDecimal cost = BigDecimal.ZERO;
-//		Iterator<Map.Entry<Long, Integer>> giftCertificates = orderDataDto.getGiftCertificateMap().entrySet()
-//				.iterator();
-//		while (giftCertificates.hasNext()) {
-//			Map.Entry<Long, Integer> giftCertificateData = giftCertificates.next();
-//			Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityById(
-//					giftCertificateData.getKey());
-//			GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
-//					() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-//							, giftCertificateData.getKey()
-//							, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
-//			int quantity = giftCertificateData.getValue();
-//			order.addGiftCertificateOrder(new GiftCertificateOrder(order, giftCertificate, quantity));
-//			cost = cost.add(giftCertificate.getPrice().multiply(new BigDecimal(quantity)));
-//		}
-//		order.setCost(cost);
-//		return order;
-//	}
-
-	private void addGiftCertificateOrderData(Order order) {//TODO incorrect adding
-		order.getGiftCertificateOrderList().stream()
-			.forEach(giftCertificateOrder -> { giftCertificateOrder.setId(
-					new GiftCertificateOrderKey(order.getId(), giftCertificateOrder.getGiftCertificate().getId()));
-			orderDao.createGiftCertificateOrder(giftCertificateOrder); });		
 	}
 	
 	@Transactional
@@ -142,15 +84,17 @@ public class OrderServiceImpl implements OrderService {
 		Optional<Order> orderOptional = orderDao.findEntityById(id);
 		Order order = orderOptional.orElseThrow(
 				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-						, id
+						, String.valueOf(id)
 						, ORDER_INCORRECT.getErrorCode()));
 		return modelMapper.map(order, OrderDto.class);
 	}
 
 	@Override
 	@Transactional
-	public PageDto<OrderDto> findOrdersByUser(User user, Map<String, String> params) {
+	public PageDto<OrderDto> findOrdersByUser(long userId, Map<String, String> params) {
 		log.info("FIND User BY PARAMS Service {}", params);
+		User user = new User();
+		user.setId(userId);
 		List<Order> orderList = orderDao.findOrdersByUser(user, params);
 		List<OrderDto> orderDtoList = orderList.stream()
 				.map(order -> modelMapper.map(order, OrderDto.class))

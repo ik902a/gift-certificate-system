@@ -1,6 +1,6 @@
-package com.epam.esm.util;
+package com.epam.esm.dao.util;
 
-import static com.epam.esm.util.ParamName.*;
+import static com.epam.esm.dao.util.ParamName.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

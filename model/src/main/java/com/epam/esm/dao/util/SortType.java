@@ -1,4 +1,4 @@
-package com.epam.esm.util;
+package com.epam.esm.dao.util;
 
 /**
  * The {@code SortType} enum describes sorting type

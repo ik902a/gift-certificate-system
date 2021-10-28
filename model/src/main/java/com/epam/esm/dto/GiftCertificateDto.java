@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMax;
@@ -17,7 +18,6 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.epam.esm.entity.GiftCertificateOrder;
 import com.epam.esm.entity.Tag;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GiftCertificateDto {
-	private long id;
+	private Long id;
 	@NotBlank
     @Size(max = 45)
     private String name;
@@ -58,7 +58,7 @@ public class GiftCertificateDto {
 	/**
 	 * Constructs a new gift certificate DTO with the specified
 	 * 
-	 * @param id is gift certificate id
+	 * @param id {@link Long} gift certificate id
 	 * @param name {@link String} name
 	 * @param description {@link String} description
 	 * @param price {@link BigDecimal} price
@@ -68,7 +68,7 @@ public class GiftCertificateDto {
 	 * @param tags {@link List} of ({@link Tag} list tags
 	 * @param giftCertificateOrderList {@link List} of ({@link GiftCertificateOrder} list giftCertificateOrder
 	 */
-    public GiftCertificateDto(long id, String name, String description, BigDecimal price, int duration, 
+    public GiftCertificateDto(Long id, String name, String description, BigDecimal price, int duration, 
     		ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<TagDto> tags) {
 		super();
 		this.id = id;
@@ -88,11 +88,11 @@ public class GiftCertificateDto {
         tags.add(tag);
     }
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -151,66 +151,25 @@ public class GiftCertificateDto {
 	public void setTags(List<TagDto> tags) {
 		this.tags = tags;
 	}
-	
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + duration;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((lastUpdateDate == null) ? 0 : lastUpdateDate.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((price == null) ? 0 : price.hashCode());
-		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
-		return result;
+		return Objects.hash(createDate, description, duration, id, lastUpdateDate, name, price, tags);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		GiftCertificateDto other = (GiftCertificateDto) obj;
-		if (createDate == null) {
-			if (other.createDate != null)
-				return false;
-		} else if (!createDate.equals(other.createDate))
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (duration != other.duration)
-			return false;
-		if (id != other.id)
-			return false;
-		if (lastUpdateDate == null) {
-			if (other.lastUpdateDate != null)
-				return false;
-		} else if (!lastUpdateDate.equals(other.lastUpdateDate))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (price == null) {
-			if (other.price != null)
-				return false;
-		} else if (!price.equals(other.price))
-			return false;
-		if (tags == null) {
-			if (other.tags != null)
-				return false;
-		} else if (!tags.equals(other.tags))
-			return false;
-		return true;
+		return Objects.equals(createDate, other.createDate) && Objects.equals(description, other.description)
+				&& duration == other.duration && Objects.equals(id, other.id)
+				&& Objects.equals(lastUpdateDate, other.lastUpdateDate) && Objects.equals(name, other.name)
+				&& Objects.equals(price, other.price) && Objects.equals(tags, other.tags);
 	}
 
 	@Override

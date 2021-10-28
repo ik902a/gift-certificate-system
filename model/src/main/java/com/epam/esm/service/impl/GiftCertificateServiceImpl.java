@@ -1,9 +1,9 @@
 package com.epam.esm.service.impl;
 
+import static com.epam.esm.dao.util.ParamName.LIMIT;
+import static com.epam.esm.dao.util.ParamName.OFFSET;
 import static com.epam.esm.exception.ErrorCode.*;
 import static com.epam.esm.exception.ErrorMessageKey.*;
-import static com.epam.esm.util.ParamName.LIMIT;
-import static com.epam.esm.util.ParamName.OFFSET;
 
 import java.util.List;
 import java.util.Map;
@@ -91,7 +91,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityById(id);
 		GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
 				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-						, id
+						, String.valueOf(id)
 						, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
 	}
@@ -138,7 +138,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		log.info("DELETE GiftCertificate Service id={}", id);
 		if (!giftCertificateDao.delete(id)) {
 		throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-				, id
+				, String.valueOf(id)
 				, GIFT_CERTIFICATE_INCORRECT.getErrorCode());
 		}
 	}

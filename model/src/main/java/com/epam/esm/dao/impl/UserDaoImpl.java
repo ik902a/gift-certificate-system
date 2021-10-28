@@ -12,9 +12,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.springframework.stereotype.Repository;
 
 import com.epam.esm.dao.UserDao;
+import com.epam.esm.dao.util.PaginationParamExtractor;
+import com.epam.esm.dao.util.UserQueryBuilder;
 import com.epam.esm.entity.User;
-import com.epam.esm.util.PaginationParamExtractor;
-import com.epam.esm.util.UserQueryBuilder;
 
 /**
  * The {@code UserDaoImpl} class works with users table in database

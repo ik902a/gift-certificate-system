@@ -1,16 +1,14 @@
 package com.epam.esm.service.impl;
 
+import static com.epam.esm.dao.util.ParamName.LIMIT;
+import static com.epam.esm.dao.util.ParamName.OFFSET;
 import static com.epam.esm.exception.ErrorCode.*;
 import static com.epam.esm.exception.ErrorMessageKey.*;
-import static com.epam.esm.util.ParamName.LIMIT;
-import static com.epam.esm.util.ParamName.OFFSET;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import javax.validation.constraints.Positive;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,12 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.esm.dao.UserDao;
-import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.User;
 import com.epam.esm.exception.ResourceNotExistException;
-import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
 
 /**
@@ -39,8 +35,6 @@ public class UserServiceImpl implements UserService {
 	public static Logger log = LogManager.getLogger();
 	@Autowired
 	private UserDao userDao;
-	@Autowired
-	private OrderService orderService;
 	@Autowired
 	private ModelMapper modelMapper;
 
@@ -73,34 +67,9 @@ public class UserServiceImpl implements UserService {
 		Optional<User> userOptional = userDao.findEntityById(id);
 		User user = userOptional.orElseThrow(
 			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-					, id
+					, String.valueOf(id)
 					, USER_INCORRECT.getErrorCode()));
 		return modelMapper.map(user, UserDto.class);
-	}
-
-	@Override
-	@Transactional
-	public OrderDto createOrder(long userId, Map<Long, Integer> orderData) {// TODO new method
-		log.info("CREATE Order BY User Service userId={}", userId);
-		User user = new User();
-		user.setId(userId);
-		OrderDto orderDto = orderService.create(user, orderData);
-		return orderDto;
-	}
-	
-	@Override
-	@Transactional
-	public PageDto<OrderDto> findOrdersByUser(long id, Map<String, String> params) {// TODO new method
-		log.info("FIND Order BY User Service userId={}", id);
-		User user = new User();
-		user.setId(id);
-		PageDto<OrderDto> pageOrder = orderService.findOrdersByUser(user, params);
-		return pageOrder;
-	}
-	
-	@Override
-	public OrderDto findOrderById(long id) {// TODO new method
-		return orderService.findById(id);
 	}
 	
 	@Override
@@ -111,6 +80,4 @@ public class UserServiceImpl implements UserService {
 		user = userDao.create(user);
 		return modelMapper.map(user, UserDto.class);
 	}
-
-
 }

@@ -2,6 +2,7 @@ package com.epam.esm.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -17,7 +18,7 @@ import org.springframework.hateoas.RepresentationModel;
  * @see RepresentationModel
  */
 public class UserDto {
-	private long id;
+	private Long id;
 	@NotBlank
     @Size(max = 45)
     private String login;
@@ -34,11 +35,11 @@ public class UserDto {
 	/**
 	 * Constructs a new user DTO with the specified
 	 * 
-	 * @param id is user id
+	 * @param id {@link Long} user id
 	 * @param login {@link String} login
 	 * @param orders {@link List} of {@link OrderForUserDto} is list orders
 	 */
-	public UserDto(long id, String login, List<OrderDto> orders) {
+	public UserDto(Long id, String login, List<OrderDto> orders) {
 		super();
 		this.id = id;
 		this.login = login;
@@ -52,11 +53,11 @@ public class UserDto {
 		orders.add(order);
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -78,36 +79,19 @@ public class UserDto {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
-		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
-		return result;
+		return Objects.hash(id, login, orders);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		UserDto other = (UserDto) obj;
-		if (id != other.id)
-			return false;
-		if (login == null) {
-			if (other.login != null)
-				return false;
-		} else if (!login.equals(other.login))
-			return false;
-		if (orders == null) {
-			if (other.orders != null)
-				return false;
-		} else if (!orders.equals(other.orders))
-			return false;
-		return true;
+		return id == other.id && Objects.equals(login, other.login) && Objects.equals(orders, other.orders);
 	}
 
 	@Override

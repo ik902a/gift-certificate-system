@@ -10,10 +10,10 @@ import java.util.Map;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import com.epam.esm.dao.util.OrderType;
+import com.epam.esm.dao.util.ParamName;
+import com.epam.esm.dao.util.SortType;
 import com.epam.esm.exception.InvalidParamException;
-import com.epam.esm.util.OrderType;
-import com.epam.esm.util.ParamName;
-import com.epam.esm.util.SortType;
 
 /**
  * The {@code ParamValidator} class validates sort parameters
@@ -107,7 +107,7 @@ public class ParamValidator {
 	public static void validateLimit(String limit, List<String> errorMessageKeys) {
 		if (NumberUtils.isParsable(limit)) {
 			if (Integer.parseInt(limit) < 0) {
-				errorMessageKeys.add(INCORRECT_OFFSET_PARAM.getErrorMessageKey());
+				errorMessageKeys.add(INCORRECT_LIMIT_PARAM.getErrorMessageKey());
 			}
 		} else {
 			errorMessageKeys.add(INCORRECT_LIMIT_PARAM.getErrorMessageKey());

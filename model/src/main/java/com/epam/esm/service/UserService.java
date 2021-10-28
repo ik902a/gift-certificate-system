@@ -2,10 +2,6 @@ package com.epam.esm.service;
 
 import java.util.Map;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
-
-import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.UserDto;
 
@@ -32,10 +28,4 @@ public interface UserService {
 	UserDto findById(long id);
 	
 	UserDto create(UserDto userDto);
-
-	PageDto<OrderDto> findOrdersByUser(long id, Map<String, String> params);
-
-	OrderDto createOrder(long userId, Map<Long, Integer> orderData);
-
-	OrderDto findOrderById(long id);
 }

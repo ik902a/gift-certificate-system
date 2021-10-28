@@ -14,8 +14,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.epam.esm.dao.GiftCertificateDao;
-import com.epam.esm.util.GiftCertificateQueryBuilder;
-import com.epam.esm.util.PaginationParamExtractor;
+import com.epam.esm.dao.util.GiftCertificateQueryBuilder;
+import com.epam.esm.dao.util.PaginationParamExtractor;
 import com.epam.esm.entity.GiftCertificate;
 
 /**

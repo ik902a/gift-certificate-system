@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.epam.esm.controller.OrderController;
-import com.epam.esm.controller.UserController;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.response.OrderResponse;
 import com.epam.esm.response.PageOrderResponse;
@@ -29,7 +28,7 @@ public class OrderHateoasUtil {
 	 * @param orderDto {@link OrderDto} order
 	 */
 	public static void addLinks(OrderResponse order) {
-		order.add(linkTo(methodOn(UserController.class).getOrderById(order.getId())).withSelfRel());
+		order.add(linkTo(methodOn(OrderController.class).getOrderById(order.getId())).withSelfRel());
 	}
 	
 	public static void addLinkOnPagedResourceRetrieval(PageOrderResponse page, long id, Map<String, String> params) {
@@ -37,11 +36,11 @@ public class OrderHateoasUtil {
 		int limit = Integer.parseInt(params.get(LIMIT));
 		if (hasNextPage(page.getPageNumber(), page.getTotalPages())) {
 			params.put(OFFSET, String.valueOf(offset + limit));
-			page.add(linkTo(methodOn(UserController.class).getOrdersByUser(id, params)).withRel(NEXT));
+			page.add(linkTo(methodOn(OrderController.class).getOrdersByUser(id, params)).withRel(NEXT));
 		}
 		if (hasPreviousPage(page.getPageNumber())) {
 			params.put(OFFSET, String.valueOf(offset - limit));
-			page.add(linkTo(methodOn(UserController.class).getOrdersByUser(id, params)).withRel(PREV));
+			page.add(linkTo(methodOn(OrderController.class).getOrdersByUser(id, params)).withRel(PREV));
 		}
 	}
 

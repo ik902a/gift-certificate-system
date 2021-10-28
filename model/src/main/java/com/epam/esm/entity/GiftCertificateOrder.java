@@ -20,17 +20,17 @@ import javax.persistence.Table;
 public class GiftCertificateOrder extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
     @EmbeddedId
-    GiftCertificateOrderKey id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    private GiftCertificateOrderKey id;
+    @ManyToOne(cascade=CascadeType.ALL)
     @MapsId("orderId")
     @JoinColumn(name = "order_id")
-    Order order;
-    @ManyToOne(cascade = CascadeType.ALL)
+    private Order order;
+    @ManyToOne(cascade=CascadeType.ALL)
     @MapsId("giftCertificateId")
     @JoinColumn(name = "gift_certificate_id")
-    GiftCertificate giftCertificate;
+    private GiftCertificate giftCertificate;
     @Column(name = "quantity")
-    int quantity;
+    private int quantity;
 
 	/**
 	 * Constructs a new gift certificate order
@@ -50,7 +50,7 @@ public class GiftCertificateOrder extends AbstractEntity {
 	public GiftCertificateOrder(GiftCertificateOrderKey id, Order order, GiftCertificate giftCertificate,
 			int quantity) {
 		super();
-		this.id = id;
+		this.id = new GiftCertificateOrderKey(order.getId(), giftCertificate.getId());
 		this.order = order;
 		this.giftCertificate = giftCertificate;
 		this.quantity = quantity;
@@ -65,6 +65,7 @@ public class GiftCertificateOrder extends AbstractEntity {
 	 */
 	public GiftCertificateOrder(Order order, GiftCertificate giftCertificate, int quantity) {
 		super();
+		this.id = new GiftCertificateOrderKey(order.getId(), giftCertificate.getId());
 		this.order = order;
 		this.giftCertificate = giftCertificate;
 		this.quantity = quantity;

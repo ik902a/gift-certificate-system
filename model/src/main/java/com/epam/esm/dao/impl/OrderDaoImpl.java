@@ -12,10 +12,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.epam.esm.dao.OrderDao;
-import com.epam.esm.entity.GiftCertificateOrder;
+import com.epam.esm.dao.util.PaginationParamExtractor;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
-import com.epam.esm.util.PaginationParamExtractor;
 
 /**
  * The {@code OrderDaoImpl} class works with orders table in database
@@ -34,6 +33,8 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public Order create(Order order) {
 		entityManager.persist(order);
+		order.getGiftCertificateOrderList().forEach(
+				giftCertificateOrder -> giftCertificateOrder.getId().setOrderId(order.getId()));
 		return order;
 	}
 
@@ -67,11 +68,6 @@ public class OrderDaoImpl implements OrderDao {
 				.setParameter(ColumnName.ORDERS_USER_ID, user)
         		.getResultStream()
 				.count();
-	}
-	
-	@Override
-	public void createGiftCertificateOrder(GiftCertificateOrder giftCertificateOrder) {//TODO
-		entityManager.persist(giftCertificateOrder);
 	}
 	
 	@Override

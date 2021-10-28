@@ -6,7 +6,7 @@ package com.epam.esm.exception;
  * @author Ihar Klepcha
  * @see RuntimeException
  */
-public abstract class GiftCertificateSystemException extends RuntimeException {
+public class GiftCertificateSystemException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -23,5 +23,24 @@ public abstract class GiftCertificateSystemException extends RuntimeException {
 	 */
 	public GiftCertificateSystemException(String message) {
 		super(message);
+	}
+
+	/**
+	 * Constructor for organization of inheritance exception with the specified
+	 * 
+	 * @param message {@link String} message
+	 * @param cause {@link Throwable} cause
+	 */
+	public GiftCertificateSystemException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	/**
+	 * Constructor for organization of inheritance exception with the specified
+	 * 
+	 * @param cause {@link Throwable} cause
+	 */
+	public GiftCertificateSystemException(Throwable cause) {
+		super(cause);
 	}
 }

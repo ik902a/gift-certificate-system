@@ -1,4 +1,4 @@
-package com.epam.esm.util;
+package com.epam.esm.dao.util;
 
 import java.util.Map;
 
@@ -11,7 +11,7 @@ import com.epam.esm.validator.ParamValidator;
  */
 public class PaginationParamExtractor {
 	private static final String DEFAULT_OFFSET = "0";
-	private static final String DEFAULT_LIMIT = "5";
+	private static final String DEFAULT_LIMIT = "20";
 	
 	/**
 	 * Extracts offset

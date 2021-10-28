@@ -1,6 +1,7 @@
 package com.epam.esm.dto;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -31,7 +32,7 @@ public class PageDto<T> {
 	 * 
 	 * @param content {@link List} of {@link T} list entities
 	 * @param totalPages contains number total pages
-	 * @param numberPages contains number of pages
+	 * @param pageNumber contains number of page
 	 * @param offset contains offset for pagination
 	 * @param limit contains limit content for pagination
 	 */
@@ -86,39 +87,20 @@ public class PageDto<T> {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + (int) (limit ^ (limit >>> 32));
-		result = prime * result + (int) (offset ^ (offset >>> 32));
-		result = prime * result + (int) (pageNumber ^ (pageNumber >>> 32));
-		result = prime * result + (int) (totalPages ^ (totalPages >>> 32));
-		return result;
+		return Objects.hash(content, limit, offset, pageNumber, totalPages);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		PageDto other = (PageDto) obj;
-		if (content == null) {
-			if (other.content != null)
-				return false;
-		} else if (!content.equals(other.content))
-			return false;
-		if (limit != other.limit)
-			return false;
-		if (offset != other.offset)
-			return false;
-		if (pageNumber != other.pageNumber)
-			return false;
-		if (totalPages != other.totalPages)
-			return false;
-		return true;
+		return Objects.equals(content, other.content) && limit == other.limit && offset == other.offset
+				&& pageNumber == other.pageNumber && totalPages == other.totalPages;
 	}
 
 	@Override

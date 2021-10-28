@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -33,17 +34,15 @@ public class Order extends AbstractEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	private long id;
+	private Long id;
 	@Column(name="date")
 	private ZonedDateTime date;
 	@Column(name="cost")
 	private BigDecimal cost;
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	private User user;
-	
-	@OneToMany(mappedBy="order")    
+	@OneToMany(mappedBy="order", cascade=CascadeType.ALL)    
 	private List<GiftCertificateOrder> giftCertificateOrderList;
 	
 	/**
@@ -56,20 +55,20 @@ public class Order extends AbstractEntity {
 	/**
 	 * Constructs a new order with the specified
 	 * 
-	 * @param id is order id
+	 * @param id {@link Long} order id
 	 * @param date {@link ZonedDateTime} creating date
 	 * @param cost {@link BigDecimal} cost order
 	 * @param user {@link UserInOrder} is user owner order
 	 * @param giftCertificateOrderList {@link List} of {@link GiftCertificateOrder} is list 
 	 * gift certificates
 	 */
-	public Order(long id, ZonedDateTime date, BigDecimal cost, User user,
+	public Order(Long id, ZonedDateTime date, BigDecimal cost, User user,
 			List<GiftCertificateOrder> giftCertificateOrderList) {
 		super();
 		this.id = id;
 		this.date = date;
 		this.cost = cost;
-//		this.user = user;
+		this.user = user;
 		this.giftCertificateOrderList = giftCertificateOrderList;
 	}
 
@@ -81,11 +80,11 @@ public class Order extends AbstractEntity {
 		giftCertificateOrder.setOrder(this);
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

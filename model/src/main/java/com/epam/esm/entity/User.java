@@ -3,12 +3,12 @@ package com.epam.esm.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,13 +25,10 @@ public class User extends AbstractEntity {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
     @Column(name = "login")
     private String login;
-    
-    @OneToMany(mappedBy="user")
-//    @OneToMany
-//    @JoinColumn(name="user_id")
+    @OneToMany(mappedBy="user", cascade=CascadeType.ALL)
     private List<Order> orders;
     
 	/**
@@ -44,11 +41,11 @@ public class User extends AbstractEntity {
 	/**
 	 * Constructs a new user with the specified
 	 * 
-	 * @param id is user id
+	 * @param id {@link Long} user id
 	 * @param login {@link String} login
 	 * @param orders {@link List} of {@link Order} is list of orders
 	 */
-    public User(long id, String login, List<Order> orders) {
+    public User(Long id, String login, List<Order> orders) {
 		super();
 		this.id = id;
 		this.login = login;
@@ -60,14 +57,14 @@ public class User extends AbstractEntity {
             orders = new ArrayList<>();
         }
         orders.add(order);
-//        order.setUser(this);
+        order.setUser(this);
     }
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

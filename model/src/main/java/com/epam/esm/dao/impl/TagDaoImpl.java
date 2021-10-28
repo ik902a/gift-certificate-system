@@ -10,8 +10,8 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import com.epam.esm.dao.TagDao;
+import com.epam.esm.dao.util.PaginationParamExtractor;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.util.PaginationParamExtractor;
 
 /**
  * The {@code TagDaoImpl} class works with tags table in database

@@ -1,13 +1,9 @@
 package com.epam.esm.service;
 
-import java.util.List;
 import java.util.Map;
 
-import com.epam.esm.dto.OrderDataDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.PageDto;
-import com.epam.esm.entity.Order;
-import com.epam.esm.entity.User;
 
 /**
  * The {@code OrderService} interface for operations with the order
@@ -18,13 +14,12 @@ public interface OrderService {
 	
 	/**
 	 * Creates order in database
-	 * @param user 
 	 * 
-	 * @param order {@link OrderDto} order DTO
+	 * @param userId is user id
+	 * @param giftCertificateMap {@link Map} of {@link String} and {@link Integer} map with gift certificate
 	 * @return {@link OrderDto} received from database
 	 */
-	OrderDto create(User user, Map<Long, Integer> orderData);
-//	OrderDto create(OrderDataDto orderDataDto);
+	OrderDto create(long userId, Map<String, Integer> giftCertificateMap);
 	
 	/**
 	 * Finds order by id
@@ -34,5 +29,12 @@ public interface OrderService {
 	 */
 	OrderDto findById(long id);
 
-	PageDto<OrderDto> findOrdersByUser(User user, Map<String, String> params);// TODO new method
+	/**
+	 * Finds orders by user
+	 * 
+	 * @param userId is user id
+	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 * @return {@link PageDto} of {@link OrderDto} received from database
+	 */
+	PageDto<OrderDto> findOrdersByUser(long userId, Map<String, String> params);
 }

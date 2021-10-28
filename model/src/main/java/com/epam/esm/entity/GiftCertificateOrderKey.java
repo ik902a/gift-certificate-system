@@ -15,9 +15,9 @@ import javax.persistence.Embeddable;
 public class GiftCertificateOrderKey implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Column(name = "order_id")
-	long orderId;
+	private Long orderId;
 	@Column(name = "gift_certificate_id")
-	long giftCertificateId;
+	private Long giftCertificateId;
 
 	/**
 	 * Constructs a new gift certificate order key
@@ -29,28 +29,28 @@ public class GiftCertificateOrderKey implements Serializable {
 	/**
 	 * Constructs a new gift certificate order key with the specified
 	 * 
-	 * @param orderId is order id
-	 * @param giftCertificateId is gift certificate id
+	 * @param orderId {@link Long} order id
+	 * @param giftCertificateId {@link Long} gift certificate id
 	 */
-	public GiftCertificateOrderKey(long orderId, long giftCertificateId) {
+	public GiftCertificateOrderKey(Long orderId, Long giftCertificateId) {
 		super();
 		this.orderId = orderId;
 		this.giftCertificateId = giftCertificateId;
 	}
 
-	public long getOrderId() {
+	public Long getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(long orderId) {
+	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
 	}
 
-	public long getGiftCertificateId() {
+	public Long getGiftCertificateId() {
 		return giftCertificateId;
 	}
 
-	public void setGiftCertificateId(long giftCertificateId) {
+	public void setGiftCertificateId(Long giftCertificateId) {
 		this.giftCertificateId = giftCertificateId;
 	}
 }

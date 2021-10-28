@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,9 +32,9 @@ import com.epam.esm.entity.audit.GiftCertificateAudit;
 public class GiftCertificate extends AbstractEntity {
 	private static final long serialVersionUID = 1L;	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-	private long id;
+	private Long id;
 	@Column(name="name")
 	private String name;
 	@Column(name="description")
@@ -46,13 +47,12 @@ public class GiftCertificate extends AbstractEntity {
 	private ZonedDateTime createDate;
 	@Column(name = "last_update_date")
 	private ZonedDateTime lastUpdateDate;
-	@ManyToMany         
+	@ManyToMany(cascade = CascadeType.ALL)       
 	@JoinTable(name = "gift_certificates_tags"
 		, joinColumns = @JoinColumn(name = "gift_certificate_id")
 		, inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private List<Tag> tags;
-	
-	@OneToMany(mappedBy = "giftCertificate")    
+	@OneToMany(mappedBy = "giftCertificate", cascade = CascadeType.ALL)    
 	private List<GiftCertificateOrder> giftCertificateOrderList;
 	
 	/**
@@ -64,7 +64,7 @@ public class GiftCertificate extends AbstractEntity {
 	/**
 	 * Constructs a new gift certificate with the specified
 	 * 
-	 * @param id is gift certificate id
+	 * @param id {@link Long} gift certificate id
 	 * @param name {@link String} name
 	 * @param description {@link String} description
 	 * @param price {@link BigDecimal} price
@@ -74,7 +74,7 @@ public class GiftCertificate extends AbstractEntity {
 	 * @param tags {@link List} of ({@link Tag} list tags
 	 * @param giftCertificateOrderList {@link List} of ({@link GiftCertificateOrder} list giftCertificateOrder
 	 */
-	public GiftCertificate(long id, String name, String description, BigDecimal price, int duration,
+	public GiftCertificate(Long id, String name, String description, BigDecimal price, int duration,
 			ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<Tag> tags,
 			List<GiftCertificateOrder> giftCertificateOrderList) {
 		super();
@@ -104,11 +104,11 @@ public class GiftCertificate extends AbstractEntity {
 		giftCertificateOrder.setGiftCertificate(this);
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

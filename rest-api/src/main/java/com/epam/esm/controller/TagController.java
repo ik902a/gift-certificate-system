@@ -45,7 +45,7 @@ public class TagController {
      * Creates new tag, processes POST requests at /tags
      *
      * @param tagDto {@link TagDto} tag
-     * @return {@link TagDto} created tag
+     * @return {@link TagResponse} created tag
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -60,11 +60,12 @@ public class TagController {
 	/**
      * Gets tags, processes GET requests at /tags
      *
-     * @return {@link PageDto} of {@link TagDto} founded tags
+     * @param params {@link Map} of {@link String} and {@link String} data for searching tags
+     * @return {@link PageTagResponse} founded tags
      */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public PageTagResponse getAllTags(@Valid @RequestParam Map<String, String> params) {
+	public PageTagResponse getAllTags(@RequestParam Map<String, String> params) {
 		PageDto<TagDto> pageDto = tagService.find(params);
 		log.info("FIND all Tag DTO Controller");
 		PageTagResponse response = PageTagResponse.valueOf(pageDto);
@@ -77,7 +78,7 @@ public class TagController {
      * Gets tag by id, processes GET requests at /tags/{id}
      *
      * @param id is the tag id
-     * @return {@link TagDto} founded tag
+     * @return {@link TagResponse} founded tag
      */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
@@ -93,6 +94,7 @@ public class TagController {
      * Deletes tag by id, processes DELETE requests at /tags/{id}
      *
      * @param id is the tag id
+     * @return {@link ResponseEntity} response
      */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -102,9 +104,10 @@ public class TagController {
 	}
 	
 	/**
-     * Gets the most widely used tag of a user with the highest cost of all orders.
+     * Gets the most widely used tag of a user with the highest cost of all orders at /tags/popular
      *
-     * @return {@link TagDto} founded tag
+     * @return {@link TagResponse} founded tag
+     * 
      */
     @GetMapping("/popular")
     @ResponseStatus(HttpStatus.OK)

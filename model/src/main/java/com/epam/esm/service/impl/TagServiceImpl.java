@@ -1,9 +1,9 @@
 package com.epam.esm.service.impl;
 
+import static com.epam.esm.dao.util.ParamName.LIMIT;
+import static com.epam.esm.dao.util.ParamName.OFFSET;
 import static com.epam.esm.exception.ErrorCode.*;
 import static com.epam.esm.exception.ErrorMessageKey.*;
-import static com.epam.esm.util.ParamName.LIMIT;
-import static com.epam.esm.util.ParamName.OFFSET;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +21,6 @@ import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.TagService;
-import com.epam.esm.util.PaginationParamExtractor;
 
 /**
  * The {@code TagServiceImpl} class is responsible for operations with the car
@@ -69,7 +68,7 @@ public class TagServiceImpl implements TagService {
 		Optional<Tag> tagOptional = tagDao.findEntityById(id);
 		Tag tag = tagOptional.orElseThrow(
 			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-					, id
+					, String.valueOf(id)
 					, TAG_INCORRECT.getErrorCode()));
 		return modelMapper.map(tag, TagDto.class);
 	}
@@ -79,7 +78,7 @@ public class TagServiceImpl implements TagService {
 	public void delete(long id) {
 		if (!tagDao.delete(id)) {
 			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-					, id
+					, String.valueOf(id)
 					, TAG_INCORRECT.getErrorCode());
 		}
 	}

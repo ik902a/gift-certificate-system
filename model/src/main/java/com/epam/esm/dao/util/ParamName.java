@@ -1,4 +1,4 @@
-package com.epam.esm.util;
+package com.epam.esm.dao.util;
 
 /**
  * The {@code ParamName} class describes all name of possible parameters

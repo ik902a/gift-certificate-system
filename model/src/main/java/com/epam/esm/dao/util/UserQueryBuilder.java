@@ -1,8 +1,8 @@
-package com.epam.esm.util;
+package com.epam.esm.dao.util;
 
-import static com.epam.esm.util.ParamName.LOGIN;
-import static com.epam.esm.util.ParamName.ORDER_BY;
-import static com.epam.esm.util.ParamName.SORT_BY;
+import static com.epam.esm.dao.util.ParamName.LOGIN;
+import static com.epam.esm.dao.util.ParamName.ORDER_BY;
+import static com.epam.esm.dao.util.ParamName.SORT_BY;
 
 import java.util.ArrayList;
 import java.util.List;

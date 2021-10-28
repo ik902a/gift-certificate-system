@@ -1,5 +1,7 @@
 package com.epam.esm.dto;
 
+import java.util.Objects;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -11,7 +13,7 @@ import javax.validation.constraints.Size;
  * @see RepresentationModel
  */
 public class TagDto {
-	private long id;
+	private Long id;
 	@NotBlank
     @Size(max = 45)
     private String name;
@@ -26,20 +28,20 @@ public class TagDto {
 	/**
 	 * Constructs a new tag DTO with the specified
 	 * 
-	 * @param tag id
+	 * @param id {@link Long} tag id
 	 * @param name {@link String} name
 	 */
-	public TagDto(long id, String name) {
+	public TagDto(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -53,30 +55,19 @@ public class TagDto {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+		return Objects.hash(id, name);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		TagDto other = (TagDto) obj;
-		if (id != other.id)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
+		return id == other.id && Objects.equals(name, other.name);
 	}
 
 	@Override

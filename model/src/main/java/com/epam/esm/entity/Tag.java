@@ -20,7 +20,7 @@ public class Tag extends AbstractEntity {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
     @Column(name = "name")
     private String name;
     
@@ -33,19 +33,19 @@ public class Tag extends AbstractEntity {
 	/**
 	 * Constructs a new tag with the specified
 	 * 
-	 * @param id {@link long} tag id
+	 * @param id {@link Long} tag id
 	 * @param name {@link String} name
 	 */
-	public Tag(long id, String name) {
+	public Tag(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

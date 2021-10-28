@@ -1,5 +1,7 @@
 package com.epam.esm.dto;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -47,14 +49,10 @@ public class GiftCertificateOrderDto {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
+    
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((giftCertificate == null) ? 0 : giftCertificate.hashCode());
-		result = prime * result + quantity;
-		return result;
+		return Objects.hash(giftCertificate, quantity);
 	}
 
 	@Override
@@ -66,16 +64,9 @@ public class GiftCertificateOrderDto {
 		if (getClass() != obj.getClass())
 			return false;
 		GiftCertificateOrderDto other = (GiftCertificateOrderDto) obj;
-		if (giftCertificate == null) {
-			if (other.giftCertificate != null)
-				return false;
-		} else if (!giftCertificate.equals(other.giftCertificate))
-			return false;
-		if (quantity != other.quantity)
-			return false;
-		return true;
+		return Objects.equals(giftCertificate, other.giftCertificate) && quantity == other.quantity;
 	}
-    
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();

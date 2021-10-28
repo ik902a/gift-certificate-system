@@ -8,7 +8,7 @@ package com.epam.esm.exception;
  */
 public class ResourceNotExistException extends GiftCertificateSystemException {
 	private static final long serialVersionUID = 1L;
-	private long incorrectParameter;
+	private String incorrectParameter;
     private String errorCode;
 
 	/**
@@ -25,7 +25,7 @@ public class ResourceNotExistException extends GiftCertificateSystemException {
 	 * @param incorrectParameter is incorrect value
 	 * @param errorCode {@link String} custom code error
 	 */
-	public ResourceNotExistException(String message, long incorrectParameter, String errorCode) {
+	public ResourceNotExistException(String message, String incorrectParameter, String errorCode) {
 		super(message);
 		this.incorrectParameter = incorrectParameter;
 		this.errorCode = errorCode;
@@ -42,16 +42,28 @@ public class ResourceNotExistException extends GiftCertificateSystemException {
 		this.errorCode = errorCode;
 	}
 
+	public ResourceNotExistException(String message, Throwable cause, String incorrectParameter, String errorCode) {
+		super(message, cause);
+		this.incorrectParameter = incorrectParameter;
+		this.errorCode = errorCode;
+	}
+
+	public ResourceNotExistException(Throwable cause, String incorrectParameter, String errorCode) {
+		super(cause);
+		this.incorrectParameter = incorrectParameter;
+		this.errorCode = errorCode;
+	}
+
 	@Override
 	public String getMessage() {
 		return super.getMessage();
 	}
 	
-	public long getIncorrectParameter() {
+	public String getIncorrectParameter() {
 		return incorrectParameter;
 	}
 
-	public void setIncorrectParameter(long incorrectParameter) {
+	public void setIncorrectParameter(String incorrectParameter) {
 		this.incorrectParameter = incorrectParameter;
 	}
 
