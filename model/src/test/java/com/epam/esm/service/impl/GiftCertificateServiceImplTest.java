@@ -131,39 +131,6 @@ public class GiftCertificateServiceImplTest {
 		assertThrows(ResourceNotExistException.class, () -> giftCertificateService.findById(42));
 	}
 
-//	@Test
-//	public void updatePositiveTest() {
-//		GiftCertificate giftCertificate = new GiftCertificate();
-//		giftCertificate.setId(1L);
-//		giftCertificate.setName("Name1");
-//		giftCertificate.setDescription("Some description 1");
-//		giftCertificate.setPrice(new BigDecimal("50"));
-//		giftCertificate.setDuration(90);
-//		giftCertificate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-//		giftCertificate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-//		GiftCertificate giftCertificateUpdate = new GiftCertificate();
-//		giftCertificateUpdate.setId(1L);
-//		giftCertificateUpdate.setName("NameUpdate");
-//		giftCertificateUpdate.setDescription("Some description 1");
-//		giftCertificateUpdate.setPrice(new BigDecimal("50"));
-//		giftCertificateUpdate.setDuration(90);
-//		giftCertificateUpdate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-//		giftCertificateUpdate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-//		GiftCertificateDto giftCertificateDtoUpdate = new GiftCertificateDto();
-//		giftCertificateDtoUpdate.setId(1L);
-//		giftCertificateDtoUpdate.setName("NameUpdate");
-//		giftCertificateDtoUpdate.setDescription("Some description 1");
-//		giftCertificateDtoUpdate.setPrice(new BigDecimal("50"));
-//		giftCertificateDtoUpdate.setDuration(90);
-//		giftCertificateDtoUpdate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-//		giftCertificateDtoUpdate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-//
-//		when(giftCertificateDao.findEntityById(anyLong())).thenReturn(Optional.of(giftCertificate));
-//		when(giftCertificateDao.update(isA(GiftCertificate.class))).thenReturn(giftCertificateUpdate);
-//		GiftCertificateDto actual = giftCertificateService.update(giftCertificateDtoUpdate);
-//		assertEquals(giftCertificateDtoUpdate, actual);
-//	}
-
 	@Test
 	public void updateNegativeTest() {
 		GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
@@ -179,16 +146,16 @@ public class GiftCertificateServiceImplTest {
 		assertThrows(ResourceNotExistException.class, () -> giftCertificateService.update(giftCertificateDto));
 	}
     
-//    @Test
-//    public void deletePositiveTest() {
-//        when(giftCertificateDao.delete(anyLong())).thenReturn(true);
-//        giftCertificateService.delete(1);
-//        verify(giftCertificateDao, times(1)).delete(anyLong());
-//    }
-//
-//    @Test
-//    public void deleteNegativeTest() {
-//        when(giftCertificateDao.delete(anyLong())).thenReturn(false);
-//        assertThrows(ResourceNotExistException.class, () -> giftCertificateService.delete(42));
-//    }
+    @Test
+    public void deletePositiveTest() {
+        when(giftCertificateDao.delete(anyLong())).thenReturn(true);
+        giftCertificateService.delete(1);
+        verify(giftCertificateDao, times(1)).delete(anyLong());
+    }
+
+    @Test
+    public void deleteNegativeTest() {
+        when(giftCertificateDao.delete(anyLong())).thenReturn(false);
+        assertThrows(ResourceNotExistException.class, () -> giftCertificateService.delete(42));
+    }
 }

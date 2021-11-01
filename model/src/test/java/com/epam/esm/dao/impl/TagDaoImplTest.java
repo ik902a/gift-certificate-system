@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +38,8 @@ public class TagDaoImplTest {
     }
     
     @Test
-    void findAllTest() {
-        List<Tag> tagList = tagDao.find(new HashMap<String, String>());
+    void findTest() {
+        List<Tag> tagList = tagDao.find(Collections.<String, String>emptyMap());
         assertTrue(tagList.size() == 3);
     }
     
@@ -71,14 +71,24 @@ public class TagDaoImplTest {
         assertFalse(actual.isPresent());
     }
     
-//	@Test
-//	public void deletePositiveTest() {
-//		boolean actual = tagDao.delete(2);
-//		assertTrue(actual);
-//	}
-//
-//	@Test
-//	public void deleteNegativeTest() {
-//		assertFalse(tagDao.delete(42));
-//	}
+	@Test
+	public void deletePositiveTest() {
+		boolean actual = tagDao.delete(2);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void deleteNegativeTest() {
+		assertFalse(tagDao.delete(42));
+	}
+	
+	@Test
+	public void findMostPopularTagOfUserWithHighestCostOfAllOrdersTest() {
+		Tag tag = new Tag(1L, "tag1");
+		
+		Optional<Tag> actual = tagDao.findMostPopularTagOfUserWithHighestCostOfAllOrders();
+		
+		assertEquals(Optional.of(tag), actual);
+		
+	}
 }
