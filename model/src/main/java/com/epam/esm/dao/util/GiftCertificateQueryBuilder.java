@@ -1,6 +1,7 @@
 package com.epam.esm.dao.util;
 
 import static com.epam.esm.dao.util.ParamName.*;
+import static com.epam.esm.dao.impl.ColumnName.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,10 +15,6 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.epam.esm.dao.impl.ColumnName;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.validator.ParamValidator;
 
@@ -27,19 +24,18 @@ import com.epam.esm.validator.ParamValidator;
  * @author Ihar Klepcha
  */
 public class GiftCertificateQueryBuilder {
-	public static Logger log = LogManager.getLogger();
 	private static final String TAGS = "tags";
 	private static final String PERCENT = "%";
 	private static final String SEPARATOR = ",";
 
 	/**
-	 * Builds query
+	 * Builds query find entity by parameters
 	 * 
 	 * @param params {@link Map} of {@link String} and {@link String} parameters
 	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
 	 * @return {@link CriteriaQuery} of {@link GiftCertificate} query
 	 */
-	public static CriteriaQuery<GiftCertificate> buildQuery(Map<String, String> params,
+	public static CriteriaQuery<GiftCertificate> buildQueryFindByParams(Map<String, String> params,
 			CriteriaBuilder criteriaBuilder) {
 		CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
 		Root<GiftCertificate> giftCertificateRoot = criteriaQuery.from(GiftCertificate.class);
@@ -57,7 +53,6 @@ public class GiftCertificateQueryBuilder {
 		criteriaQuery.select(giftCertificateRoot).where(predicateList.toArray(new Predicate[] {}));
 		Order order = addSort(params, criteriaBuilder, giftCertificateRoot);
 		criteriaQuery.orderBy(order);
-		log.info("SQL criteria query Builder");
 		return criteriaQuery;
 	}
 
@@ -73,7 +68,7 @@ public class GiftCertificateQueryBuilder {
 			, Root<GiftCertificate> giftCertificateRoot) {
 		List<String> tagNameList = Arrays.asList(tag.split(SEPARATOR));
 		return tagNameList.stream()
-				.map(name -> criteriaBuilder.equal(giftCertificateRoot.join(TAGS).get(ColumnName.TAGS_NAME), name))
+				.map(name -> criteriaBuilder.equal(giftCertificateRoot.join(TAGS).get(TAGS_NAME), name))
 				.collect(Collectors.toList());
 	}
 	
@@ -87,8 +82,7 @@ public class GiftCertificateQueryBuilder {
 	 */
 	private static Predicate addName(String name, CriteriaBuilder criteriaBuilder
 			, Root<GiftCertificate> giftCertificateRoot) {
-		return criteriaBuilder.like(giftCertificateRoot.get(ColumnName.GIFT_CERTIFICATES_NAME)
-				, PERCENT + name + PERCENT);
+		return criteriaBuilder.like(giftCertificateRoot.get(GIFT_CERTIFICATES_NAME), PERCENT + name + PERCENT);
 	}
 
 	/**
@@ -101,7 +95,7 @@ public class GiftCertificateQueryBuilder {
 	 */
 	private static Predicate addDescription(String description, CriteriaBuilder criteriaBuilder,
 			Root<GiftCertificate> giftCertificateRoot) {
-		return criteriaBuilder.like(giftCertificateRoot.get(ColumnName.GIFT_CERTIFICATES_DESCRIPTION)
+		return criteriaBuilder.like(giftCertificateRoot.get(GIFT_CERTIFICATES_DESCRIPTION)
 				, PERCENT + description + PERCENT);
 	}
 
@@ -121,5 +115,21 @@ public class GiftCertificateQueryBuilder {
 		return (OrderType.valueOf(orderBy) == OrderType.ASC)
 				? criteriaBuilder.asc(giftCertificateRoot.get(sortBy))
 				: criteriaBuilder.desc(giftCertificateRoot.get(sortBy));
+	}
+	
+	/**
+	 * Builds query find entity by name
+	 * 
+	 * @param name {@link String} name gift certificate
+	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
+	 * @return {@link CriteriaQuery} of {@link GiftCertificate} query
+	 */
+	public static CriteriaQuery<GiftCertificate> buildQueryFindEntityByName(String name, 
+			CriteriaBuilder criteriaBuilder) {
+		CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
+		Root<GiftCertificate> giftCertificateRoot = criteriaQuery.from(GiftCertificate.class);
+		criteriaQuery.select(giftCertificateRoot);
+		criteriaQuery.where(criteriaBuilder.like(giftCertificateRoot.get(GIFT_CERTIFICATES_NAME), name));
+		return criteriaQuery;
 	}
 }

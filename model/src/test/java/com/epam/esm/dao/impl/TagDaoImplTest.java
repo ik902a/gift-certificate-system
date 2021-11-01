@@ -71,14 +71,14 @@ public class TagDaoImplTest {
         assertFalse(actual.isPresent());
     }
     
-	@Test
-	public void deletePositiveTest() {
-		boolean actual = tagDao.delete(2);
-		assertTrue(actual);
-	}
-
-	@Test
-	public void deleteNegativeTest() {
-		assertFalse(tagDao.delete(42));
-	}
+//	@Test
+//	public void deletePositiveTest() {
+//		boolean actual = tagDao.delete(2);
+//		assertTrue(actual);
+//	}
+//
+//	@Test
+//	public void deleteNegativeTest() {
+//		assertFalse(tagDao.delete(42));
+//	}
 }

@@ -38,7 +38,7 @@ public class GiftCertificateOrderResponse extends RepresentationModel<GiftCertif
 	/**
 	 * Builds a new response 
 	 * 
-	 * @param user {@link GiftCertificateOrderDto}  entity
+	 * @param giftCertificateOrderDto {@link GiftCertificateOrderDto}  entity
 	 * @return {@link GiftCertificateOrderResponse} response
 	 */
     public static GiftCertificateOrderResponse valueOf(GiftCertificateOrderDto giftCertificateOrderDto) {

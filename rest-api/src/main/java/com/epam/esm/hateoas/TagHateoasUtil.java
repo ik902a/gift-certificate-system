@@ -6,27 +6,21 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.epam.esm.controller.TagController;
-import com.epam.esm.dto.PageDto;
-import com.epam.esm.dto.TagDto;
 import com.epam.esm.response.PageTagResponse;
 import com.epam.esm.response.TagResponse;
 
 /**
- * The {@code TagHateoas} class makes HATEOAS for tags
+ * The {@code TagHateoasUtil} class makes HATEOAS for tags
  * 
  * @author Ihar Klepcha
  */
 public class TagHateoasUtil {
-	public static Logger log = LogManager.getLogger();
     
 	/**
 	 * Adds HATEOAS links
 	 * 
-	 * @param tagDto {@link TagDto} tag
+	 * @param tag {@link TagResponse} tag
 	 */
     public static void addLinks(TagResponse tag) {
         tag.add(linkTo(methodOn(TagController.class).getTagById(tag.getId())).withSelfRel());
@@ -36,7 +30,7 @@ public class TagHateoasUtil {
 	/**
 	 * Adds HATEOAS links to page
 	 * 
-	 * @param page {@link PageDto} of {@link TagDto} page
+	 * @param page {@link PageTagResponse} page response
 	 * @param params {@link Map} of {@link String} and {@link String} parameters
 	 */
 	public static void addLinkOnPagedResourceRetrieval(PageTagResponse page, Map<String, String> params) {
@@ -53,12 +47,10 @@ public class TagHateoasUtil {
 	}
 
 	private static boolean hasNextPage(long page, long totalPages) {
-		log.info("hasNextPage page={}, total={}", page, totalPages);
 		return page < totalPages;
 	}
 
 	private static boolean hasPreviousPage(long page) {
-		log.info("hasPreviousPage page={}", page);
 		return page > 1;
 	}
 }

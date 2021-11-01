@@ -7,7 +7,7 @@ import javax.persistence.PrePersist;
 import com.epam.esm.entity.Order;
 
 /**
- * Class is listener for order entity.
+ * The {@code OrderAudit} class is listener for order entity
  *
  * @author Ihar Klepcha
  */

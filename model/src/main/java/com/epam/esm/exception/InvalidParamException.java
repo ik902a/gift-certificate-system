@@ -3,7 +3,7 @@ package com.epam.esm.exception;
 import java.util.List;
 
 /**
- * The {@code InvalidDataException} class describes the exception
+ * The {@code InvalidParamException} class describes the exception
  * 
  * @author Ihar Klepcha
  * @see GiftCertificateSystemException
@@ -22,10 +22,10 @@ public class InvalidParamException extends GiftCertificateSystemException {
 	}
 
 	/**
-	 * Constructs a new resource exception with the specified
+	 * Constructs a new invalid exception with the specified
 	 * 
-	 * @param errorMessageKeys {@link List} of{@link String} keys for message
-	 * @param incorrectParameter is incorrect value
+	 * @param errorMessageKeys {@link List} of {@link String} keys for message
+	 * @param incorrectParameter {@link String} incorrect value
 	 * @param errorCode {@link String} custom code error
 	 */
 	public InvalidParamException(List<String> errorMessageKeys, String incorrectParameter, String errorCode) {
@@ -36,7 +36,7 @@ public class InvalidParamException extends GiftCertificateSystemException {
 	}
 	
 	/**
-	 * Constructs a new parameter exception with the specified
+	 * Constructs a new invalid exception with the specified
 	 * 
 	 * @param errorMessageKeys {@link List} of{@link String} keys for message
 	 * @param errorCode {@link String} custom code error

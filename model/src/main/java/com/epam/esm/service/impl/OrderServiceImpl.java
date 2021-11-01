@@ -27,14 +27,13 @@ import com.epam.esm.entity.GiftCertificateOrder;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
 import com.epam.esm.exception.ResourceNotExistException;
-import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
 
 /**
  * The {@code OrderServiceImpl} class is responsible for operations with order
  * 
  * @author Ihar Klepcha
- * @see GiftCertificateService
+ * @see OrderService
  */
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -49,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional
 	public OrderDto create(long userId, Map<String, Integer> giftCertificateMap) {
-		log.info("CREATE Order Service {}", giftCertificateMap);
+		log.info("Creating Order by data: {}", giftCertificateMap);
 		Order order = buildOrder(userId, giftCertificateMap);
 		order = orderDao.create(order);
 		return modelMapper.map(order, OrderDto.class);
@@ -80,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
 	@Transactional
 	@Override
 	public OrderDto findById(long id) {
-		log.info("FIND Order BY ID Service id={}", id);
+		log.info("Finding Order by id={}", id);
 		Optional<Order> orderOptional = orderDao.findEntityById(id);
 		Order order = orderOptional.orElseThrow(
 				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
@@ -92,7 +91,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional
 	public PageDto<OrderDto> findOrdersByUser(long userId, Map<String, String> params) {
-		log.info("FIND User BY PARAMS Service {}", params);
+		log.info("Finding Order by user(id={})", userId);
 		User user = new User();
 		user.setId(userId);
 		List<Order> orderList = orderDao.findOrdersByUser(user, params);
@@ -105,11 +104,9 @@ public class OrderServiceImpl implements OrderService {
 	private PageDto<OrderDto> buildPage(List<OrderDto> orderDtoList, User user, Map<String, String> params) {
 		int offset = Integer.parseInt(params.get(OFFSET));
 		int limit = Integer.parseInt(params.get(LIMIT));
-		log.info("Service offset={}, limit={}", offset, limit);
 		long totalPositions = orderDao.getTotalNumberByUser(user, params);
 		long totalPages = (long) Math.ceil((double) totalPositions / limit);
 		long pageNumber = offset / limit + 1;
-		log.info("Service page={}", pageNumber);
       return new PageDto<>(orderDtoList, totalPages, pageNumber, offset, limit);
 	}
 }

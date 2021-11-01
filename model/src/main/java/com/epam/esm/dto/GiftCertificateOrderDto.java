@@ -16,17 +16,17 @@ public class GiftCertificateOrderDto {
     int quantity;
     
     /**
-	 * Constructs a new Gift Certificate Order DTO
+	 * Constructs a gift certificate order DTO
 	 */
 	public GiftCertificateOrderDto() {
 		super();
 	}
 
 	/**
-	 * Constructs a new gift certificate order DTO with the specified
+	 * Constructs a gift certificate order DTO with the specified
 	 * 
 	 * @param giftCertificate {@link GiftCertificatDto} gift certificate
-	 * @param quantity of gift certificate
+	 * @param quantity is quantity of gift certificate
 	 */
 	public GiftCertificateOrderDto(GiftCertificateDto giftCertificate, int quantity) {
 		super();

@@ -6,22 +6,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.epam.esm.controller.GiftCertificateController;
-import com.epam.esm.dto.GiftCertificateDto;
-import com.epam.esm.dto.PageDto;
 import com.epam.esm.response.GiftCertificateResponse;
 import com.epam.esm.response.PageGiftCertificateResponse;
 
 /**
- * The {@code GiftCertificateHateoas} class makes HATEOAS for gift сertificates
+ * The {@code GiftCertificateHateoasUtil} class makes HATEOAS for gift сertificates
  * 
  * @author Ihar Klepcha
  */
 public class GiftCertificateHateoasUtil {
-	public static Logger log = LogManager.getLogger();
     
 	/**
 	 * Adds HATEOAS links
@@ -38,7 +32,7 @@ public class GiftCertificateHateoasUtil {
 	/**
 	 * Adds HATEOAS links to page
 	 * 
-	 * @param page {@link PageDto} of {@link GiftCertificateDto} page
+	 * @param page {@link PageGiftCertificateResponse} page response
 	 * @param params {@link Map} of {@link String} and {@link String} parameters
 	 */
     public static void addLinkOnPagedResourceRetrieval(PageGiftCertificateResponse page, Map<String, String> params) {
@@ -46,23 +40,19 @@ public class GiftCertificateHateoasUtil {
 		int limit = Integer.parseInt(params.get(LIMIT));
     	if (hasNextPage(page.getPageNumber(), page.getTotalPages())) {
 			params.put(OFFSET, String.valueOf(offset + limit));
-			page.add(linkTo(methodOn(GiftCertificateController.class)
-					.getAllGiftCertificates(params)).withRel(NEXT));
+			page.add(linkTo(methodOn(GiftCertificateController.class).getAllGiftCertificates(params)).withRel(NEXT));
 		}
 		if (hasPreviousPage(page.getPageNumber())) {
 			params.put(OFFSET, String.valueOf(offset - limit));
-			page.add(linkTo(methodOn(GiftCertificateController.class)
-					.getAllGiftCertificates(params)).withRel(PREV));
+			page.add(linkTo(methodOn(GiftCertificateController.class).getAllGiftCertificates(params)).withRel(PREV));
 		}
 	}
 
 	private static boolean hasNextPage(long page, long totalPages) {
-		log.info("hasNextPage page={}, total={}", page, totalPages);
 		return page < totalPages;
 	}
 
 	private static boolean hasPreviousPage(long page) {
-		log.info("hasPreviousPage page={}", page);
 		return page > 1;
 	}
 }

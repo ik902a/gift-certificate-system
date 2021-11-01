@@ -7,11 +7,11 @@ package com.epam.esm.exception;
  */
 public enum ErrorCode {
 
-	GIFT_CERTIFICATE_INCORRECT("01"), 
-	TAG_INCORRECT("02"), 
-	USER_INCORRECT("03"),
-	ORDER_INCORRECT("04"),
-	INCORRECT_PARAM("12"),
+	GIFT_CERTIFICATE_INCORRECT ("01"), 
+	TAG_INCORRECT ("02"), 
+	USER_INCORRECT ("03"),
+	ORDER_INCORRECT ("04"),
+	INCORRECT_PARAM ("12"),
 	DEFAULT_ERROR ("11");
     
 	private final String errorCode;

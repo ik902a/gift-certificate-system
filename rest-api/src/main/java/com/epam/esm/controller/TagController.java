@@ -50,8 +50,8 @@ public class TagController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public TagResponse createTag(@Valid @RequestBody TagDto tagDto) {
+		log.info("Creating Tag");
 		TagDto tagDtoCreated = tagService.create(tagDto);
-		log.info("CREATE Tag DTO Controller");
 		TagResponse response = TagResponse.valueOf(tagDtoCreated);
 		TagHateoasUtil.addLinks(response);
 		return response;
@@ -66,8 +66,8 @@ public class TagController {
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public PageTagResponse getAllTags(@RequestParam Map<String, String> params) {
+		log.info("Finding Tags with parameters");
 		PageDto<TagDto> pageDto = tagService.find(params);
-		log.info("FIND all Tag DTO Controller");
 		PageTagResponse response = PageTagResponse.valueOf(pageDto);
 		response.getContent().forEach(TagHateoasUtil::addLinks);
 		TagHateoasUtil.addLinkOnPagedResourceRetrieval(response, params);
@@ -83,10 +83,10 @@ public class TagController {
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public TagResponse getTagById(@Positive @PathVariable long id) {
+		log.info("Finding Tag by id");
 		TagDto tagDto = tagService.findById(id);
 		TagResponse response = TagResponse.valueOf(tagDto);
 		TagHateoasUtil.addLinks(response);
-		log.info("FIND Tag DTO by id Controller");
 		return response;
 	}
 
@@ -99,6 +99,7 @@ public class TagController {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> deleteTag(@Positive @PathVariable long id) {
+		log.info("Deleting Tag by id");
 		tagService.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -112,6 +113,7 @@ public class TagController {
     @GetMapping("/popular")
     @ResponseStatus(HttpStatus.OK)
     public TagResponse getMostPopularTagOfUserWithHighestCostOfAllOrders() {
+    	log.info("Finding the most widely used Tag of a user with the highest cost of all orders");
         TagDto tagDto = tagService.findMostPopularTagOfUserWithHighestCostOfAllOrders();
         TagResponse response = TagResponse.valueOf(tagDto);
         TagHateoasUtil.addLinks(response);

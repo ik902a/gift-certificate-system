@@ -15,10 +15,10 @@ public interface TagService {
 	/**
 	 * Creates tag in database
 	 * 
-	 * @param tag {@link TagDto} tag
+	 * @param tagDto {@link TagDto} tag
 	 * @return {@link TagDto} received from database
 	 */
-	TagDto create(TagDto tagdto);
+	TagDto create(TagDto tagDto);
 
 	/**
 	 * Finds all tags

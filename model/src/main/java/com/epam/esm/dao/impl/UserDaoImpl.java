@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public List<User> find(Map<String, String> params) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<User> criteriaQuery = UserQueryBuilder.buildQuery(params, criteriaBuilder);
+		CriteriaQuery<User> criteriaQuery = UserQueryBuilder.buildQueryFindByParams(params, criteriaBuilder);
 		int offset = PaginationParamExtractor.getOffset(params);
 		int limit = PaginationParamExtractor.getLimit(params);
         return entityManager.createQuery(criteriaQuery)
@@ -47,7 +47,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public long getTotalNumber(Map<String, String> params) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<User> criteriaQuery = UserQueryBuilder.buildQuery(params, criteriaBuilder);
+		CriteriaQuery<User> criteriaQuery = UserQueryBuilder.buildQueryFindByParams(params, criteriaBuilder);
 		return entityManager.createQuery(criteriaQuery)
 	        		.getResultStream()
 					.count();

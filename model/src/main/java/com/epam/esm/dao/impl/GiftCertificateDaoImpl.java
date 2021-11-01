@@ -27,7 +27,6 @@ import com.epam.esm.entity.GiftCertificate;
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 	public static Logger log = LogManager.getLogger();
-	private static final String FIND_GIFT_CERTIFICATE_BY_NAME = "FROM GiftCertificate WHERE name=:name";
 	private static final String DELETE_GIFT_CERTIFICATE = "DELETE GiftCertificate WHERE id=:id";
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -41,7 +40,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 	@Override
 	public List<GiftCertificate> find(Map<String, String> params) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<GiftCertificate> criteriaQuery = GiftCertificateQueryBuilder.buildQuery(params, criteriaBuilder);
+		CriteriaQuery<GiftCertificate> criteriaQuery = 
+				GiftCertificateQueryBuilder.buildQueryFindByParams(params, criteriaBuilder);
 		int offset = PaginationParamExtractor.getOffset(params);
 		int limit = PaginationParamExtractor.getLimit(params);
 		return entityManager.createQuery(criteriaQuery)
@@ -57,15 +57,12 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
 	@Override
 	public Optional<GiftCertificate> findEntityByName(String name) {
-		return entityManager.createQuery(FIND_GIFT_CERTIFICATE_BY_NAME, GiftCertificate.class)
-				.setParameter(ColumnName.GIFT_CERTIFICATES_NAME, name)
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<GiftCertificate> criteriaQuery = 
+				GiftCertificateQueryBuilder.buildQueryFindEntityByName(name, criteriaBuilder);
+		return entityManager.createQuery(criteriaQuery)
 				.getResultStream()
 				.findFirst();
-	}
-
-	@Override
-	public GiftCertificate update(GiftCertificate giftCertificate) {
-		return entityManager.merge(giftCertificate);
 	}
 
 	@Override
@@ -80,7 +77,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 	public long getTotalNumber(Map<String, String> params) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<GiftCertificate> criteriaQuery = GiftCertificateQueryBuilder
-				.buildQuery(params, criteriaBuilder);
+				.buildQueryFindByParams(params, criteriaBuilder);
 		return entityManager.createQuery(criteriaQuery)
 				.getResultStream()
 				.count();

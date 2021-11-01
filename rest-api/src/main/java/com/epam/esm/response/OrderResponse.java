@@ -52,7 +52,7 @@ public class OrderResponse extends RepresentationModel<OrderResponse> {
 	/**
 	 * Builds a new response 
 	 * 
-	 * @param user {@link OrderDto}  entity
+	 * @param order {@link OrderDto}  entity
 	 * @return {@link OrderResponse} response
 	 */
 	public static OrderResponse valueOf(OrderDto order) {
@@ -119,7 +119,7 @@ public class OrderResponse extends RepresentationModel<OrderResponse> {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nOrder{ id=").append(id);
+		sb.append("\nOrderResponse{ id=").append(id);
 		sb.append(", date=").append(date);
 		sb.append(", cost=").append(cost).append(" }");
 		return sb.toString();

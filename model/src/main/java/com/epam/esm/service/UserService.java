@@ -11,6 +11,7 @@ import com.epam.esm.dto.UserDto;
  * @author Ihar Klepcha
  */
 public interface UserService {
+	
 	/**
 	 * Finds user by parameters
 	 * 

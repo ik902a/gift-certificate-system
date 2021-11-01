@@ -103,7 +103,7 @@ public class PageGiftCertificateResponse extends RepresentationModel<PageGiftCer
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nPage DTO{ content=").append(content);
+		sb.append("\nPage response{ content=").append(content);
 		sb.append(", totalPages=").append(totalPages);
 		sb.append(", pageNumber=").append(pageNumber).append(" }");
 		return sb.toString();

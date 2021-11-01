@@ -1,8 +1,6 @@
 package com.epam.esm.response;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -17,7 +15,6 @@ import com.epam.esm.dto.UserDto;
 public class UserResponse extends RepresentationModel<UserResponse> {
 	private long id;
     private String login;
-    private List<OrderResponse> orders;
 	
     /**
 	 * Constructs a new response
@@ -31,13 +28,11 @@ public class UserResponse extends RepresentationModel<UserResponse> {
 	 * 
 	 * @param id is user id
 	 * @param login {@link String} login
-	 * @param orders {@link List} of {@link OrderResponse} is list of orders
 	 */
-	public UserResponse(long id, String login, List<OrderResponse> orders) {
+	public UserResponse(long id, String login) {
 		super();
 		this.id = id;
 		this.login = login;
-		this.orders = orders;
 	}
 	
 	/**
@@ -47,11 +42,7 @@ public class UserResponse extends RepresentationModel<UserResponse> {
 	 * @return {@link UserResponse} response
 	 */
     public static UserResponse valueOf(UserDto user) {
-    	List<OrderResponse> ordersResponse = user.getOrders()
-    			.stream()
-    			.map(order -> OrderResponse.valueOf(order))
-    			.collect(Collectors.toList());
-    	return new UserResponse(user.getId(), user.getLogin(), ordersResponse);
+    	return new UserResponse(user.getId(), user.getLogin());
 	}
 
 	public long getId() {
@@ -70,19 +61,11 @@ public class UserResponse extends RepresentationModel<UserResponse> {
 		this.login = login;
 	}
 
-	public List<OrderResponse> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(List<OrderResponse> orders) {
-		this.orders = orders;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(id, login, orders);
+		result = prime * result + Objects.hash(id, login);
 		return result;
 	}
 
@@ -95,7 +78,7 @@ public class UserResponse extends RepresentationModel<UserResponse> {
 		if (getClass() != obj.getClass())
 			return false;
 		UserResponse other = (UserResponse) obj;
-		return id == other.id && Objects.equals(login, other.login) && Objects.equals(orders, other.orders);
+		return id == other.id && Objects.equals(login, other.login);
 	}
 
 	@Override

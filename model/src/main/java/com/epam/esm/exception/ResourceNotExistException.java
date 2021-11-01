@@ -22,7 +22,7 @@ public class ResourceNotExistException extends GiftCertificateSystemException {
 	 * Constructs a new resource exception with the specified
 	 * 
 	 * @param message {@link String} message
-	 * @param incorrectParameter is incorrect value
+	 * @param incorrectParameter {@link String} incorrect value
 	 * @param errorCode {@link String} custom code error
 	 */
 	public ResourceNotExistException(String message, String incorrectParameter, String errorCode) {
@@ -34,7 +34,7 @@ public class ResourceNotExistException extends GiftCertificateSystemException {
 	/**
 	 * Constructs a new resource exception with the specified
 	 * 
-	 * @param incorrectParameter is incorrect value
+	 * @param message {@link String} message
 	 * @param errorCode {@link String} custom code error
 	 */
 	public ResourceNotExistException(String message, String errorCode) {
@@ -42,12 +42,27 @@ public class ResourceNotExistException extends GiftCertificateSystemException {
 		this.errorCode = errorCode;
 	}
 
+	/**
+	 * Constructs a new resource exception with the specified
+	 * 
+	 * @param message {@link String} message
+	 * @param cause {@link Throwable} cause
+	 * @param incorrectParameter {@link String} incorrect value
+	 * @param errorCode {@link String} custom code error
+	 */
 	public ResourceNotExistException(String message, Throwable cause, String incorrectParameter, String errorCode) {
 		super(message, cause);
 		this.incorrectParameter = incorrectParameter;
 		this.errorCode = errorCode;
 	}
 
+	/**
+	 * Constructs a new resource exception with the specified
+	 * 
+	 * @param cause {@link Throwable} cause
+	 * @param incorrectParameter {@link String} incorrect value
+	 * @param errorCode {@link String} custom code error
+	 */
 	public ResourceNotExistException(Throwable cause, String incorrectParameter, String errorCode) {
 		super(cause);
 		this.incorrectParameter = incorrectParameter;

@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,13 +25,14 @@ import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.TagService;
 
 /**
- * The {@code TagServiceImpl} class is responsible for operations with the car
+ * The {@code TagServiceImpl} class is responsible for operations with the tag
  * 
  * @author Ihar Klepcha
  * @see TagService
  */
 @Service
 public class TagServiceImpl implements TagService {
+	public static Logger log = LogManager.getLogger();
 	@Autowired
 	private TagDao tagDao;
 	@Autowired
@@ -38,6 +41,7 @@ public class TagServiceImpl implements TagService {
 	@Override
 	@Transactional
 	public TagDto create(TagDto tagDto) {
+		log.info("Creating Tag from {}", tagDto);
 		Tag tag = modelMapper.map(tagDto, Tag.class);
 		tag = tagDao.create(tag);
 		return modelMapper.map(tag, TagDto.class);
@@ -46,6 +50,7 @@ public class TagServiceImpl implements TagService {
 	@Override
 	@Transactional
 	public PageDto<TagDto> find(Map<String, String> params) {
+		log.info("Finding Tag with searching parametres: {}", params);
 		List<Tag> tagList = tagDao.find(params);
 		List<TagDto> tagDtoList = tagList.stream()
 				.map(tag -> modelMapper.map(tag, TagDto.class))
@@ -65,6 +70,7 @@ public class TagServiceImpl implements TagService {
 	@Override
 	@Transactional
 	public TagDto findById(long id) {
+		log.info("Finding Tag by id={}", id);
 		Optional<Tag> tagOptional = tagDao.findEntityById(id);
 		Tag tag = tagOptional.orElseThrow(
 			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
@@ -76,6 +82,7 @@ public class TagServiceImpl implements TagService {
 	@Override
 	@Transactional
 	public void delete(long id) {
+		log.info("Deleting Tag by id={}", id);
 		if (!tagDao.delete(id)) {
 			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
 					, String.valueOf(id)
@@ -84,7 +91,9 @@ public class TagServiceImpl implements TagService {
 	}
 
 	@Override
+	@Transactional
 	public TagDto findMostPopularTagOfUserWithHighestCostOfAllOrders() {
+		log.info("Finding the most widely used Tag of a user with the highest cost of all orders");
 		Optional<Tag> tagOptional = tagDao.findMostPopularTagOfUserWithHighestCostOfAllOrders();
 		Tag tag = tagOptional.orElseThrow(
 				() -> new ResourceNotExistException(NOT_FOUND_POPULAR_TAG.getErrorMessageKey()

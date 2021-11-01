@@ -58,8 +58,8 @@ public class GiftCertificateController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public GiftCertificateResponse createGiftCertificate(@Valid @RequestBody GiftCertificateDto giftCertificateDto) {
+		log.info("Creating GiftCertificate");
 		GiftCertificateDto giftCertificateDtoCreated = giftCertificateService.create(giftCertificateDto);
-		log.info("CREATE GiftCertificate Controller");
 		GiftCertificateResponse response = GiftCertificateResponse.valueOf(giftCertificateDtoCreated);
 		GiftCertificateHateoasUtil.addLinks(response);
 		return response;
@@ -74,11 +74,11 @@ public class GiftCertificateController {
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public PageGiftCertificateResponse getAllGiftCertificates(@RequestParam Map<String, String> params) {
+		log.info("Finding GiftCertificates with parameters");
 		PageDto<GiftCertificateDto> pageDto = giftCertificateService.find(params);
 		PageGiftCertificateResponse response = PageGiftCertificateResponse.valueOf(pageDto);
 		response.getContent().forEach(GiftCertificateHateoasUtil::addLinks);
 		GiftCertificateHateoasUtil.addLinkOnPagedResourceRetrieval(response, params);
-		log.info("FIND all Gift Certificate DTO Controller");
 		return  response;
 	}
 
@@ -91,10 +91,10 @@ public class GiftCertificateController {
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public GiftCertificateResponse getGiftCertificateById(@Positive @PathVariable long id) {
+		log.info("Finding GiftCertificate by id");
 		GiftCertificateDto giftCertificateDto = giftCertificateService.findById(id);
 		GiftCertificateResponse response = GiftCertificateResponse.valueOf(giftCertificateDto);
 		GiftCertificateHateoasUtil.addLinks(response);
-		log.info("FIND Gift Certificate DTO by id Controller");
 		return response;
 	}
 
@@ -102,18 +102,18 @@ public class GiftCertificateController {
      * Updates gift certificate, processes PUT requests at /gift-certificates/{id}
      *
      * @param id is the gift certificate id
-     * @param giftCertificate {@link GiftCertificateDto} data for updating gift certificate
+     * @param giftCertificateDto {@link GiftCertificateDto} data for updating gift certificate
      * @return {@link GiftCertificateRespons} updated gift certificate
      */
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GiftCertificateResponse updateGiftCertificate(@Positive @PathVariable long id, 
     		@RequestBody GiftCertificateDto giftCertificateDto) {
+    	log.info("Updating GiftCertificate");
         giftCertificateDto.setId(id);
         GiftCertificateDto giftCertificateDtoUpdated = giftCertificateService.update(giftCertificateDto);
         GiftCertificateResponse response = GiftCertificateResponse.valueOf(giftCertificateDtoUpdated);
         GiftCertificateHateoasUtil.addLinks(response);
-		log.info("UPDATE Gift Certificate DTO Controller");
         return response;
     }
 	
@@ -126,6 +126,7 @@ public class GiftCertificateController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteGiftCertificate(@Positive @PathVariable long id) {
+    	log.info("Deleting GiftCertificate");
         giftCertificateService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

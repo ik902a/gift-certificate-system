@@ -6,11 +6,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * The {@code TagDto} class is implementation of pattern DTO for transmission tag
- * entity between service and controller
+ * The {@code TagDto} class is implementation of pattern DTO for transmission tag entity 
+ * between service and controller
  *
  * @author Ihar Klepcha
- * @see RepresentationModel
  */
 public class TagDto {
 	private Long id;
@@ -19,14 +18,14 @@ public class TagDto {
     private String name;
     
     /**
-	 * Constructs a new Tag DTO
+	 * Constructs a tag DTO
 	 */
 	public TagDto() {
 		super();
 	}
 
 	/**
-	 * Constructs a new tag DTO with the specified
+	 * Constructs a tag DTO with the specified
 	 * 
 	 * @param id {@link Long} tag id
 	 * @param name {@link String} name

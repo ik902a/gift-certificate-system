@@ -26,7 +26,7 @@ public class TagResponse extends RepresentationModel<TagResponse> {
 	/**
 	 * Constructs a new response with the specified
 	 * 
-	 * @param id {@link Long} tag id
+	 * @param id is tag id
 	 * @param name {@link String} name
 	 */
 	public TagResponse(long id, String name) {
@@ -38,7 +38,7 @@ public class TagResponse extends RepresentationModel<TagResponse> {
 	/**
 	 * Builds a new response 
 	 * 
-	 * @param user {@link TagDto}  entity
+	 * @param tag {@link TagDto}  entity
 	 * @return {@link TagResponse} response
 	 */
     public static TagResponse valueOf(TagDto tag) {
@@ -84,7 +84,7 @@ public class TagResponse extends RepresentationModel<TagResponse> {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nTag{ id=").append(id);
+		sb.append("\nTagResponse{ id=").append(id);
 		sb.append(", name=").append(name).append(" }");
 		return sb.toString();
 	}  

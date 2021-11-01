@@ -33,31 +33,14 @@ public class GiftCertificateOrder extends AbstractEntity {
     private int quantity;
 
 	/**
-	 * Constructs a new gift certificate order
+	 * Constructs a gift certificate order
 	 */
 	public GiftCertificateOrder() {
 		super();
 	}
-
-	/**
-	 * Constructs a new gift certificate order with the specified
-	 * 
-	 * @param id is embedded gift certificate order id
-	 * @param order {@link Order} order
-	 * @param giftCertificate {@link GiftCertificete} gift certificate
-	 * @param quantity is quantity orders
-	 */
-	public GiftCertificateOrder(GiftCertificateOrderKey id, Order order, GiftCertificate giftCertificate,
-			int quantity) {
-		super();
-		this.id = new GiftCertificateOrderKey(order.getId(), giftCertificate.getId());
-		this.order = order;
-		this.giftCertificate = giftCertificate;
-		this.quantity = quantity;
-	}
 	
 	/**
-	 * Constructs a new gift certificate order with the specified
+	 * Constructs a gift certificate order with the specified
 	 * 
 	 * @param order {@link Order} order
 	 * @param giftCertificate {@link GiftCertificete} gift certificate

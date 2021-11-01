@@ -46,23 +46,22 @@ public class Order extends AbstractEntity {
 	private List<GiftCertificateOrder> giftCertificateOrderList;
 	
 	/**
-	 * Constructs a new order
+	 * Constructs a order
 	 */
 	public Order() {
 		super();
 	}
 
 	/**
-	 * Constructs a new order with the specified
+	 * Constructs a order with the specified
 	 * 
 	 * @param id {@link Long} order id
 	 * @param date {@link ZonedDateTime} creating date
 	 * @param cost {@link BigDecimal} cost order
-	 * @param user {@link UserInOrder} is user owner order
-	 * @param giftCertificateOrderList {@link List} of {@link GiftCertificateOrder} is list 
-	 * gift certificates
+	 * @param user {@link User} is user owner order
+	 * @param giftCertificateOrderList {@link List} of {@link GiftCertificateOrder} is list gift certificates
 	 */
-	public Order(Long id, ZonedDateTime date, BigDecimal cost, User user,
+	public Order(Long id, ZonedDateTime date, BigDecimal cost, User user, 
 			List<GiftCertificateOrder> giftCertificateOrderList) {
 		super();
 		this.id = id;
@@ -123,7 +122,7 @@ public class Order extends AbstractEntity {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nOrder{ id=").append(id);
+		sb.append("Order{ id=").append(id);
 		sb.append(", date=").append(date);
 		sb.append(", cost=").append(cost).append(" }");
 		return sb.toString();

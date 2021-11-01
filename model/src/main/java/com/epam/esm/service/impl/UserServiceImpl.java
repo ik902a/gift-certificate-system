@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public PageDto<UserDto> find(Map<String, String> params) {
-		log.info("FIND User BY PARAMS Service {}", params);
+		log.info("Finding User with searching parametres: {}", params);
 		List<User> userList = userDao.find(params);
 		List<UserDto> userDtoList = userList.stream()
 				.map(user -> modelMapper.map(user, UserDto.class))
@@ -52,18 +52,16 @@ public class UserServiceImpl implements UserService {
 	private PageDto<UserDto> buildPage(List<UserDto> userDtoList, Map<String, String> params) {
 		int offset = Integer.parseInt(params.get(OFFSET));
 		int limit = Integer.parseInt(params.get(LIMIT));
-		log.info("Service offset={}, limit={}", offset, limit);
 		long totalPositions = userDao.getTotalNumber(params);
 		long totalPages = (long) Math.ceil((double) totalPositions / limit);
 		long pageNumber = offset / limit + 1;
-		log.info("Service page={}", pageNumber);
       return new PageDto<>(userDtoList, totalPages, pageNumber, offset, limit);
 	}
 
 	@Override
 	@Transactional
 	public UserDto findById(long id) {
-		log.info("FIND User BY ID Service id={}", id);
+		log.info("Finding User by id={}", id);
 		Optional<User> userOptional = userDao.findEntityById(id);
 		User user = userOptional.orElseThrow(
 			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
@@ -75,7 +73,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserDto create(UserDto userDto) {
-		log.info("CREATE user Service {}", userDto);
+		log.info("Creating user from {}", userDto);
 		User user = modelMapper.map(userDto, User.class);
 		user = userDao.create(user);
 		return modelMapper.map(user, UserDto.class);

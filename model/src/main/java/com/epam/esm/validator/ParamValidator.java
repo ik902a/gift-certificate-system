@@ -16,7 +16,7 @@ import com.epam.esm.dao.util.SortType;
 import com.epam.esm.exception.InvalidParamException;
 
 /**
- * The {@code ParamValidator} class validates sort parameters
+ * The {@code ParamValidator} class validates parameters
  * 
  * @author Ihar Klepcha
  */
@@ -44,7 +44,7 @@ public class ParamValidator {
 	 * Checks sort type
 	 * 
 	 * @param sortBy {@link String} value sort type 
-	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 * @param errorMessageKeys {@link List} of {@link String} list of error message keys
 	 */
 	private static void validateSort(String sortBy, List<String> errorMessageKeys) {
 		if (!EnumUtils.isValidEnumIgnoreCase(SortType.class, sortBy)) {
@@ -56,7 +56,7 @@ public class ParamValidator {
 	 * Checks order type
 	 * 
 	 * @param orderBy {@link String} value order type 
-	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 * @param errorMessageKeys {@link List} of {@link String} list of error message keys
 	 */
 	private static void validateOrder(String orderBy, List<String> errorMessageKeys) {
 		if (!EnumUtils.isValidEnumIgnoreCase(OrderType.class, orderBy)) {
@@ -86,7 +86,7 @@ public class ParamValidator {
 	 * Checks offset
 	 * 
 	 * @param offset {@link String} offset value
-	 * @param params {@link List} of {@link String} keys for error message
+	 * @param errorMessageKeys {@link List} of {@link String} list of error message keys
 	 */
 	public static void validateOffset(String offset, List<String> errorMessageKeys) {
 		if (NumberUtils.isParsable(offset)) {
@@ -102,7 +102,7 @@ public class ParamValidator {
 	 * Checks limit
 	 * 
 	 * @param limit {@link String} limit value 
-	 * @param params {@link List} of {@link String} keys for error message
+	 * @param errorMessageKeys {@link List} of {@link String} list of error message keys
 	 */
 	public static void validateLimit(String limit, List<String> errorMessageKeys) {
 		if (NumberUtils.isParsable(limit)) {

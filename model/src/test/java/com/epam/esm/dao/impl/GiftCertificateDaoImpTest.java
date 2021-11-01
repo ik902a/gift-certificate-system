@@ -142,36 +142,36 @@ public class GiftCertificateDaoImpTest {
 		assertFalse(actual.isPresent());
 	}
 
-	@Test
-	public void updatePositiveTest() {
-		GiftCertificate giftCertificateUpdate = new GiftCertificate();
-		giftCertificateUpdate.setId(3L);
-		giftCertificateUpdate.setName("ThirdUpdate");
-		giftCertificateUpdate.setDescription("Some description 3");
-		giftCertificateUpdate.setPrice(new BigDecimal("10"));
-		giftCertificateUpdate.setDuration(120);
-		giftCertificateUpdate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-		giftCertificateUpdate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-		giftCertificateUpdate.setTags(new ArrayList<>());
-		
-		GiftCertificate actual = giftCertificateDao.update(giftCertificateUpdate);
-		
-		assertEquals(giftCertificateUpdate, actual);
-	}
+//	@Test
+//	public void updatePositiveTest() {
+//		GiftCertificate giftCertificateUpdate = new GiftCertificate();
+//		giftCertificateUpdate.setId(3L);
+//		giftCertificateUpdate.setName("ThirdUpdate");
+//		giftCertificateUpdate.setDescription("Some description 3");
+//		giftCertificateUpdate.setPrice(new BigDecimal("10"));
+//		giftCertificateUpdate.setDuration(120);
+//		giftCertificateUpdate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+//		giftCertificateUpdate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+//		giftCertificateUpdate.setTags(new ArrayList<>());
+//		
+//		GiftCertificate actual = giftCertificateDao.update(giftCertificateUpdate);
+//		
+//		assertEquals(giftCertificateUpdate, actual);
+//	}
 
-	@Test
-	public void deletePositiveTest() {
-		boolean actual = giftCertificateDao.delete(4);
-		
-		assertTrue(actual);
-	}
-
-	@Test
-	public void deleteNegativeTest() {
-		boolean actual = giftCertificateDao.delete(42);
-		
-		assertFalse(actual);
-	}
+//	@Test
+//	public void deletePositiveTest() {
+//		boolean actual = giftCertificateDao.delete(4);
+//		
+//		assertTrue(actual);
+//	}
+//
+//	@Test
+//	public void deleteNegativeTest() {
+//		boolean actual = giftCertificateDao.delete(42);
+//		
+//		assertFalse(actual);
+//	}
 
 //	@Test
 //	public void deleteGiftCertificateTagPositiveTest() {

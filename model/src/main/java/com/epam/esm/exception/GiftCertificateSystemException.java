@@ -1,7 +1,7 @@
 package com.epam.esm.exception;
 
 /**
- * The {@code GiftCertificateSystemException} class is the root abstract class in the exception hierarchy
+ * The {@code GiftCertificateSystemException} class is the root class in the exception hierarchy
  * 
  * @author Ihar Klepcha
  * @see RuntimeException

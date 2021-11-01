@@ -14,18 +14,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.hateoas.RepresentationModel;
-
-import com.epam.esm.entity.GiftCertificateOrder;
-import com.epam.esm.entity.Tag;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * The {@code GiftCertificateDto} class is implementation of pattern DTO for transmission Gift Certificate
+ * The {@code GiftCertificateDto} class is implementation of pattern DTO for transmission gift certificate
  * entity between service and controller.
  *
  * @author Ihar Klepcha
- * @see RepresentationModel
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GiftCertificateDto {
@@ -42,33 +37,32 @@ public class GiftCertificateDto {
 	@DecimalMin(value = "1")
 	@DecimalMax(value = "365")
 	@NotNull
-    private int duration;
+    private Integer duration;
     private ZonedDateTime createDate;
     private ZonedDateTime lastUpdateDate;
     @Valid
     private List<TagDto> tags;
     
     /**
-	 * Constructs a new Gift Certificate DTO
+	 * Constructs a gift certificate DTO
 	 */
 	public GiftCertificateDto() {
 		super();
 	}
 
 	/**
-	 * Constructs a new gift certificate DTO with the specified
+	 * Constructs a gift certificate DTO with the specified
 	 * 
 	 * @param id {@link Long} gift certificate id
 	 * @param name {@link String} name
 	 * @param description {@link String} description
 	 * @param price {@link BigDecimal} price
-	 * @param duration is duration
+	 * @param duration {@link Integer} duration
 	 * @param createDate {@link ZonedDateTime} create date
 	 * @param lastUodateDate {@link ZonedDateTime} last update date
-	 * @param tags {@link List} of ({@link Tag} list tags
-	 * @param giftCertificateOrderList {@link List} of ({@link GiftCertificateOrder} list giftCertificateOrder
+	 * @param tags {@link List} of ({@link TagDto} list tags
 	 */
-    public GiftCertificateDto(Long id, String name, String description, BigDecimal price, int duration, 
+    public GiftCertificateDto(Long id, String name, String description, BigDecimal price, Integer duration, 
     		ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<TagDto> tags) {
 		super();
 		this.id = id;
@@ -120,11 +114,11 @@ public class GiftCertificateDto {
 		this.price = price;
 	}
 
-	public int getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 
-	public void setDuration(int duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
@@ -167,7 +161,7 @@ public class GiftCertificateDto {
 			return false;
 		GiftCertificateDto other = (GiftCertificateDto) obj;
 		return Objects.equals(createDate, other.createDate) && Objects.equals(description, other.description)
-				&& duration == other.duration && Objects.equals(id, other.id)
+				&& Objects.equals(duration, other.duration) && Objects.equals(id, other.id)
 				&& Objects.equals(lastUpdateDate, other.lastUpdateDate) && Objects.equals(name, other.name)
 				&& Objects.equals(price, other.price) && Objects.equals(tags, other.tags);
 	}
@@ -175,7 +169,7 @@ public class GiftCertificateDto {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nGift Certificate DTO{ id=").append(id);
+		sb.append("\nGiftCertificateDTO{ id=").append(id);
 		sb.append(", name=").append(name);
 		sb.append(", description=").append(description);
 		sb.append(", price=").append(price);

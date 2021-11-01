@@ -45,25 +45,25 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	@Override
 	@Transactional
 	public GiftCertificateDto create(GiftCertificateDto giftCertificateDto) {
-		log.info("CREATE GiftCertificate Service {}", giftCertificateDto);
+		log.info("Creating GiftCertificate from {}", giftCertificateDto);
 		GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
 		if (giftCertificate.getTags() != null) {
-			createNewTag(giftCertificate);
+			giftCertificate.setTags(createNewTag(giftCertificate.getTags()));
 		}
 		giftCertificate = giftCertificateDao.create(giftCertificate);
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
 	}
 	
-	private void createNewTag(GiftCertificate giftCertificate) {
-		List<Tag> tags = giftCertificate.getTags();
-		tags.forEach(tag -> tag.setId(tagDao.findEntityByName(tag.getName()).orElseGet(
-						() -> tagDao.create(tag)).getId()));
+	private List<Tag> createNewTag(List<Tag> tags) {
+		return tags.stream()
+				.map(tag -> tagDao.findEntityByName(tag.getName()).orElseGet(() -> tagDao.create(tag)))
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	@Transactional
 	public PageDto<GiftCertificateDto> find(Map<String, String> params) {
-		log.info("FIND GiftCertificate BY PARAMS Service {}", params);
+		log.info("Finding GiftCertificate with parameters: {}", params);
 		List<GiftCertificate> giftCertificateList = giftCertificateDao.find(params);
 	    List<GiftCertificateDto> giftCertificateDtoList = giftCertificateList.stream()
                 .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
@@ -75,19 +75,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 			, Map<String, String> params) {
 		int offset = Integer.parseInt(params.get(OFFSET));
 		int limit = Integer.parseInt(params.get(LIMIT));
-		log.info("Service offset={}, limit={}", offset, limit);
 		long totalPositions = giftCertificateDao.getTotalNumber(params);
-		log.info("Service total={}", totalPositions);
 		long totalPages = (long) Math.ceil((double) totalPositions / limit);
 		long pageNumber = offset / limit + 1;
-		log.info("Service page={}", pageNumber);
       return new PageDto<>(giftCertificateDtoList, totalPages, pageNumber, offset, limit);
 	}
 
 	@Override
 	@Transactional
 	public GiftCertificateDto findById(long id) {
-		log.info("FIND GiftCertificate BY ID Service id={}", id);
+		log.info("Finding GiftCertificate by id={}", id);
 		Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityById(id);
 		GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
 				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
@@ -98,48 +95,45 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
 	@Override
 	@Transactional
-	public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {
-		log.info("UPDATE GiftCertificate Service {}", giftCertificateDto);
-		GiftCertificateDto giftCertificateOldDto = findById(giftCertificateDto.getId());
-		giftCertificateDto = updateFields(giftCertificateOldDto, giftCertificateDto);
-		GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
-		if (giftCertificate.getTags() != null) {
-			createNewTag(giftCertificate);
-		}
-		giftCertificate = giftCertificateDao.update(giftCertificate);
+	public GiftCertificateDto update(GiftCertificateDto giftCertificateNewDto) {
+		log.info("Updating GiftCertificate by data: {}", giftCertificateNewDto);
+		Optional<GiftCertificate> giftCertificateOptional = 
+				giftCertificateDao.findEntityById(giftCertificateNewDto.getId());
+		GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
+				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+						, giftCertificateNewDto.getId().toString()
+						, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
+		GiftCertificate giftCertificateNew = modelMapper.map(giftCertificateNewDto, GiftCertificate.class);
+		updateFields(giftCertificate, giftCertificateNew);
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
 	}
 	
-	private GiftCertificateDto updateFields(GiftCertificateDto giftCertificateOldDto
-			, GiftCertificateDto giftCertificateDto) {
-		if (giftCertificateDto.getName() == null) {
-			giftCertificateDto.setName(giftCertificateOldDto.getName());
+	private void updateFields(GiftCertificate giftCertificate, GiftCertificate giftCertificateNew) {
+		if (giftCertificateNew.getName() != null) {
+			giftCertificate.setName(giftCertificateNew.getName());
 		}
-		if (giftCertificateDto.getDescription() == null) {
-			giftCertificateDto.setDescription(giftCertificateOldDto.getDescription());
+		if (giftCertificateNew.getDescription() != null) {
+			giftCertificate.setDescription(giftCertificateNew.getDescription());
 		}
-		if (giftCertificateDto.getPrice() == null) {
-			giftCertificateDto.setPrice(giftCertificateOldDto.getPrice());
+		if (giftCertificateNew.getPrice() != null) {
+			giftCertificate.setPrice(giftCertificateNew.getPrice());
 		}
-		if (giftCertificateDto.getDuration() == 0) {
-			giftCertificateDto.setDuration(giftCertificateOldDto.getDuration());
+		if (giftCertificateNew.getDuration() != null) {
+			giftCertificate.setDuration(giftCertificateNew.getDuration());
 		}
-        if(giftCertificateDto.getTags() == null){
-            giftCertificateDto.setTags(giftCertificateOldDto.getTags());
+        if(giftCertificateNew.getTags() != null){
+            giftCertificate.setTags(createNewTag(giftCertificateNew.getTags()));
         }
-		giftCertificateDto.setCreateDate(giftCertificateOldDto.getCreateDate());
-		giftCertificateDto.setId(giftCertificateOldDto.getId());
-		return giftCertificateDto;
 	}
 	
 	@Override
 	@Transactional
 	public void delete(long id) {
-		log.info("DELETE GiftCertificate Service id={}", id);
+		log.info("Deleting GiftCertificate by id={}", id);
 		if (!giftCertificateDao.delete(id)) {
-		throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-				, String.valueOf(id)
-				, GIFT_CERTIFICATE_INCORRECT.getErrorCode());
+			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+					, String.valueOf(id)
+					, GIFT_CERTIFICATE_INCORRECT.getErrorCode());
 		}
 	}
 }

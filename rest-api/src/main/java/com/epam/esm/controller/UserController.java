@@ -48,11 +48,11 @@ public class UserController {
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public PageUserResponse getAllUsers(@RequestParam Map<String, String> params) {
+		log.info("Finding Users with parameters");
 		PageDto<UserDto> pageDto = userService.find(params);
 		PageUserResponse response = PageUserResponse.valueOf(pageDto);
 		response.getContent().forEach(UserHateoasUtil::addLinks);
 		UserHateoasUtil.addLinkOnPagedResourceRetrieval(response, params);
-		log.info("FIND User DTO Controller");
 		return response;
 	}	
 
@@ -65,19 +65,19 @@ public class UserController {
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public UserResponse getUserById(@Positive @PathVariable long id) {
+		log.info("Finding User by id");
 		UserDto userDto = userService.findById(id);
 		UserResponse response = UserResponse.valueOf(userDto);
 		UserHateoasUtil.addLinks(response);
-		log.info("FIND User DTO by id Controller");
 		return response;
 	}	
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UserResponse createUser(@RequestBody @Valid UserDto userDto) {
+		log.info("Creating User");
 		UserDto userDtoCreated = userService.create(userDto);
 		UserResponse response = UserResponse.valueOf(userDtoCreated);
-		log.info("Controller CREATE User is worcking");
 		return response;
 	}
 }

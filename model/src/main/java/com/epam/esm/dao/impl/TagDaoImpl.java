@@ -6,11 +6,14 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 import org.springframework.stereotype.Repository;
 
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.dao.util.PaginationParamExtractor;
+import com.epam.esm.dao.util.TagQueryBuilder;
 import com.epam.esm.entity.Tag;
 
 /**
@@ -21,8 +24,6 @@ import com.epam.esm.entity.Tag;
  */
 @Repository
 public class TagDaoImpl implements TagDao {
-	private static final String FIND_ALL_TAGS = "FROM Tag";
-	private static final String FIND_TAG_BY_NAME = "FROM Tag WHERE name=:name";
 	private static final String DELETE_TAG = "DELETE FROM Tag WHERE id=:id";
 	private static final String FIND_MOST_POPULAR_TAG = "SELECT t.id, t.name FROM tags t " +
             "JOIN gift_certificates_tags gct ON t.id=gct.tag_id " +
@@ -42,9 +43,11 @@ public class TagDaoImpl implements TagDao {
     
     @Override
     public List<Tag> find(Map<String, String> params) {
+    	CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Tag> criteriaQuery = TagQueryBuilder.buildQueryFindByParams(params, criteriaBuilder);
     	int offset = PaginationParamExtractor.getOffset(params);
 		int limit = PaginationParamExtractor.getLimit(params);
-        return entityManager.createQuery(FIND_ALL_TAGS, Tag.class)
+		return entityManager.createQuery(criteriaQuery)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
@@ -57,23 +60,26 @@ public class TagDaoImpl implements TagDao {
 	
 	@Override
 	public Optional<Tag> findEntityByName(String name) {
-		return entityManager.createQuery(FIND_TAG_BY_NAME, Tag.class)
-				.setParameter(ColumnName.TAGS_NAME, name)
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Tag> criteriaQuery = TagQueryBuilder.buildQueryFindEntityByName(name, criteriaBuilder);
+		return entityManager.createQuery(criteriaQuery)
 				.getResultStream()
 				.findFirst();
 	}
 	
 	@Override
 	public boolean delete(long id) {
-	int row = entityManager.createQuery(DELETE_TAG)
-	        .setParameter(ColumnName.TAGS_ID, id)
-	        .executeUpdate();
-	return row > 0;
+		int row = entityManager.createQuery(DELETE_TAG)
+		        .setParameter(ColumnName.TAGS_ID, id)
+		        .executeUpdate();
+		return row > 0;
 	}
 	
 	@Override
 	public long getTotalNumber(Map<String, String> params) {
-        return entityManager.createQuery(FIND_ALL_TAGS, Tag.class)
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Tag> criteriaQuery = TagQueryBuilder.buildQueryFindByParams(params, criteriaBuilder);
+        return entityManager.createQuery(criteriaQuery)
         		.getResultStream()
 				.count();
 	}

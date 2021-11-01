@@ -6,17 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.hateoas.RepresentationModel;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * The {@code OrderDto} class is implementation of pattern DTO for transmission order
- * entity between service and controller
+ * The {@code OrderDto} class is implementation of pattern DTO for transmission order entity 
+ * between service and controller
  *
  * @author Ihar Klepcha
- * @see RepresentationModel
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OrderDto {
@@ -27,19 +24,19 @@ public class OrderDto {
 	private List<GiftCertificateOrderDto> giftCertificateOrderList;
 	
     /**
-	 * Constructs a new order DTO
+	 * Constructs a order DTO
 	 */
 	public OrderDto() {
 		super();
 	}
 
 	/**
-	 * Constructs a new order DTO with the specified
+	 * Constructs a order DTO with the specified
 	 * 
 	 * @param id {@link Long} order id
 	 * @param date {@link ZonedDateTime} creating date
 	 * @param cost {@link BigDecimal} cost order
-	 * @param user {@link UserInOrderDto} is user owner order
+	 * @param user {@link UserDto} is user owner order
 	 * @param giftCertificateOrderList {@link List} of {@link GiftCertificateOrderDto} is list 
 	 * gift certificates
 	 */

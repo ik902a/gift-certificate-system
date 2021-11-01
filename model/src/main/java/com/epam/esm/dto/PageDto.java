@@ -3,14 +3,11 @@ package com.epam.esm.dto;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.hateoas.RepresentationModel;
-
 /**
- * The {@code PageDto} class is implementation of pattern DTO for transmission page
- * entity between service and controller.
+ * The {@code PageDto} class is implementation of pattern DTO for transmission page entity 
+ * between service and controller.
  *
  * @param <T> the entity which presents on page
- * @see RepresentationModel
  * @author Ihar Klepcha
  */
 public class PageDto<T> {
@@ -21,14 +18,14 @@ public class PageDto<T> {
     private long limit;
     
     /**
-	 * Constructs a new Page DTO
+	 * Constructs a page DTO
 	 */
 	public PageDto() {
 		super();
 	}
 
 	/**
-	 * Constructs a new Page with the specified
+	 * Constructs a page DTO with the specified
 	 * 
 	 * @param content {@link List} of {@link T} list entities
 	 * @param totalPages contains number total pages
@@ -106,7 +103,7 @@ public class PageDto<T> {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nPage DTO{ content=").append(content);
+		sb.append("\nPageDTO{ content=").append(content);
 		sb.append(", totalPages=").append(totalPages);
 		sb.append(", pageNumber=").append(pageNumber);
 		sb.append(", offset=").append(offset);

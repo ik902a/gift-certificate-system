@@ -64,7 +64,7 @@ public class GiftCertificateResponse extends RepresentationModel<GiftCertificate
 	/**
 	 * Builds a new response 
 	 * 
-	 * @param user {@link GiftCertificateDto}  entity
+	 * @param giftCertificate {@link GiftCertificateDto}  entity
 	 * @return {@link GiftCertificateResponse} response
 	 */
     public static GiftCertificateResponse valueOf(GiftCertificateDto giftCertificate) {
@@ -173,7 +173,7 @@ public class GiftCertificateResponse extends RepresentationModel<GiftCertificate
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nGift certificate{ ID=").append(id);
+		sb.append("\nGiftCertificateResponse{ ID=").append(id);
 		sb.append(", name=").append(name);
 		sb.append(", description=").append(description);
 		sb.append(", price=").append(price);

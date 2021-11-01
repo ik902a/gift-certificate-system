@@ -6,8 +6,7 @@ import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.PageDto;
 
 /**
- * The {@code GiftCertificateService} interface for operations with the gift
- * certificate
+ * The {@code GiftCertificateService} interface for operations with the gift certificate
  * 
  * @author Ihar Klepcha
  */
@@ -16,7 +15,7 @@ public interface GiftCertificateService {
 	/**
 	 * Creates gift certificate in database
 	 * 
-	 * @param giftCertificate {@link GiftCertificateDto} gift certificate
+	 * @param giftCertificateDto {@link GiftCertificateDto} gift certificate
 	 * @return {@link GiftCertificateDto} received from database
 	 */
 	GiftCertificateDto create(GiftCertificateDto giftCertificateDto);
@@ -40,7 +39,7 @@ public interface GiftCertificateService {
 	/**
 	 * Updates gift certificate
 	 * 
-	 * @param giftCertificate {@link GiftCertificateDto} gift certificate
+	 * @param giftCertificateDto {@link GiftCertificateDto} gift certificate
 	 * @return {@link GiftCertificateDto} received from database
 	 */
 	GiftCertificateDto update(GiftCertificateDto giftCertificateDto);

@@ -47,11 +47,12 @@ public class OrderController {
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public OrderResponse createOrder(@Positive  @PathVariable long userId, @RequestBody Map<String, @Positive Integer> giftCertificateMap) {
+	public OrderResponse createOrder(@Positive  @PathVariable long userId, 
+			@RequestBody Map<String, @Positive Integer> giftCertificateMap) {
+		log.info("Creating Order");
 		OrderDto orderDtoCreated = orderService.create(userId, giftCertificateMap);
 		OrderResponse response = OrderResponse.valueOf(orderDtoCreated);
 		OrderHateoasUtil.addLinks(response);
-		log.info("Controller CREATE Order is worcking");
 		return response;
 	}
 	
@@ -64,12 +65,13 @@ public class OrderController {
 	 */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public PageOrderResponse getOrdersByUser(@Positive @PathVariable long userId, @RequestParam Map<String, String> params) {
+	public PageOrderResponse getOrdersByUser(@Positive @PathVariable long userId, 
+			@RequestParam Map<String, String> params) {
+		log.info("Finding Orders by user");
 		PageDto<OrderDto> pageDto = orderService.findOrdersByUser(userId, params);
 		PageOrderResponse response = PageOrderResponse.valueOf(pageDto);
 		response.getContent().forEach(OrderHateoasUtil::addLinks);
 		OrderHateoasUtil.addLinkOnPagedResourceRetrieval(response, userId, params);
-		log.info("FIND User DTO by id Controller");
 		return response;
 	}
 	
@@ -82,10 +84,10 @@ public class OrderController {
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public OrderResponse getOrderById(@Positive @PathVariable long id) {
+		log.info("Finding Order by id");
 		OrderDto orderDto = orderService.findById(id);
 		OrderResponse response = OrderResponse.valueOf(orderDto);
 		OrderHateoasUtil.addLinks(response);
-		log.info("FIND Order DTO by id Controller");
 		return response;
 	}
 }

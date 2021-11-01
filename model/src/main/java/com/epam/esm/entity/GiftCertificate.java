@@ -42,12 +42,12 @@ public class GiftCertificate extends AbstractEntity {
 	@Column(name="price")
 	private BigDecimal price;
 	@Column(name="duration")
-	private int duration;
+	private Integer duration;
 	@Column(name = "create_date")
 	private ZonedDateTime createDate;
 	@Column(name = "last_update_date")
 	private ZonedDateTime lastUpdateDate;
-	@ManyToMany(cascade = CascadeType.ALL)       
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "gift_certificates_tags"
 		, joinColumns = @JoinColumn(name = "gift_certificate_id")
 		, inverseJoinColumns = @JoinColumn(name = "tag_id"))
@@ -56,25 +56,25 @@ public class GiftCertificate extends AbstractEntity {
 	private List<GiftCertificateOrder> giftCertificateOrderList;
 	
 	/**
-	 * Constructs a new gift certificate
+	 * Constructs a gift certificate
 	 */
 	public GiftCertificate() {
 	}
 
 	/**
-	 * Constructs a new gift certificate with the specified
+	 * Constructs a gift certificate with the specified
 	 * 
 	 * @param id {@link Long} gift certificate id
 	 * @param name {@link String} name
 	 * @param description {@link String} description
 	 * @param price {@link BigDecimal} price
-	 * @param duration is duration
+	 * @param duration {@link Integer} duration
 	 * @param createDate {@link ZonedDateTime} create date
 	 * @param lastUodateDate {@link ZonedDateTime} last update date
 	 * @param tags {@link List} of ({@link Tag} list tags
-	 * @param giftCertificateOrderList {@link List} of ({@link GiftCertificateOrder} list giftCertificateOrder
+	 * @param giftCertificateOrderList {@link List} of ({@link GiftCertificateOrder} list GiftCertificateOrders
 	 */
-	public GiftCertificate(Long id, String name, String description, BigDecimal price, int duration,
+	public GiftCertificate(Long id, String name, String description, BigDecimal price, Integer duration,
 			ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<Tag> tags,
 			List<GiftCertificateOrder> giftCertificateOrderList) {
 		super();
@@ -136,11 +136,11 @@ public class GiftCertificate extends AbstractEntity {
 		this.price = price;
 	}
 
-	public int getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 
-	public void setDuration(int duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
@@ -179,7 +179,7 @@ public class GiftCertificate extends AbstractEntity {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nGift certificate{ ID=").append(id);
+		sb.append("Gift certificate{ ID=").append(id);
 		sb.append(", name=").append(name);
 		sb.append(", description=").append(description);
 		sb.append(", price=").append(price);

@@ -6,12 +6,13 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.epam.esm.dao.OrderDao;
+import com.epam.esm.dao.util.OrderQueryBuilder;
 import com.epam.esm.dao.util.PaginationParamExtractor;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
@@ -24,9 +25,6 @@ import com.epam.esm.entity.User;
  */
 @Repository
 public class OrderDaoImpl implements OrderDao {
-	public static Logger log = LogManager.getLogger();
-	private static final String FIND_ALL_ORDERS = "FROM Order";
-	private static final String FIND_ORDER_BY_USER = "FROM Order WHERE user=:user_id";
 	@PersistenceContext
 	private EntityManager entityManager;
 	
@@ -44,30 +42,24 @@ public class OrderDaoImpl implements OrderDao {
 	}
 
 	@Override
-	public long getTotalNumber(Map<String, String> params) {
-        return entityManager.createQuery(FIND_ALL_ORDERS, Order.class)
-        		.getResultStream()
-				.count();
-	}
-	
-	@Override
 	public List<Order> findOrdersByUser(User user, Map<String, String> params) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> criteriaQuery = OrderQueryBuilder.buildQueryFindByUser(user, params, criteriaBuilder);
 		int offset = PaginationParamExtractor.getOffset(params);
 		int limit = PaginationParamExtractor.getLimit(params);
-		log.info("FIND OrdersByUser DAO userID={}", user);
-		return entityManager.createQuery(FIND_ORDER_BY_USER, Order.class)
-				.setParameter(ColumnName.ORDERS_USER_ID, user)
-				.setFirstResult(offset)
-				.setMaxResults(limit)
-				.getResultList();
+		return entityManager.createQuery(criteriaQuery)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
 	}
 	
 	@Override
 	public long getTotalNumberByUser(User user, Map<String, String> params) {
-        return entityManager.createQuery(FIND_ORDER_BY_USER, Order.class)
-				.setParameter(ColumnName.ORDERS_USER_ID, user)
-        		.getResultStream()
-				.count();
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> criteriaQuery = OrderQueryBuilder.buildQueryFindByUser(user, params, criteriaBuilder);
+		return entityManager.createQuery(criteriaQuery)
+	        		.getResultStream()
+					.count();
 	}
 	
 	@Override
@@ -82,6 +74,11 @@ public class OrderDaoImpl implements OrderDao {
 
 	@Override
 	public boolean delete(long id) {
+		throw new UnsupportedOperationException("operation not supported for class " + this.getClass().getName());
+	}
+	
+	@Override
+	public long getTotalNumber(Map<String, String> params) {
 		throw new UnsupportedOperationException("operation not supported for class " + this.getClass().getName());
 	}
 }

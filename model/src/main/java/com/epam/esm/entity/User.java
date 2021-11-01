@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,22 +29,22 @@ public class User extends AbstractEntity {
     private Long id;
     @Column(name = "login")
     private String login;
-    @OneToMany(mappedBy="user", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders;
     
 	/**
-	 * Constructs a new user
+	 * Constructs a user
 	 */
 	public User() {
 		super();
 	}
 
 	/**
-	 * Constructs a new user with the specified
+	 * Constructs a user with the specified
 	 * 
 	 * @param id {@link Long} user id
 	 * @param login {@link String} login
-	 * @param orders {@link List} of {@link Order} is list of orders
+	 * @param orders {@link List} of {@link Order} list of orders
 	 */
     public User(Long id, String login, List<Order> orders) {
 		super();
@@ -87,7 +88,7 @@ public class User extends AbstractEntity {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nUser{ id=").append(id);
+		sb.append("User{ id=").append(id);
 		sb.append(", login=").append(login).append(" }");
 		return sb.toString();
 	}

@@ -25,13 +25,13 @@ public class Tag extends AbstractEntity {
     private String name;
     
     /**
-	 * Constructs a new tag
+	 * Constructs a tag
 	 */
 	public Tag() {
 	}
 
 	/**
-	 * Constructs a new tag with the specified
+	 * Constructs a tag with the specified
 	 * 
 	 * @param id {@link Long} tag id
 	 * @param name {@link String} name
@@ -60,7 +60,7 @@ public class Tag extends AbstractEntity {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nTag{ id=").append(id);
+		sb.append("Tag{ id=").append(id);
 		sb.append(", name=").append(name).append(" }");
 		return sb.toString();
 	}    

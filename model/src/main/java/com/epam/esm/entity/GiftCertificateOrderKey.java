@@ -20,14 +20,14 @@ public class GiftCertificateOrderKey implements Serializable {
 	private Long giftCertificateId;
 
 	/**
-	 * Constructs a new gift certificate order key
+	 * Constructs a gift certificate order key
 	 */
 	public GiftCertificateOrderKey() {
 		super();
 	}
 
 	/**
-	 * Constructs a new gift certificate order key with the specified
+	 * Constructs a gift certificate order key with the specified
 	 * 
 	 * @param orderId {@link Long} order id
 	 * @param giftCertificateId {@link Long} gift certificate id
