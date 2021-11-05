@@ -1,21 +1,31 @@
 package com.epam.esm.controller;
 
-import java.util.List;
+import java.util.Map;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.epam.esm.entity.Tag;
+import com.epam.esm.dto.PageDto;
+import com.epam.esm.dto.TagDto;
+import com.epam.esm.hateoas.TagHateoasUtil;
+import com.epam.esm.response.PageTagResponse;
+import com.epam.esm.response.TagResponse;
 import com.epam.esm.service.TagService;
 
 /**
@@ -23,6 +33,7 @@ import com.epam.esm.service.TagService;
  * 
  * @author Ihar Klepcha
  */
+@Validated
 @RestController
 @RequestMapping("/tags")
 public class TagController {
@@ -33,49 +44,79 @@ public class TagController {
     /**
      * Creates new tag, processes POST requests at /tags
      *
-     * @param tag {@link Tag} tag
-     * @return {@link Tag}  created tag
+     * @param tagDto {@link TagDto} tag
+     * @return {@link TagResponse} created tag
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Tag createTag(@RequestBody Tag tag) {
-		Tag tagCreated = tagService.create(tag);
-		return tagCreated;
+	public TagResponse createTag(@Valid @RequestBody TagDto tagDto) {
+		log.info("Creating Tag");
+		TagDto tagDtoCreated = tagService.create(tagDto);
+		TagResponse response = TagResponse.valueOf(tagDtoCreated);
+		TagHateoasUtil.addLinks(response);
+		return response;
 	}
 
 	/**
      * Gets tags, processes GET requests at /tags
      *
-     * @return {@link List} of {@link Tag} founded tags
+     * @param params {@link Map} of {@link String} and {@link String} data for searching tags
+     * @return {@link PageTagResponse} founded tags
      */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<Tag> getAllTags() {
-		List<Tag> tags = tagService.findAll();
-		return tags;
+	public PageTagResponse getAllTags(@RequestParam Map<String, String> params) {
+		log.info("Finding Tags with parameters");
+		PageDto<TagDto> pageDto = tagService.find(params);
+		PageTagResponse response = PageTagResponse.valueOf(pageDto);
+		response.getContent().forEach(TagHateoasUtil::addLinks);
+		TagHateoasUtil.addLinkOnPagedResourceRetrieval(response, params);
+		return response;
 	}
 
 	/**
      * Gets tag by id, processes GET requests at /tags/{id}
      *
      * @param id is the tag id
-     * @return {@link Tag} founded tag
+     * @return {@link TagResponse} founded tag
      */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Tag getTag(@PathVariable long id) {
-		Tag tag = tagService.findById(id);
-		return tag;
+	public TagResponse getTagById(@Positive @PathVariable long id) {
+		log.info("Finding Tag by id");
+		TagDto tagDto = tagService.findById(id);
+		TagResponse response = TagResponse.valueOf(tagDto);
+		TagHateoasUtil.addLinks(response);
+		return response;
 	}
 
 	/**
      * Deletes tag by id, processes DELETE requests at /tags/{id}
      *
      * @param id is the tag id
+     * @return {@link ResponseEntity} response
      */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteTag(@PathVariable long id) {
+	public ResponseEntity<Void> deleteTag(@Positive @PathVariable long id) {
+		log.info("Deleting Tag by id");
 		tagService.delete(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	/**
+     * Gets the most widely used tag of a user with the highest cost of all orders at /tags/popular
+     *
+     * @return {@link TagResponse} founded tag
+     * 
+     */
+    @GetMapping("/popular")
+    @ResponseStatus(HttpStatus.OK)
+    public TagResponse getMostPopularTagOfUserWithHighestCostOfAllOrders() {
+    	log.info("Finding the most widely used Tag of a user with the highest cost of all orders");
+        TagDto tagDto = tagService.findMostPopularTagOfUserWithHighestCostOfAllOrders();
+        TagResponse response = TagResponse.valueOf(tagDto);
+        TagHateoasUtil.addLinks(response);
+        return response;
+    }
 }
