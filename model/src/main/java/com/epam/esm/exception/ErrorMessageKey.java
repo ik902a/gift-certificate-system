@@ -8,7 +8,7 @@ package com.epam.esm.exception;
 public enum ErrorMessageKey {
 	
 	RESOURCE_NOT_FOUND_BY_ID ("message.resource_not_found_by_id"),
-	RESOURCE_NOT_FOUND_BY_NAME ("resource_not_found_by_name"),
+	RESOURCE_NOT_FOUND_BY_NAME ("message.resource_not_found_by_name"),
 	NOT_FOUND_POPULAR_TAG ("message.not_found_popular_tag"),
 	INCORRECT_SORT_PARAM ("message.incorrect_sort_param"),
 	INCORRECT_ORDER_PARAM ("message.incorrect_order_param"),

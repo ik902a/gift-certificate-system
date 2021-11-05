@@ -112,7 +112,7 @@ public class GiftCertificateQueryBuilder {
 		ParamValidator.validateSortParam(params);
 		String sortBy = params.getOrDefault(SORT_BY, SortType.ID.toString().toLowerCase());
 		String orderBy = params.getOrDefault(ORDER_BY, OrderType.ASC.toString());
-		return (OrderType.valueOf(orderBy) == OrderType.ASC)
+		return (OrderType.valueOf(orderBy.toUpperCase()) == OrderType.ASC)
 				? criteriaBuilder.asc(giftCertificateRoot.get(sortBy))
 				: criteriaBuilder.desc(giftCertificateRoot.get(sortBy));
 	}
