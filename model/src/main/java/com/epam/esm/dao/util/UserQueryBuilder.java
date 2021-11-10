@@ -70,4 +70,18 @@ public class UserQueryBuilder {
 				? criteriaBuilder.asc(userRoot.get(sortBy))
 				: criteriaBuilder.desc(userRoot.get(sortBy));
 	}
+	
+	/**
+	 * Builds query find entity by name
+	 * 
+	 * @param login {@link String} user login
+	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
+	 * @return {@link CriteriaQuery} of {@link User} query
+	 */
+	public static CriteriaQuery<User> buildQueryFindEntityByName(String login, CriteriaBuilder criteriaBuilder) {
+		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+		Root<User> userRoot = criteriaQuery.from(User.class);
+		criteriaQuery.select(userRoot).where(addLogin(login, criteriaBuilder, userRoot));
+		return criteriaQuery;
+	}
 }

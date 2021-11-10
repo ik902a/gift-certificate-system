@@ -1,7 +1,7 @@
 package com.epam.esm.entity;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class Order extends AbstractEntity {
 	@Column(name="id")
 	private Long id;
 	@Column(name="date")
-	private ZonedDateTime date;
+	private LocalDateTime date;
 	@Column(name="cost")
 	private BigDecimal cost;
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -56,12 +56,12 @@ public class Order extends AbstractEntity {
 	 * Constructs a order with the specified
 	 * 
 	 * @param id {@link Long} order id
-	 * @param date {@link ZonedDateTime} creating date
+	 * @param date {@link LocalDateTime} creating date
 	 * @param cost {@link BigDecimal} cost order
 	 * @param user {@link User} is user owner order
 	 * @param giftCertificateOrderList {@link List} of {@link GiftCertificateOrder} is list gift certificates
 	 */
-	public Order(Long id, ZonedDateTime date, BigDecimal cost, User user, 
+	public Order(Long id, LocalDateTime date, BigDecimal cost, User user, 
 			List<GiftCertificateOrder> giftCertificateOrderList) {
 		super();
 		this.id = id;
@@ -87,11 +87,11 @@ public class Order extends AbstractEntity {
 		this.id = id;
 	}
 
-	public ZonedDateTime getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(ZonedDateTime date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 

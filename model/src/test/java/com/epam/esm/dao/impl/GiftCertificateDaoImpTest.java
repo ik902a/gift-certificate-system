@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,16 +41,16 @@ public class GiftCertificateDaoImpTest {
 		giftCertificateNew.setDescription("Some description 5");
 		giftCertificateNew.setPrice(new BigDecimal("50"));
 		giftCertificateNew.setDuration(90);
-		giftCertificateNew.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-		giftCertificateNew.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificateNew.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
+		giftCertificateNew.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
 		GiftCertificate giftCertificateCreated = new GiftCertificate();
 		giftCertificateCreated.setId(5L);
 		giftCertificateCreated.setName("Fifth");
 		giftCertificateCreated.setDescription("Some description 5");
 		giftCertificateCreated.setPrice(new BigDecimal("50"));
 		giftCertificateCreated.setDuration(90);
-		giftCertificateCreated.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-		giftCertificateCreated.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificateCreated.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
+		giftCertificateCreated.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
 		
 		GiftCertificate actual = giftCertificateDao.create(giftCertificateNew);
 		
@@ -66,8 +66,8 @@ public class GiftCertificateDaoImpTest {
 		giftCertificate.setDescription("Some description 2");
 		giftCertificate.setPrice(new BigDecimal("70"));
 		giftCertificate.setDuration(42);
-		giftCertificate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-		giftCertificate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificate.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
+		giftCertificate.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
 		giftCertificate.setTags(List.of(new Tag(1L, "tag1"), new Tag(3L, "tag3")));
 		
 		List<GiftCertificate> actual = giftCertificateDao.find(params);
@@ -95,8 +95,8 @@ public class GiftCertificateDaoImpTest {
 		giftCertificate.setDescription("Some description 1");
 		giftCertificate.setPrice(new BigDecimal("50"));
 		giftCertificate.setDuration(90);
-		giftCertificate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-		giftCertificate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificate.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
+		giftCertificate.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
 		
 		Optional<GiftCertificate> actual = giftCertificateDao.findEntityById(1);
 
@@ -118,8 +118,8 @@ public class GiftCertificateDaoImpTest {
 		giftCertificate.setDescription("Some description 1");
 		giftCertificate.setPrice(new BigDecimal("50"));
 		giftCertificate.setDuration(90);
-		giftCertificate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-		giftCertificate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificate.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
+		giftCertificate.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
 		
 		Optional<GiftCertificate> actual = giftCertificateDao.findEntityByName("First");
 		

@@ -1,7 +1,8 @@
 package com.epam.esm.response;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -23,10 +24,10 @@ public class GiftCertificateResponse extends RepresentationModel<GiftCertificate
     private String description;
     private BigDecimal price;
     private int duration;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-    private ZonedDateTime createDate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-    private ZonedDateTime lastUpdateDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime createDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")// TODO .SSSZ
+    private LocalDateTime lastUpdateDate;
     private List<TagResponse> tags;
     
     /**
@@ -44,12 +45,12 @@ public class GiftCertificateResponse extends RepresentationModel<GiftCertificate
 	 * @param description {@link String} description
 	 * @param price {@link BigDecimal} price
 	 * @param duration is duration
-	 * @param createDate {@link ZonedDateTime} create date
-	 * @param lastUodateDate {@link ZonedDateTime} last update date
+	 * @param createDate {@link LocalDateTime} create date
+	 * @param lastUodateDate {@link LocalDateTime} last update date
 	 * @param tags {@link List} of ({@link TagResponse} list tags
 	 */
     public GiftCertificateResponse(long id, String name, String description, BigDecimal price, int duration,
-			ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<TagResponse> tags) {
+    		LocalDateTime createDate, LocalDateTime lastUpdateDate, List<TagResponse> tags) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -62,18 +63,20 @@ public class GiftCertificateResponse extends RepresentationModel<GiftCertificate
 	}
     
 	/**
-	 * Builds a new response 
+	 * Builds a new response
 	 * 
-	 * @param giftCertificate {@link GiftCertificateDto}  entity
+	 * @param giftCertificate {@link GiftCertificateDto} entity
 	 * @return {@link GiftCertificateResponse} response
 	 */
-    public static GiftCertificateResponse valueOf(GiftCertificateDto giftCertificate) {
-    	List<TagResponse> tagResponse = giftCertificate.getTags()
-				.stream()
-				.map(tag -> TagResponse.valueOf(tag))
-				.collect(Collectors.toList());
-    	return new GiftCertificateResponse(giftCertificate.getId()
-    			, giftCertificate.getName()
+	public static GiftCertificateResponse valueOf(GiftCertificateDto giftCertificate) {
+		List<TagResponse> tagResponse = (giftCertificate.getTags() != null) // TODO check
+				? giftCertificate.getTags()
+						.stream()
+						.map(tag -> TagResponse.valueOf(tag))
+						.collect(Collectors.toList())
+				: Collections.emptyList();
+		return new GiftCertificateResponse(giftCertificate.getId(),
+				giftCertificate.getName()
     			, giftCertificate.getDescription()
     			, giftCertificate.getPrice()
     			, giftCertificate.getDuration()
@@ -122,19 +125,19 @@ public class GiftCertificateResponse extends RepresentationModel<GiftCertificate
 		this.duration = duration;
 	}
 
-	public ZonedDateTime getCreateDate() {
+	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(ZonedDateTime createDate) {
+	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;
 	}
 
-	public ZonedDateTime getLastUpdateDate() {
+	public LocalDateTime getLastUpdateDate() {
 		return lastUpdateDate;
 	}
 
-	public void setLastUpdateDate(ZonedDateTime lastUpdateDate) {
+	public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
 		this.lastUpdateDate = lastUpdateDate;
 	}
 

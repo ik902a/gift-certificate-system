@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="DEBUG">
+<Configuration status="debug">
+    <Properties>
+        <Property name="basePath">C:\\logs</Property>
+    </Properties>
+    
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
-			<PatternLayout
-				pattern="%d{HH:mm:ss} [%t] %-5level %logger{5} - %msg%n" />
+			<PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{5} - %msg%n" />
 		</Console>
 		<File name="File" filename="logs/text.log" bufferedIO="true">
-			<PatternLayout
-				pattern="%d{HH:mm:ss} [%t] %-5level %logger{5} - %msg%n" />
+			<PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{5} - %msg%n" />
 		</File>
 	</Appenders>
+	
 	<Loggers>
 		<Logger name="Log_File" level="info" additivity="false">
-			<AppenderRef ref="File" />
+			<appenderRef ref="File" />
 		</Logger>
 		<Logger name="Log_Console" level="debug" additivity="false">
-			<AppenderRef ref="Console" />
+			<appenderRef ref="Console" />
 		</Logger>
 		<Root level="debug">
-			<AppenderRef ref="Console" />
-			<AppenderRef ref="File" />
+			<appenderRef ref="Console" />
+			<appenderRef ref="File" />
 		</Root>
 	</Loggers>
 </Configuration>

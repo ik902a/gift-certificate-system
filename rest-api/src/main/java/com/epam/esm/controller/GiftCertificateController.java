@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,6 +58,7 @@ public class GiftCertificateController {
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("hasRole('ADMIN')")
 	public GiftCertificateResponse createGiftCertificate(@Valid @RequestBody GiftCertificateDto giftCertificateDto) {
 		log.info("Creating GiftCertificate");
 		GiftCertificateDto giftCertificateDtoCreated = giftCertificateService.create(giftCertificateDto);
@@ -107,6 +109,7 @@ public class GiftCertificateController {
      */
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public GiftCertificateResponse updateGiftCertificate(@Positive @PathVariable long id, 
     		@RequestBody GiftCertificateDto giftCertificateDto) {
     	log.info("Updating GiftCertificate");
@@ -125,6 +128,7 @@ public class GiftCertificateController {
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteGiftCertificate(@Positive @PathVariable long id) {
     	log.info("Deleting GiftCertificate");
         giftCertificateService.delete(id);

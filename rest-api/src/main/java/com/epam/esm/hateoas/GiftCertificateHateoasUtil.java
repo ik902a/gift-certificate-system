@@ -25,8 +25,6 @@ public class GiftCertificateHateoasUtil {
     public static void addLinks (GiftCertificateResponse giftCertificate){
         giftCertificate.add(linkTo(methodOn(GiftCertificateController.class)
         		.getGiftCertificateById(giftCertificate.getId())).withSelfRel());
-        giftCertificate.add(linkTo(methodOn(GiftCertificateController.class)
-        		.deleteGiftCertificate(giftCertificate.getId())).withRel(DELETE));
     }  
 
 	/**

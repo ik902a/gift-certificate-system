@@ -1,6 +1,6 @@
 package com.epam.esm.entity.audit;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.PrePersist;
 
@@ -20,6 +20,6 @@ public class OrderAudit {
 	 */
     @PrePersist
     public void beforeCreateOrder(Order order) {
-        order.setDate(ZonedDateTime.now());
+        order.setDate(LocalDateTime.now());
     }
 }

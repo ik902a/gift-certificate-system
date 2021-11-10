@@ -52,7 +52,7 @@ public class UserDaoImpl implements UserDao {
 	        		.getResultStream()
 					.count();
 	}
-
+	
 	@Override
 	public User create(User user) {
 		entityManager.persist(user);
@@ -61,7 +61,11 @@ public class UserDaoImpl implements UserDao {
 	
 	@Override
 	public Optional<User> findEntityByName(String login) {
-		throw new UnsupportedOperationException("operation not supported for class " + this.getClass().getName());
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<User> criteriaQuery = UserQueryBuilder.buildQueryFindEntityByName(login, criteriaBuilder);
+		return entityManager.createQuery(criteriaQuery)
+				.getResultStream()
+				.findFirst();
 	}
 
 	@Override

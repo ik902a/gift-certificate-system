@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -53,16 +53,16 @@ public class GiftCertificateServiceImplTest {
         giftCertificateDto.setDescription("Some description 1");
         giftCertificateDto.setPrice(new BigDecimal("50"));
         giftCertificateDto.setDuration(90);
-        giftCertificateDto.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-        giftCertificateDto.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+        giftCertificateDto.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
+        giftCertificateDto.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
         GiftCertificate giftCertificate = new GiftCertificate();
         giftCertificate.setId(1L);
         giftCertificate.setName("Name1");
         giftCertificate.setDescription("Some description 1");
         giftCertificate.setPrice(new BigDecimal("50"));
         giftCertificate.setDuration(90);
-        giftCertificate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-        giftCertificate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+        giftCertificate.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
+        giftCertificate.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
         GiftCertificateDto giftCertificateDtoResult = giftCertificateDto;
         giftCertificateDtoResult.setId(1L);
         
@@ -79,16 +79,16 @@ public class GiftCertificateServiceImplTest {
         giftCertificate.setDescription("Some description 1");
         giftCertificate.setPrice(new BigDecimal("50"));
         giftCertificate.setDuration(90);
-        giftCertificate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-        giftCertificate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+        giftCertificate.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
+        giftCertificate.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
         GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
         giftCertificateDto.setId(1L);
         giftCertificateDto.setName("Name1");
         giftCertificateDto.setDescription("Some description 1");
         giftCertificateDto.setPrice(new BigDecimal("50"));
         giftCertificateDto.setDuration(90);
-        giftCertificateDto.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-        giftCertificateDto.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+        giftCertificateDto.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
+        giftCertificateDto.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
         PageDto<GiftCertificateDto> page = new PageDto<>();
         page.setContent(List.of(giftCertificateDto));
         page.setTotalPages(1L);
@@ -109,16 +109,16 @@ public class GiftCertificateServiceImplTest {
         giftCertificate.setDescription("Some description 1");
         giftCertificate.setPrice(new BigDecimal("50"));
         giftCertificate.setDuration(90);
-        giftCertificate.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-        giftCertificate.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+        giftCertificate.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
+        giftCertificate.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
         GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
         giftCertificateDto.setId(1L);
         giftCertificateDto.setName("Name1");
         giftCertificateDto.setDescription("Some description 1");
         giftCertificateDto.setPrice(new BigDecimal("50"));
         giftCertificateDto.setDuration(90);
-        giftCertificateDto.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-        giftCertificateDto.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+        giftCertificateDto.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
+        giftCertificateDto.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
         
         when(giftCertificateDao.findEntityById(anyLong())).thenReturn(Optional.of(giftCertificate));
         GiftCertificateDto actual = giftCertificateService.findById(1);
@@ -139,8 +139,8 @@ public class GiftCertificateServiceImplTest {
 		giftCertificateDto.setDescription("Some description 1");
 		giftCertificateDto.setPrice(new BigDecimal("50"));
 		giftCertificateDto.setDuration(90);
-		giftCertificateDto.setCreateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
-		giftCertificateDto.setLastUpdateDate(ZonedDateTime.parse("2021-08-12T08:12:15+03:00"));
+		giftCertificateDto.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
+		giftCertificateDto.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
 
 		when(giftCertificateDao.findEntityById(anyLong())).thenReturn(Optional.empty());
 		assertThrows(ResourceNotExistException.class, () -> giftCertificateService.update(giftCertificateDto));

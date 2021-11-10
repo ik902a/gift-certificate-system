@@ -1,7 +1,7 @@
 package com.epam.esm.dto;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -38,8 +38,8 @@ public class GiftCertificateDto {
 	@DecimalMax(value = "365")
 	@NotNull
     private Integer duration;
-    private ZonedDateTime createDate;
-    private ZonedDateTime lastUpdateDate;
+    private LocalDateTime createDate;
+    private LocalDateTime lastUpdateDate;
     @Valid
     private List<TagDto> tags;
     
@@ -58,12 +58,12 @@ public class GiftCertificateDto {
 	 * @param description {@link String} description
 	 * @param price {@link BigDecimal} price
 	 * @param duration {@link Integer} duration
-	 * @param createDate {@link ZonedDateTime} create date
-	 * @param lastUodateDate {@link ZonedDateTime} last update date
+	 * @param createDate {@link LocalDateTime} create date
+	 * @param lastUodateDate {@link LocalDateTime} last update date
 	 * @param tags {@link List} of ({@link TagDto} list tags
 	 */
     public GiftCertificateDto(Long id, String name, String description, BigDecimal price, Integer duration, 
-    		ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<TagDto> tags) {
+    		LocalDateTime createDate, LocalDateTime lastUpdateDate, List<TagDto> tags) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -122,19 +122,19 @@ public class GiftCertificateDto {
 		this.duration = duration;
 	}
 
-	public ZonedDateTime getCreateDate() {
+	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(ZonedDateTime createDate) {
+	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;
 	}
 
-	public ZonedDateTime getLastUpdateDate() {
+	public LocalDateTime getLastUpdateDate() {
 		return lastUpdateDate;
 	}
 
-	public void setLastUpdateDate(ZonedDateTime lastUpdateDate) {
+	public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
 		this.lastUpdateDate = lastUpdateDate;
 	}
 

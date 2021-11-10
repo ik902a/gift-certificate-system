@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +50,7 @@ public class TagController {
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("hasRole('ADMIN')")
 	public TagResponse createTag(@Valid @RequestBody TagDto tagDto) {
 		log.info("Creating Tag");
 		TagDto tagDtoCreated = tagService.create(tagDto);
@@ -65,6 +67,7 @@ public class TagController {
      */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public PageTagResponse getAllTags(@RequestParam Map<String, String> params) {
 		log.info("Finding Tags with parameters");
 		PageDto<TagDto> pageDto = tagService.find(params);
@@ -82,6 +85,7 @@ public class TagController {
      */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public TagResponse getTagById(@Positive @PathVariable long id) {
 		log.info("Finding Tag by id");
 		TagDto tagDto = tagService.findById(id);
@@ -98,6 +102,7 @@ public class TagController {
      */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> deleteTag(@Positive @PathVariable long id) {
 		log.info("Deleting Tag by id");
 		tagService.delete(id);
@@ -112,6 +117,7 @@ public class TagController {
      */
     @GetMapping("/popular")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public TagResponse getMostPopularTagOfUserWithHighestCostOfAllOrders() {
     	log.info("Finding the most widely used Tag of a user with the highest cost of all orders");
         TagDto tagDto = tagService.findMostPopularTagOfUserWithHighestCostOfAllOrders();

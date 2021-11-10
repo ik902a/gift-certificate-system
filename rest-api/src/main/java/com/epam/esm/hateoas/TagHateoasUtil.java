@@ -24,7 +24,6 @@ public class TagHateoasUtil {
 	 */
     public static void addLinks(TagResponse tag) {
         tag.add(linkTo(methodOn(TagController.class).getTagById(tag.getId())).withSelfRel());
-        tag.add(linkTo(methodOn(TagController.class).deleteTag(tag.getId())).withRel(DELETE));
     }
     
 	/**

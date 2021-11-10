@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,7 @@ public class OrderController {
      */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public OrderResponse createOrder(@Positive  @PathVariable long userId, 
 			@RequestBody Map<String, @Positive Integer> giftCertificateMap) {
 		log.info("Creating Order");
@@ -65,6 +67,7 @@ public class OrderController {
 	 */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public PageOrderResponse getOrdersByUser(@Positive @PathVariable long userId, 
 			@RequestParam Map<String, String> params) {
 		log.info("Finding Orders by user");
@@ -83,6 +86,7 @@ public class OrderController {
 	 */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public OrderResponse getOrderById(@Positive @PathVariable long id) {
 		log.info("Finding Order by id");
 		OrderDto orderDto = orderService.findById(id);

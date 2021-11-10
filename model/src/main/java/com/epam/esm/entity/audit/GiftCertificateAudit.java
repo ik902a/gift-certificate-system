@@ -1,6 +1,6 @@
 package com.epam.esm.entity.audit;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -21,7 +21,7 @@ public class GiftCertificateAudit {
 	 */
     @PrePersist
     public void beforeCreateGiftCertificate(GiftCertificate giftCertificate) {
-        ZonedDateTime currentDate = ZonedDateTime.now();
+    	LocalDateTime currentDate = LocalDateTime.now();
         giftCertificate.setCreateDate(currentDate);
         giftCertificate.setLastUpdateDate(currentDate);
     }
@@ -33,6 +33,6 @@ public class GiftCertificateAudit {
 	 */
     @PreUpdate
     public void beforeUpdateGiftCertificate(GiftCertificate giftCertificate) {
-        giftCertificate.setLastUpdateDate(ZonedDateTime.now());
+        giftCertificate.setLastUpdateDate(LocalDateTime.now());
     }
 }

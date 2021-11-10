@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,7 @@ public class UserController {
 	 */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
+	@PreAuthorize("hasRole('ADMIN')")
 	public PageUserResponse getAllUsers(@RequestParam Map<String, String> params) {
 		log.info("Finding Users with parameters");
 		PageDto<UserDto> pageDto = userService.find(params);
@@ -64,6 +66,7 @@ public class UserController {
 	 */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
+	@PreAuthorize("hasRole('ADMIN')")
 	public UserResponse getUserById(@Positive @PathVariable long id) {
 		log.info("Finding User by id");
 		UserDto userDto = userService.findById(id);
@@ -72,12 +75,5 @@ public class UserController {
 		return response;
 	}	
 
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public UserResponse createUser(@RequestBody @Valid UserDto userDto) {
-		log.info("Creating User");
-		UserDto userDtoCreated = userService.create(userDto);
-		UserResponse response = UserResponse.valueOf(userDtoCreated);
-		return response;
-	}
+
 }
