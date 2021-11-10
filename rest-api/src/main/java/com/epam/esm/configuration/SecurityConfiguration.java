@@ -19,6 +19,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.epam.esm.security.AuthEntryPointJwt;
 import com.epam.esm.security.JwtTokenFilter;
 
+/**
+ * The {@code SecurityConfiguration} class contains spring security configuration
+ * 
+ * @author Ihar Klepcha
+ * @see WebSecurityConfigurerAdapter
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

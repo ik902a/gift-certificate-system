@@ -3,7 +3,7 @@ package com.epam.esm.request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class LoginRequest {
+public class AuthRequest {
 	@NotBlank
 	@Size(max = 45)
 	private String username;
@@ -26,5 +26,4 @@ public class LoginRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 }

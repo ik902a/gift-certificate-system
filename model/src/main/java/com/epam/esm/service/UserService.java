@@ -11,6 +11,13 @@ import com.epam.esm.dto.UserDto;
  * @author Ihar Klepcha
  */
 public interface UserService {
+	/**
+	 * Creates user in database
+	 * 
+	 * @param userDto {@link UserDto} user
+	 * @return {@link UserDto} received from database
+	 */
+	UserDto create(UserDto userDto);
 	
 	/**
 	 * Finds user by parameters
@@ -27,6 +34,4 @@ public interface UserService {
 	 * @return {@link UserDto} received from database
 	 */
 	UserDto findById(long id);
-	
-	UserDto create(UserDto userDto);
 }

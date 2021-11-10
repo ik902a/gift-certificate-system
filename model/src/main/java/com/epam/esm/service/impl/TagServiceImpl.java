@@ -73,9 +73,7 @@ public class TagServiceImpl implements TagService {
 		log.info("Finding Tag by id={}", id);
 		Optional<Tag> tagOptional = tagDao.findEntityById(id);
 		Tag tag = tagOptional.orElseThrow(
-			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-					, String.valueOf(id)
-					, TAG_INCORRECT.getErrorCode()));
+			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID, String.valueOf(id), TAG_INCORRECT));
 		return modelMapper.map(tag, TagDto.class);
 	}
 
@@ -84,9 +82,7 @@ public class TagServiceImpl implements TagService {
 	public void delete(long id) {
 		log.info("Deleting Tag by id={}", id);
 		if (!tagDao.delete(id)) {
-			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-					, String.valueOf(id)
-					, TAG_INCORRECT.getErrorCode());
+			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID, String.valueOf(id), TAG_INCORRECT);
 		}
 	}
 
@@ -96,8 +92,7 @@ public class TagServiceImpl implements TagService {
 		log.info("Finding the most widely used Tag of a user with the highest cost of all orders");
 		Optional<Tag> tagOptional = tagDao.findMostPopularTagOfUserWithHighestCostOfAllOrders();
 		Tag tag = tagOptional.orElseThrow(
-				() -> new ResourceNotExistException(NOT_FOUND_POPULAR_TAG.getErrorMessageKey()
-						, TAG_INCORRECT.getErrorCode()));
+				() -> new ResourceNotExistException(NOT_FOUND_POPULAR_TAG, TAG_INCORRECT));
 		return modelMapper.map(tag, TagDto.class);
 	}
 }

@@ -88,9 +88,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		log.info("Finding GiftCertificate by id={}", id);
 		Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityById(id);
 		GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
-				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID
 						, String.valueOf(id)
-						, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
+						, GIFT_CERTIFICATE_INCORRECT));
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
 	}
 
@@ -101,9 +101,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		Optional<GiftCertificate> giftCertificateOptional = 
 				giftCertificateDao.findEntityById(giftCertificateNewDto.getId());
 		GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
-				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID
 						, giftCertificateNewDto.getId().toString()
-						, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
+						, GIFT_CERTIFICATE_INCORRECT));
 		GiftCertificate giftCertificateNew = modelMapper.map(giftCertificateNewDto, GiftCertificate.class);
 		updateFields(giftCertificate, giftCertificateNew);
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
@@ -132,9 +132,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	public void delete(long id) {
 		log.info("Deleting GiftCertificate by id={}", id);
 		if (!giftCertificateDao.delete(id)) {
-			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID
 					, String.valueOf(id)
-					, GIFT_CERTIFICATE_INCORRECT.getErrorCode());
+					, GIFT_CERTIFICATE_INCORRECT);
 		}
 	}
 }

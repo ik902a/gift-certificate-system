@@ -2,10 +2,6 @@ package com.epam.esm.dto;
 
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
 import com.epam.esm.entity.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -18,13 +14,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
 	private Long id;
-	@NotBlank
-	@Size(max = 45)
 	private String login;
-	@NotBlank
-    @Size(min = 6, max = 45)
 	private String password;
-
 	private Role role;
 
 	/**
@@ -45,20 +36,6 @@ public class UserDto {
 	public UserDto(Long id, String login, String password, Role role) {
 		super();
 		this.id = id;
-		this.login = login;
-		this.password = password;
-		this.role = role;
-	}
-	
-	/**
-	 * Constructs a user DTO with the specified
-	 * 
-	 * @param login {@link String} login
-	 * @param password {@link String} password
-	 * @param role {@link Role} user role
-	 */
-	public UserDto(String login, String password, Role role) {
-		super();
 		this.login = login;
 		this.password = password;
 		this.role = role;

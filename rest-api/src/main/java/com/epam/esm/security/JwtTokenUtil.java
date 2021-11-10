@@ -17,6 +17,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
+/**
+ * The {@code JwtTokenUtil} class contains operations with JWT
+ * 
+ * @author Ihar Klepcha
+ */
 @Component
 public class JwtTokenUtil {
 	public static Logger log = LogManager.getLogger();

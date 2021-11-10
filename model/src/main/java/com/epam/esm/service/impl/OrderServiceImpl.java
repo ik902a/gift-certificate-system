@@ -65,9 +65,9 @@ public class OrderServiceImpl implements OrderService {
 			Integer quantity = giftCertificateEntry.getValue();
 			Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityByName(giftCertificateName);
 			GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
-							() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_NAME.getErrorMessageKey()
+							() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_NAME
 									, giftCertificateName
-									, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
+									, GIFT_CERTIFICATE_INCORRECT));
 			order.addGiftCertificateOrder(new GiftCertificateOrder(order, giftCertificate, quantity));
 			cost = cost.add(giftCertificate.getPrice().multiply(new BigDecimal(quantity)));
 
@@ -82,9 +82,7 @@ public class OrderServiceImpl implements OrderService {
 		log.info("Finding Order by id={}", id);
 		Optional<Order> orderOptional = orderDao.findEntityById(id);
 		Order order = orderOptional.orElseThrow(
-				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-						, String.valueOf(id)
-						, ORDER_INCORRECT.getErrorCode()));
+				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID, String.valueOf(id), ORDER_INCORRECT));
 		return modelMapper.map(order, OrderDto.class);
 	}
 

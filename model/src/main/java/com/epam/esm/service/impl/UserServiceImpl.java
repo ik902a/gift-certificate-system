@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.UserDto;
+import com.epam.esm.entity.Role;
 import com.epam.esm.entity.User;
 import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.UserService;
@@ -37,6 +38,16 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Override
+	@Transactional
+	public UserDto create(UserDto userDto) {
+		log.info("Creating user from {}", userDto);
+		userDto.setRole(Role.ROLE_USER);
+		User user = modelMapper.map(userDto, User.class);
+		user = userDao.create(user);
+		return modelMapper.map(user, UserDto.class);
+	}
 
 	@Override
 	@Transactional
@@ -64,18 +75,9 @@ public class UserServiceImpl implements UserService {
 		log.info("Finding User by id={}", id);
 		Optional<User> userOptional = userDao.findEntityById(id);
 		User user = userOptional.orElseThrow(
-			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
+			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID
 					, String.valueOf(id)
-					, USER_INCORRECT.getErrorCode()));
-		return modelMapper.map(user, UserDto.class);
-	}
-	
-	@Override
-	@Transactional
-	public UserDto create(UserDto userDto) {
-		log.info("Creating user from {}", userDto);
-		User user = modelMapper.map(userDto, User.class);
-		user = userDao.create(user);
+					, USER_INCORRECT));
 		return modelMapper.map(user, UserDto.class);
 	}
 }

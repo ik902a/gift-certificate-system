@@ -3,7 +3,6 @@ package com.epam.esm.dto;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,16 +10,29 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.epam.esm.entity.User;
 
+/**
+ * The {@code UserDetailsImpl} class presents user data for authentication and access
+ *
+ * @author Ihar Klepcha
+ * @see UserDetails
+ */
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String username;
-//	@JsonIgnore
 	private String password;
 	private Collection<? extends GrantedAuthority> authorities;
-//    private Set<SimpleGrantedAuthority> authorities;
 
-	public UserDetailsImpl(Long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+	/**
+	 * Constructs a new user data
+	 * 
+	 * @param id {@link Long} user id
+	 * @param username {@link String} username
+	 * @param password {@link String} password
+	 * @param authorities {@link Collection} of {@link GrantedAuthority} list of authorities
+	 */
+	public UserDetailsImpl(Long id, String username, String password, 
+			Collection<? extends GrantedAuthority> authorities) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -28,9 +40,14 @@ public class UserDetailsImpl implements UserDetails {
 		this.authorities = authorities;
 	}
 	
+	/**
+	 * Builds a new entity with user data 
+	 * 
+	 * @param user {@link User}  entity
+	 * @return {@link UserDetailsImpl} data for authentication and access
+	 */
 	public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().toString()));
-
 		return new UserDetailsImpl(
 				user.getId(), 
 				user.getLogin(), 
