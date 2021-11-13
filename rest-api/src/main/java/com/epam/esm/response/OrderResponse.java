@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 public class OrderResponse extends RepresentationModel<OrderResponse> {
 	private long id;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime date;
 	private BigDecimal cost;
 	private List<GiftCertificateOrderResponse> giftCertificateOrderList;

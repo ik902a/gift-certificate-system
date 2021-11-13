@@ -11,7 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.epam.esm.entity.User;
 
 /**
- * The {@code UserDetailsImpl} class presents user data for authentication and access
+ * The {@code UserDetailsImpl} class presents user data for authentication and
+ * access
  *
  * @author Ihar Klepcha
  * @see UserDetails
@@ -26,10 +27,11 @@ public class UserDetailsImpl implements UserDetails {
 	/**
 	 * Constructs a new user data
 	 * 
-	 * @param id {@link Long} user id
-	 * @param username {@link String} username
-	 * @param password {@link String} password
-	 * @param authorities {@link Collection} of {@link GrantedAuthority} list of authorities
+	 * @param id          {@link Long} user id
+	 * @param username    {@link String} username
+	 * @param password    {@link String} password
+	 * @param authorities {@link Collection} of {@link GrantedAuthority} list of
+	 *                    authorities
 	 */
 	public UserDetailsImpl(Long id, String username, String password, 
 			Collection<? extends GrantedAuthority> authorities) {
@@ -39,21 +41,20 @@ public class UserDetailsImpl implements UserDetails {
 		this.password = password;
 		this.authorities = authorities;
 	}
-	
+
 	/**
-	 * Builds a new entity with user data 
+	 * Builds a new entity with user data
 	 * 
-	 * @param user {@link User}  entity
+	 * @param user {@link User} entity
 	 * @return {@link UserDetailsImpl} data for authentication and access
 	 */
 	public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().toString()));
-		return new UserDetailsImpl(
-				user.getId(), 
+		return new UserDetailsImpl(user.getId(), 
 				user.getLogin(), 
 				user.getPassword(), 
 				authorities);
-	}	
+	}
 
 	public Long getId() {
 		return id;
@@ -80,15 +81,15 @@ public class UserDetailsImpl implements UserDetails {
 		return authorities;
 	}
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+	@Override
+	public String getPassword() {
+		return password;
+	}
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
+	@Override
+	public String getUsername() {
+		return username;
+	}
 
 	@Override
 	public boolean isAccountNonExpired() {
@@ -134,7 +135,7 @@ public class UserDetailsImpl implements UserDetails {
 		sb.append("UserDetails{ id=").append(id);
 		sb.append(", login=").append(username);
 		sb.append(", password=").append(password);
-        sb.append(", authorities=").append(authorities).append(" }");
+		sb.append(", authorities=").append(authorities).append(" }");
 		return sb.toString();
 	}
 }

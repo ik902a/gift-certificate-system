@@ -28,10 +28,10 @@ public class UserDto {
 	/**
 	 * Constructs a user DTO with the specified
 	 * 
-	 * @param id {@link Long} user id
-	 * @param login {@link String} login
+	 * @param id       {@link Long} user id
+	 * @param login    {@link String} login
 	 * @param password {@link String} password
-	 * @param role {@link Role} user role
+	 * @param role     {@link Role} user role
 	 */
 	public UserDto(Long id, String login, String password, Role role) {
 		super();
