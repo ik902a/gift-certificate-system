@@ -34,9 +34,9 @@ public class UserDaoImpl implements UserDao {
 		int offset = PaginationParamExtractor.getOffset(params);
 		int limit = PaginationParamExtractor.getLimit(params);
 		return entityManager.createQuery(criteriaQuery)
-							.setFirstResult(offset)
-							.setMaxResults(limit)
-							.getResultList();
+				.setFirstResult(offset)
+				.setMaxResults(limit)
+				.getResultList();
 	}
 
 	@Override
@@ -49,8 +49,8 @@ public class UserDaoImpl implements UserDao {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<User> criteriaQuery = UserQueryBuilder.buildQueryFindByParams(params, criteriaBuilder);
 		return entityManager.createQuery(criteriaQuery)
-							.getResultStream()
-							.count();
+				.getResultStream()
+				.count();
 	}
 
 	@Override
@@ -64,8 +64,8 @@ public class UserDaoImpl implements UserDao {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<User> criteriaQuery = UserQueryBuilder.buildQueryFindEntityByName(login, criteriaBuilder);
 		return entityManager.createQuery(criteriaQuery)
-							.getResultStream()
-							.findFirst();
+				.getResultStream()
+				.findFirst();
 	}
 
 	@Override

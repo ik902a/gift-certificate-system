@@ -48,9 +48,9 @@ public class TagDaoImpl implements TagDao {
 		int offset = PaginationParamExtractor.getOffset(params);
 		int limit = PaginationParamExtractor.getLimit(params);
 		return entityManager.createQuery(criteriaQuery)
-							.setFirstResult(offset)
-							.setMaxResults(limit)
-							.getResultList();
+				.setFirstResult(offset)
+				.setMaxResults(limit)
+				.getResultList();
 	}
 
 	@Override
@@ -63,15 +63,15 @@ public class TagDaoImpl implements TagDao {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Tag> criteriaQuery = TagQueryBuilder.buildQueryFindEntityByName(name, criteriaBuilder);
 		return entityManager.createQuery(criteriaQuery)
-							.getResultStream()
-							.findFirst();
+				.getResultStream()
+				.findFirst();
 	}
 
 	@Override
 	public boolean delete(long id) {
 		int row = entityManager.createQuery(DELETE_TAG)
-							.setParameter(ColumnName.TAGS_ID, id)
-							.executeUpdate();
+				.setParameter(ColumnName.TAGS_ID, id)
+				.executeUpdate();
 		return row > 0;
 	}
 
@@ -80,15 +80,15 @@ public class TagDaoImpl implements TagDao {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Tag> criteriaQuery = TagQueryBuilder.buildQueryFindByParams(params, criteriaBuilder);
 		return entityManager.createQuery(criteriaQuery)
-							.getResultStream()
-							.count();
+				.getResultStream()
+				.count();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<Tag> findMostPopularTagOfUserWithHighestCostOfAllOrders() {
 		return entityManager.createNativeQuery(FIND_MOST_POPULAR_TAG, Tag.class)
-							.getResultStream()
-							.findFirst();
+				.getResultStream()
+				.findFirst();
 	}
 }

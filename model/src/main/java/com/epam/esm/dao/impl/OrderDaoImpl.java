@@ -32,7 +32,7 @@ public class OrderDaoImpl implements OrderDao {
 	public Order create(Order order) {
 		entityManager.persist(order);
 		order.getGiftCertificateOrderList()
-			.forEach(giftCertificateOrder -> giftCertificateOrder.getId().setOrderId(order.getId()));
+				.forEach(giftCertificateOrder -> giftCertificateOrder.getId().setOrderId(order.getId()));
 		return order;
 	}
 
@@ -48,9 +48,9 @@ public class OrderDaoImpl implements OrderDao {
 		int offset = PaginationParamExtractor.getOffset(params);
 		int limit = PaginationParamExtractor.getLimit(params);
 		return entityManager.createQuery(criteriaQuery)
-							.setFirstResult(offset)
-							.setMaxResults(limit)
-							.getResultList();
+				.setFirstResult(offset)
+				.setMaxResults(limit)
+				.getResultList();
 	}
 
 	@Override
@@ -58,8 +58,8 @@ public class OrderDaoImpl implements OrderDao {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Order> criteriaQuery = OrderQueryBuilder.buildQueryFindByUser(user, params, criteriaBuilder);
 		return entityManager.createQuery(criteriaQuery)
-							.getResultStream()
-							.count();
+				.getResultStream()
+				.count();
 	}
 
 	@Override
