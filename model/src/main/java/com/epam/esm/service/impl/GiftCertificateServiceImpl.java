@@ -63,7 +63,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	@Override
 	@Transactional
 	public PageDto<GiftCertificateDto> find(Map<String, String> params) {
-		log.debug("Finding GiftCertificate with parameters: {}-------------     -----DEBUG", params);
 		log.info("Finding GiftCertificate with parameters: {}", params);
 		List<GiftCertificate> giftCertificateList = giftCertificateDao.find(params);
 	    List<GiftCertificateDto> giftCertificateDtoList = giftCertificateList.stream()

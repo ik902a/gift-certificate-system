@@ -34,14 +34,14 @@ import com.epam.esm.service.UserService;
 public class AuthenticationController {
 	public static Logger log = LogManager.getLogger();
 	@Autowired
-	AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 	@Autowired
-	PasswordEncoder encoder;
+	private PasswordEncoder encoder;
 	@Autowired
-	JwtTokenUtil jwtTokenUtil;
+	private JwtTokenUtil jwtTokenUtil;
 	@Autowired
 	private UserService userService;
-	
+    	
 	/**
 	 * Logs in user , processes POST requests at /users/login
 	 *

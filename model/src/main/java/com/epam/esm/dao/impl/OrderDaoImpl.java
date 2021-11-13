@@ -27,12 +27,12 @@ import com.epam.esm.entity.User;
 public class OrderDaoImpl implements OrderDao {
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
 	@Override
 	public Order create(Order order) {
 		entityManager.persist(order);
-		order.getGiftCertificateOrderList().forEach(
-				giftCertificateOrder -> giftCertificateOrder.getId().setOrderId(order.getId()));
+		order.getGiftCertificateOrderList()
+			.forEach(giftCertificateOrder -> giftCertificateOrder.getId().setOrderId(order.getId()));
 		return order;
 	}
 
@@ -48,25 +48,25 @@ public class OrderDaoImpl implements OrderDao {
 		int offset = PaginationParamExtractor.getOffset(params);
 		int limit = PaginationParamExtractor.getLimit(params);
 		return entityManager.createQuery(criteriaQuery)
-                .setFirstResult(offset)
-                .setMaxResults(limit)
-                .getResultList();
+							.setFirstResult(offset)
+							.setMaxResults(limit)
+							.getResultList();
 	}
-	
+
 	@Override
 	public long getTotalNumberByUser(User user, Map<String, String> params) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Order> criteriaQuery = OrderQueryBuilder.buildQueryFindByUser(user, params, criteriaBuilder);
 		return entityManager.createQuery(criteriaQuery)
-	        		.getResultStream()
-					.count();
+							.getResultStream()
+							.count();
 	}
-	
+
 	@Override
 	public Optional<Order> findEntityByName(String name) {
 		throw new UnsupportedOperationException("operation not supported for class " + this.getClass().getName());
 	}
-	
+
 	@Override
 	public List<Order> find(Map<String, String> params) {
 		throw new UnsupportedOperationException("operation not supported for class " + this.getClass().getName());
@@ -76,7 +76,7 @@ public class OrderDaoImpl implements OrderDao {
 	public boolean delete(long id) {
 		throw new UnsupportedOperationException("operation not supported for class " + this.getClass().getName());
 	}
-	
+
 	@Override
 	public long getTotalNumber(Map<String, String> params) {
 		throw new UnsupportedOperationException("operation not supported for class " + this.getClass().getName());

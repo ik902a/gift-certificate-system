@@ -21,11 +21,12 @@ public interface BaseDao<T extends AbstractEntity> {
 	 * @return {@link T} if the record has been created
 	 */
 	T create(T t);
-	
+
 	/**
 	 * Looks for all entity
 	 * 
-	 * @param  params {@link Map} of {@link String} and {@link String} parameters for searching
+	 * @param params {@link Map} of {@link String} and {@link String} parameters for
+	 *               searching
 	 * @return {@link List} of {@link T} entity received from database
 	 */
 	List<T> find(Map<String, String> params);
@@ -53,11 +54,12 @@ public interface BaseDao<T extends AbstractEntity> {
 	 * @return boolean true if the record has been deleted, else false
 	 */
 	boolean delete(long id);
-	
+
 	/**
 	 * Gets number of entities in query
 	 * 
-	 * @param  params {@link Map} of {@link String} and {@link String} parameters for searching
+	 * @param params {@link Map} of {@link String} and {@link String} parameters for
+	 *               searching
 	 * @return number entities received from database
 	 */
 	long getTotalNumber(Map<String, String> params);

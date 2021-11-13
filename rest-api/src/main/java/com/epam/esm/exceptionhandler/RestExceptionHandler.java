@@ -155,18 +155,17 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorData> accessDeniedExceptionHandler(AccessDeniedException exception, Locale locale) {
     	log.error(exception.getLocalizedMessage(), exception);
     	String message = exception.getLocalizedMessage();
-//    	messageSource.getMessage(ErrorMessageKey.BAD_CREDENTIALS, new String[]{}, locale);
 		String code = HttpStatus.FORBIDDEN.value() + ErrorCode.FORBIDDEN;
 		ErrorData incorrectData = new ErrorData(List.of(message), code);
         return new ResponseEntity<>(incorrectData, HttpStatus.FORBIDDEN);
-    	
-//    	String errorMessage = messageSource.getMessage(MessageKey.ACCESS_IS_DENIED, new String[]{}, locale);
-//        logger.error(HttpStatus.FORBIDDEN, exception);
-//        return new ResponseMessage(errorMessage, HttpStatus.FORBIDDEN.value() + ErrorCode.DEFAULT.getErrorCode());
     }
     
     
 	
+    
+    
+    
+    
 	
 	/**
 	 * Handles MethodArgumentTypeMismatchException and HttpMessageNotReadableException

@@ -22,6 +22,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.epam.esm.service.impl.UserDetailsServiceImpl;
 
+/**
+ * The {@code JwtTokenFilter} class represents filter for token
+ * 
+ * @author Ihar Klepcha
+ * @see OncePerRequestFilter
+ */
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 	public static Logger log = LogManager.getLogger();
@@ -57,7 +63,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 		String headerAuth = request.getHeader(HttpHeaders.AUTHORIZATION);
 		Optional <String> jwt = Optional.empty();
 		if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(AUTHORIZATION_TYPE)) {
-			jwt = Optional.of(headerAuth.split(SEPARATOR)[1].trim());
+			jwt = Optional.of(headerAuth.split(SEPARATOR)[1].trim());// TODO mb beter
 		}
 		return jwt;
 	}

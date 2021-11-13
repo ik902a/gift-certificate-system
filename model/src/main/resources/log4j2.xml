@@ -17,10 +17,10 @@
 		<Logger name="Log_File" level="info" additivity="false">
 			<appenderRef ref="File" />
 		</Logger>
-		<Logger name="Log_Console" level="debug" additivity="false">
+		<Logger name="Log_Console" level="info" additivity="false">
 			<appenderRef ref="Console" />
 		</Logger>
-		<Root level="debug">
+		<Root level="info">
 			<appenderRef ref="Console" />
 			<appenderRef ref="File" />
 		</Root>

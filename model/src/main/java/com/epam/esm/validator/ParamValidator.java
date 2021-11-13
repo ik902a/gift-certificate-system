@@ -36,7 +36,7 @@ public class ParamValidator {
 			validateOrder(params.get(ParamName.ORDER_BY), errorMessageKeys);
 		}
 		if (!errorMessageKeys.isEmpty()) {
-			throw new InvalidParamException(errorMessageKeys, INCORRECT_PARAM.getErrorCode());
+			throw new InvalidParamException(errorMessageKeys, INCORRECT_PARAM);
 		}
 	}
 
@@ -48,7 +48,7 @@ public class ParamValidator {
 	 */
 	private static void validateSort(String sortBy, List<String> errorMessageKeys) {
 		if (!EnumUtils.isValidEnumIgnoreCase(SortType.class, sortBy)) {
-			errorMessageKeys.add(INCORRECT_SORT_PARAM.getErrorMessageKey());
+			errorMessageKeys.add(INCORRECT_SORT_PARAM);
 		}
 	}
 
@@ -60,7 +60,7 @@ public class ParamValidator {
 	 */
 	private static void validateOrder(String orderBy, List<String> errorMessageKeys) {
 		if (!EnumUtils.isValidEnumIgnoreCase(OrderType.class, orderBy)) {
-			errorMessageKeys.add(INCORRECT_ORDER_PARAM.getErrorMessageKey());
+			errorMessageKeys.add(INCORRECT_ORDER_PARAM);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class ParamValidator {
 			validateLimit(params.get(ParamName.LIMIT), errorMessageKeys);
 		}
 		if (!errorMessageKeys.isEmpty()) {
-			throw new InvalidParamException(errorMessageKeys, INCORRECT_PARAM.getErrorCode());
+			throw new InvalidParamException(errorMessageKeys, INCORRECT_PARAM);
 		}
 	}
 
@@ -91,10 +91,10 @@ public class ParamValidator {
 	public static void validateOffset(String offset, List<String> errorMessageKeys) {
 		if (NumberUtils.isParsable(offset)) {
 			if (Integer.parseInt(offset) < 0) {
-			errorMessageKeys.add(INCORRECT_OFFSET_PARAM.getErrorMessageKey());
+			errorMessageKeys.add(INCORRECT_OFFSET_PARAM);
 			}
 		} else {
-			errorMessageKeys.add(INCORRECT_OFFSET_PARAM.getErrorMessageKey());
+			errorMessageKeys.add(INCORRECT_OFFSET_PARAM);
 		}
 	}
 	
@@ -107,10 +107,10 @@ public class ParamValidator {
 	public static void validateLimit(String limit, List<String> errorMessageKeys) {
 		if (NumberUtils.isParsable(limit)) {
 			if (Integer.parseInt(limit) < 0) {
-				errorMessageKeys.add(INCORRECT_LIMIT_PARAM.getErrorMessageKey());
+				errorMessageKeys.add(INCORRECT_LIMIT_PARAM);
 			}
 		} else {
-			errorMessageKeys.add(INCORRECT_LIMIT_PARAM.getErrorMessageKey());
+			errorMessageKeys.add(INCORRECT_LIMIT_PARAM);
 		}
 	}
 }

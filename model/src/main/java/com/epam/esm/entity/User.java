@@ -26,19 +26,19 @@ import javax.persistence.Table;
 public class User extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "login")
-    private String login;
-    @Column(name = "password")
-    private String password;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private Role role;
-    @OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Order> orders;
-    
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
+	@Column(name = "login")
+	private String login;
+	@Column(name = "password")
+	private String password;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "role")
+	private Role role;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Order> orders;
+
 	/**
 	 * Constructs a user
 	 */
@@ -49,11 +49,11 @@ public class User extends AbstractEntity {
 	/**
 	 * Constructs a user with the specified
 	 * 
-	 * @param id {@link Long} user id
-	 * @param login {@link String} login
+	 * @param id       {@link Long} user id
+	 * @param login    {@link String} login
 	 * @param password {@link String} password
-	 * @param role {@link Role} user role
-	 * @param orders {@link List} of {@link Order} list of orders
+	 * @param role     {@link Role} user role
+	 * @param orders   {@link List} of {@link Order} list of orders
 	 */
 	public User(Long id, String login, String password, Role role, List<Order> orders) {
 		super();
@@ -65,13 +65,13 @@ public class User extends AbstractEntity {
 	}
 
 	public void addOrder(Order order) {
-        if (orders == null) {
-            orders = new ArrayList<>();
-        }
-        orders.add(order);
-        order.setUser(this);
-    }
-	
+		if (orders == null) {
+			orders = new ArrayList<>();
+		}
+		orders.add(order);
+		order.setUser(this);
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -95,7 +95,6 @@ public class User extends AbstractEntity {
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
-	
 
 	public String getPassword() {
 		return password;
