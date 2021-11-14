@@ -21,7 +21,7 @@ import com.epam.esm.exception.InvalidParamException;
  * @author Ihar Klepcha
  */
 public class ParamValidator {
-	
+
 	/**
 	 * Checks presence parameters and errors
 	 * 
@@ -43,8 +43,9 @@ public class ParamValidator {
 	/**
 	 * Checks sort type
 	 * 
-	 * @param sortBy {@link String} value sort type 
-	 * @param errorMessageKeys {@link List} of {@link String} list of error message keys
+	 * @param sortBy           {@link String} value sort type
+	 * @param errorMessageKeys {@link List} of {@link String} list of error message
+	 *                         keys
 	 */
 	private static void validateSort(String sortBy, List<String> errorMessageKeys) {
 		if (!EnumUtils.isValidEnumIgnoreCase(SortType.class, sortBy)) {
@@ -55,8 +56,9 @@ public class ParamValidator {
 	/**
 	 * Checks order type
 	 * 
-	 * @param orderBy {@link String} value order type 
-	 * @param errorMessageKeys {@link List} of {@link String} list of error message keys
+	 * @param orderBy          {@link String} value order type
+	 * @param errorMessageKeys {@link List} of {@link String} list of error message
+	 *                         keys
 	 */
 	private static void validateOrder(String orderBy, List<String> errorMessageKeys) {
 		if (!EnumUtils.isValidEnumIgnoreCase(OrderType.class, orderBy)) {
@@ -85,24 +87,26 @@ public class ParamValidator {
 	/**
 	 * Checks offset
 	 * 
-	 * @param offset {@link String} offset value
-	 * @param errorMessageKeys {@link List} of {@link String} list of error message keys
+	 * @param offset           {@link String} offset value
+	 * @param errorMessageKeys {@link List} of {@link String} list of error message
+	 *                         keys
 	 */
 	public static void validateOffset(String offset, List<String> errorMessageKeys) {
 		if (NumberUtils.isParsable(offset)) {
 			if (Integer.parseInt(offset) < 0) {
-			errorMessageKeys.add(INCORRECT_OFFSET_PARAM);
+				errorMessageKeys.add(INCORRECT_OFFSET_PARAM);
 			}
 		} else {
 			errorMessageKeys.add(INCORRECT_OFFSET_PARAM);
 		}
 	}
-	
+
 	/**
 	 * Checks limit
 	 * 
-	 * @param limit {@link String} limit value 
-	 * @param errorMessageKeys {@link List} of {@link String} list of error message keys
+	 * @param limit            {@link String} limit value
+	 * @param errorMessageKeys {@link List} of {@link String} list of error message
+	 *                         keys
 	 */
 	public static void validateLimit(String limit, List<String> errorMessageKeys) {
 		if (NumberUtils.isParsable(limit)) {

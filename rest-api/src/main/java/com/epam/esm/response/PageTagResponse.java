@@ -17,10 +17,10 @@ import com.epam.esm.dto.TagDto;
  */
 public class PageTagResponse extends RepresentationModel<PageTagResponse> {
 	private List<TagResponse> content;
-    private long totalPages;
-    private long pageNumber;
-    
-    /**
+	private long totalPages;
+	private long pageNumber;
+
+	/**
 	 * Constructs a new page response
 	 */
 	public PageTagResponse() {
@@ -30,7 +30,7 @@ public class PageTagResponse extends RepresentationModel<PageTagResponse> {
 	/**
 	 * Constructs a new page response with the specified
 	 * 
-	 * @param content {@link List} of {@link TagResponse} list entities
+	 * @param content    {@link List} of {@link TagResponse} list entities
 	 * @param totalPages contains number total pages
 	 * @param pageNumber contains number of page
 	 */
@@ -40,19 +40,19 @@ public class PageTagResponse extends RepresentationModel<PageTagResponse> {
 		this.totalPages = totalPages;
 		this.pageNumber = pageNumber;
 	}
-	
+
 	/**
-	 * Builds a new response 
+	 * Builds a new response
 	 * 
 	 * @param page {@link PageDto} of {@link TagDto} entities
 	 * @return {@link PageTagResponse} response
 	 */
-    public static PageTagResponse valueOf(PageDto<TagDto> page) {
-    	List<TagResponse> contentResponse = page.getContent()
-    			.stream()
-    			.map(tag -> TagResponse.valueOf(tag))
-    			.collect(Collectors.toList());
-    	return new PageTagResponse(contentResponse, page.getTotalPages(), page.getPageNumber());
+	public static PageTagResponse valueOf(PageDto<TagDto> page) {
+		List<TagResponse> contentResponse = page.getContent()
+				.stream()
+				.map(tag -> TagResponse.valueOf(tag))
+				.collect(Collectors.toList());
+		return new PageTagResponse(contentResponse, page.getTotalPages(), page.getPageNumber());
 	}
 
 	public List<TagResponse> getContent() {
@@ -99,13 +99,13 @@ public class PageTagResponse extends RepresentationModel<PageTagResponse> {
 		return Objects.equals(content, other.content) && pageNumber == other.pageNumber
 				&& totalPages == other.totalPages;
 	}
-	
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nPage response{ content=").append(content);
+		sb.append("Page response{ content=").append(content);
 		sb.append(", totalPages=").append(totalPages);
 		sb.append(", pageNumber=").append(pageNumber).append(" }");
 		return sb.toString();
-	} 
+	}
 }

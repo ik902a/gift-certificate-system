@@ -30,20 +30,37 @@ import com.epam.esm.security.JwtTokenUtil;
 import com.epam.esm.service.UserService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/auth")
 public class AuthenticationController {
 	public static Logger log = LogManager.getLogger();
-	@Autowired
+	private static final String AUTHORIZATION_TYPE = "Bearer";
 	private AuthenticationManager authenticationManager;
-	@Autowired
 	private PasswordEncoder encoder;
-	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
-	@Autowired
 	private UserService userService;
-    	
+
 	/**
-	 * Logs in user , processes POST requests at /users/login
+	 * Constructs an authentication controller
+	 * 
+	 * @param AuthenticationManager {@link AuthenticationManager} processes an
+	 *                              request
+	 * @param encoder               {@link PasswordEncoder} encoding passwords
+	 * @param jwtTokenUtil          {@link JwtTokenUtil} contains operations with
+	 *                              JWT
+	 * @param userService           {@link UserService} service for user
+	 */
+	@Autowired
+	public AuthenticationController(AuthenticationManager authenticationManager, PasswordEncoder encoder,
+			JwtTokenUtil jwtTokenUtil, UserService userService) {
+		super();
+		this.authenticationManager = authenticationManager;
+		this.encoder = encoder;
+		this.jwtTokenUtil = jwtTokenUtil;
+		this.userService = userService;
+	}
+
+	/**
+	 * Logs in user, processes POST requests at /auth/login
 	 *
 	 * @param loginRequest {@link AuthRequest} request
 	 * @return {@link ResponseEntity} login user
@@ -56,18 +73,18 @@ public class AuthenticationController {
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtTokenUtil.generateJwtToken(authentication);
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(new JwtResponse(jwt, 
-												 userDetails.getId(), 
-												 userDetails.getUsername(), 
-												 roles));
+				AUTHORIZATION_TYPE, 
+				userDetails.getId(), 
+				userDetails.getUsername(), 
+				roles));
 	}
-	
+
 	/**
-	 * Registers user , processes POST requests at /users/signup
+	 * Registers user , processes POST requests at /auth/signup
 	 *
 	 * @param signUpRequest {@link AuthRequest} request
 	 * @return {@link ResponseEntity} registered user

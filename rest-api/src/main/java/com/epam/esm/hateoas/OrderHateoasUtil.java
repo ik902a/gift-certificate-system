@@ -25,15 +25,15 @@ public class OrderHateoasUtil {
 	public static void addLinks(OrderResponse order) {
 		order.add(linkTo(methodOn(OrderController.class).getOrderById(order.getId())).withSelfRel());
 	}
-	
+
 	/**
 	 * Adds HATEOAS links to page
 	 * 
-	 * @param page {@link PageOrderResponse} page response
+	 * @param page   {@link PageOrderResponse} page response
 	 * @param userId is user id
 	 * @param params {@link Map} of {@link String} and {@link String} parameters
 	 */
-	public static void addLinkOnPagedResourceRetrieval(PageOrderResponse page, long userId, 
+	public static void addLinkOnPagedResourceRetrieval(PageOrderResponse page, long userId,
 			Map<String, String> params) {
 		int offset = Integer.parseInt(params.get(OFFSET));
 		int limit = Integer.parseInt(params.get(LIMIT));

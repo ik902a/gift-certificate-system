@@ -25,7 +25,7 @@ public class OrderResponse extends RepresentationModel<OrderResponse> {
 	private BigDecimal cost;
 	private List<GiftCertificateOrderResponse> giftCertificateOrderList;
 
-    /**
+	/**
 	 * Constructs a new response
 	 */
 	public OrderResponse() {
@@ -35,11 +35,12 @@ public class OrderResponse extends RepresentationModel<OrderResponse> {
 	/**
 	 * Constructs a new response with the specified
 	 * 
-	 * @param id is order id
-	 * @param date {@link LocalDateTime} creating date
-	 * @param cost {@link BigDecimal} cost order
-	 * @param giftCertificateOrderList {@link List} of {@link GiftCertificateOrderResponse} is list 
-	 * gift certificates
+	 * @param id                       is order id
+	 * @param date                     {@link LocalDateTime} creating date
+	 * @param cost                     {@link BigDecimal} cost order
+	 * @param giftCertificateOrderList {@link List} of
+	 *                                 {@link GiftCertificateOrderResponse} is list
+	 *                                 gift certificates
 	 */
 	public OrderResponse(long id, LocalDateTime date, BigDecimal cost,
 			List<GiftCertificateOrderResponse> giftCertificateOrderList) {
@@ -56,13 +57,17 @@ public class OrderResponse extends RepresentationModel<OrderResponse> {
 	 * @param order {@link OrderDto} entity
 	 * @return {@link OrderResponse} response
 	 */
-	public static OrderResponse valueOf(OrderDto order) {// TODO check
+	public static OrderResponse valueOf(OrderDto order) {
 		List<GiftCertificateOrderResponse> giftCertificateOrderResponse = (order.getGiftCertificateOrderList() != null)
-				? order.getGiftCertificateOrderList().stream()
+				? order.getGiftCertificateOrderList()
+						.stream()
 						.map(giftCertificateOrder -> GiftCertificateOrderResponse.valueOf(giftCertificateOrder))
 						.collect(Collectors.toList())
 				: Collections.emptyList();
-		return new OrderResponse(order.getId(), order.getDate(), order.getCost(), giftCertificateOrderResponse);
+		return new OrderResponse(order.getId(), 
+				order.getDate(), 
+				order.getCost(), 
+				giftCertificateOrderResponse);
 	}
 
 	public long getId() {
@@ -117,11 +122,11 @@ public class OrderResponse extends RepresentationModel<OrderResponse> {
 		return Objects.equals(cost, other.cost) && Objects.equals(date, other.date)
 				&& Objects.equals(giftCertificateOrderList, other.giftCertificateOrderList) && id == other.id;
 	}
-	
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nOrderResponse{ id=").append(id);
+		sb.append("OrderResponse{ id=").append(id);
 		sb.append(", date=").append(date);
 		sb.append(", cost=").append(cost).append(" }");
 		return sb.toString();

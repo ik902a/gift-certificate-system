@@ -27,24 +27,24 @@ import com.epam.esm.entity.audit.OrderAudit;
  * @see AbstractEntity
  */
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 @EntityListeners(OrderAudit.class)
 public class Order extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
-	@Column(name="date")
+	@Column(name = "date")
 	private LocalDateTime date;
-	@Column(name="cost")
+	@Column(name = "cost")
 	private BigDecimal cost;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	private User user;
-	@OneToMany(mappedBy="order", cascade=CascadeType.ALL)    
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private List<GiftCertificateOrder> giftCertificateOrderList;
-	
+
 	/**
 	 * Constructs a order
 	 */
@@ -55,13 +55,14 @@ public class Order extends AbstractEntity {
 	/**
 	 * Constructs a order with the specified
 	 * 
-	 * @param id {@link Long} order id
-	 * @param date {@link LocalDateTime} creating date
-	 * @param cost {@link BigDecimal} cost order
-	 * @param user {@link User} is user owner order
-	 * @param giftCertificateOrderList {@link List} of {@link GiftCertificateOrder} is list gift certificates
+	 * @param id                       {@link Long} order id
+	 * @param date                     {@link LocalDateTime} creating date
+	 * @param cost                     {@link BigDecimal} cost order
+	 * @param user                     {@link User} is user owner order
+	 * @param giftCertificateOrderList {@link List} of {@link GiftCertificateOrder}
+	 *                                 is list gift certificates
 	 */
-	public Order(Long id, LocalDateTime date, BigDecimal cost, User user, 
+	public Order(Long id, LocalDateTime date, BigDecimal cost, User user,
 			List<GiftCertificateOrder> giftCertificateOrderList) {
 		super();
 		this.id = id;
@@ -118,7 +119,7 @@ public class Order extends AbstractEntity {
 	public void setGiftCertificateOrderList(List<GiftCertificateOrder> giftCertificateOrderList) {
 		this.giftCertificateOrderList = giftCertificateOrderList;
 	}
-	
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();

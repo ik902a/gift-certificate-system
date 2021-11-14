@@ -24,6 +24,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.LockedException;
 
 import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.ErrorMessageKey;
@@ -41,9 +42,19 @@ import com.epam.esm.exception.ResourceNotExistException;
 public class RestExceptionHandler {
 	public static Logger log = LogManager.getLogger();
 	private static final String CONNECTOR = ": ";
-	@Autowired
 	private MessageSource messageSource;
-	
+
+	/**
+	 * Constructs a REST exception handler
+	 * 
+	 * @param messageSource {@link MessageSource} source of messages
+	 */
+	@Autowired
+	public RestExceptionHandler(MessageSource messageSource) {
+		super();
+		this.messageSource = messageSource;
+	}
+
 	/**
 	 * Handles ResourceNotExistException
 	 *
@@ -53,8 +64,7 @@ public class RestExceptionHandler {
 	 */
 	@ExceptionHandler(ResourceNotExistException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ResponseEntity<ErrorData> resourceExceptionHandler(ResourceNotExistException exception, 
-			Locale locale) {
+	public ResponseEntity<ErrorData> resourceExceptionHandler(ResourceNotExistException exception, Locale locale) {
 		log.error(exception.getLocalizedMessage(), exception);
 		String message = messageSource.getMessage(exception.getMessage(),
 				new String[] { exception.getIncorrectParameter() }, locale);
@@ -62,12 +72,12 @@ public class RestExceptionHandler {
 		ErrorData incorrectData = new ErrorData(List.of(message), code);
 		return new ResponseEntity<>(incorrectData, HttpStatus.NOT_FOUND);
 	}
-	
+
 	/**
 	 * Handles InvalidParamException
 	 *
 	 * @param exception {@link InvalidParamException} exception
-	 * @param locale {@link Locale} locale of HTTP request
+	 * @param locale    {@link Locale} locale of HTTP request
 	 * @return {@link ResponseEntity} the response message
 	 */
 	@ExceptionHandler(InvalidParamException.class)
@@ -120,55 +130,60 @@ public class RestExceptionHandler {
 		ErrorData incorrectData = new ErrorData(List.of(message), code);
 		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
 	}
-	
-	
-	
-	
-	
-	
-    /**
-     * Handles BadCredentialsException
-     *
-     * @param exception {@link BadCredentialsException} exception
-	 * @param locale {@link Locale} locale of HTTP request
+
+	/**
+	 * Handles BadCredentialsException
+	 *
+	 * @param exception {@link BadCredentialsException} exception
+	 * @param locale    {@link Locale} locale of HTTP request
 	 * @return {@link ResponseEntity} the response message
-     */
-    @ExceptionHandler(BadCredentialsException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<ErrorData> badCredentialsExceptionHandler(BadCredentialsException exception, Locale locale) {
-    	log.error(exception.getLocalizedMessage(), exception);
-    	String message = messageSource.getMessage(ErrorMessageKey.BAD_CREDENTIALS, new String[]{}, locale);
+	 */
+	@ExceptionHandler(BadCredentialsException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public ResponseEntity<ErrorData> badCredentialsExceptionHandler(BadCredentialsException exception, Locale locale) {
+		log.error(exception.getLocalizedMessage(), exception);
+		String message = messageSource.getMessage(ErrorMessageKey.BAD_CREDENTIALS, new String[] {}, locale);
 		String code = HttpStatus.UNAUTHORIZED.value() + ErrorCode.UNAUTHORIZED;
 		ErrorData incorrectData = new ErrorData(List.of(message), code);
-        return new ResponseEntity<>(incorrectData, HttpStatus.UNAUTHORIZED);
-    }
-	
-    /**
-     * Handles AccessDeniedException
-     *
-     * @param exception {@link AccessDeniedException} exception
-	 * @param locale {@link Locale} locale of HTTP request
+		return new ResponseEntity<>(incorrectData, HttpStatus.UNAUTHORIZED);
+	}
+
+	/**
+	 * Handles AccessDeniedException
+	 *
+	 * @param exception {@link AccessDeniedException} exception
 	 * @return {@link ResponseEntity} the response message
-     */
-    @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseEntity<ErrorData> accessDeniedExceptionHandler(AccessDeniedException exception, Locale locale) {
-    	log.error(exception.getLocalizedMessage(), exception);
-    	String message = exception.getLocalizedMessage();
+	 */
+	@ExceptionHandler(AccessDeniedException.class)
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public ResponseEntity<ErrorData> accessDeniedExceptionHandler(AccessDeniedException exception) {
+		log.error(exception.getLocalizedMessage(), exception);
+		String message = exception.getLocalizedMessage();
 		String code = HttpStatus.FORBIDDEN.value() + ErrorCode.FORBIDDEN;
 		ErrorData incorrectData = new ErrorData(List.of(message), code);
-        return new ResponseEntity<>(incorrectData, HttpStatus.FORBIDDEN);
-    }
-    
-    
-	
-    
-    
-    
-    
-	
+		return new ResponseEntity<>(incorrectData, HttpStatus.FORBIDDEN);
+	}
+
 	/**
-	 * Handles MethodArgumentTypeMismatchException and HttpMessageNotReadableException
+	 * Handles LockedException
+	 *
+	 * @param exception {@link LockedException} exception
+	 * @param locale    {@link Locale} locale of HTTP request
+	 * @return {@link ResponseEntity} the response message
+	 */
+	@ExceptionHandler(LockedException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public ResponseEntity<ErrorData> lockedExceptionHandler(LockedException exception, Locale locale) {
+		log.error(exception.getLocalizedMessage(), exception);
+		String code = HttpStatus.UNAUTHORIZED.value() + ErrorCode.UNAUTHORIZED;
+		String message = messageSource.getMessage(ErrorMessageKey.LOCKED_ACCOUNT, new String[] {}, locale);
+		ErrorData incorrectData = new ErrorData(List.of(message), code);
+		return new ResponseEntity<>(incorrectData, HttpStatus.UNAUTHORIZED);
+	}
+
+	/**
+	 * Handles MethodArgumentTypeMismatchException and
+	 * HttpMessageNotReadableException
 	 *
 	 * @param exception {@link NestedRuntimeException} exception
 	 * @param locale    {@link Locale} locale of HTTP request
@@ -176,7 +191,7 @@ public class RestExceptionHandler {
 	 */
 	@ExceptionHandler({ MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class })
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<ErrorData> argumentTypeMismatchExceptionHandler(NestedRuntimeException exception, 
+	public ResponseEntity<ErrorData> argumentTypeMismatchExceptionHandler(NestedRuntimeException exception,
 			Locale locale) {
 		log.error(exception.getLocalizedMessage(), exception);
 		String message = messageSource.getMessage(ErrorMessageKey.INCORRECT_VALUE_TYPE, new String[] {}, locale);
@@ -184,17 +199,17 @@ public class RestExceptionHandler {
 		ErrorData incorrectData = new ErrorData(List.of(message), code);
 		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	/**
 	 * Handles DataIntegrityViolationException
 	 *
 	 * @param exception {@link DataIntegrityViolationException} exception
-	 * @param locale {@link Locale} locale of HTTP request
+	 * @param locale    {@link Locale} locale of HTTP request
 	 * @return {@link ResponseEntity} the response message
 	 */
-	@ExceptionHandler(DataIntegrityViolationException.class )
+	@ExceptionHandler(DataIntegrityViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<ErrorData> dataViolationExceptionHandler(DataIntegrityViolationException exception, 
+	public ResponseEntity<ErrorData> dataViolationExceptionHandler(DataIntegrityViolationException exception,
 			Locale locale) {
 		log.error(exception.getLocalizedMessage(), exception);
 		String message = messageSource.getMessage(ErrorMessageKey.DATABASE_ERROR, new String[] {}, locale);
@@ -202,7 +217,7 @@ public class RestExceptionHandler {
 		ErrorData incorrectData = new ErrorData(List.of(message), code);
 		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	/**
 	 * Handles UnsupportedOperationException
 	 *
@@ -218,12 +233,12 @@ public class RestExceptionHandler {
 		ErrorData incorrectData = new ErrorData(List.of(message), code);
 		return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	/**
 	 * Handles Exception
 	 *
 	 * @param exception {@link Exception} exception
-	 * @param locale {@link Locale} locale of HTTP request
+	 * @param locale    {@link Locale} locale of HTTP request
 	 * @return {@link ResponseEntity} the response message
 	 */
 	@ExceptionHandler(Exception.class)

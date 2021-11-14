@@ -17,10 +17,10 @@ import com.epam.esm.dto.UserDto;
  */
 public class PageUserResponse extends RepresentationModel<PageUserResponse> {
 	private List<UserResponse> content;
-    private long totalPages;
-    private long pageNumber;
-    
-    /**
+	private long totalPages;
+	private long pageNumber;
+
+	/**
 	 * Constructs a new page response
 	 */
 	public PageUserResponse() {
@@ -30,7 +30,7 @@ public class PageUserResponse extends RepresentationModel<PageUserResponse> {
 	/**
 	 * Constructs a new page response with the specified
 	 * 
-	 * @param content {@link List} of {@link UserResponse} list entities
+	 * @param content    {@link List} of {@link UserResponse} list entities
 	 * @param totalPages contains number total pages
 	 * @param pageNumber contains number of page
 	 */
@@ -40,19 +40,19 @@ public class PageUserResponse extends RepresentationModel<PageUserResponse> {
 		this.totalPages = totalPages;
 		this.pageNumber = pageNumber;
 	}
-	
+
 	/**
-	 * Builds a new response 
+	 * Builds a new response
 	 * 
 	 * @param page {@link PageDto} of {@link UserDto} list entities
 	 * @return {@link PageUserResponse} response
 	 */
-    public static PageUserResponse valueOf(PageDto<UserDto> page) {
-    	List<UserResponse> contentResponse = page.getContent()
-    			.stream()
-    			.map(user -> UserResponse.valueOf(user))
-    			.collect(Collectors.toList());
-    	return new PageUserResponse(contentResponse, page.getTotalPages(), page.getPageNumber());
+	public static PageUserResponse valueOf(PageDto<UserDto> page) {
+		List<UserResponse> contentResponse = page.getContent()
+				.stream()
+				.map(user -> UserResponse.valueOf(user))
+				.collect(Collectors.toList());
+		return new PageUserResponse(contentResponse, page.getTotalPages(), page.getPageNumber());
 	}
 
 	public List<UserResponse> getContent() {
@@ -99,13 +99,13 @@ public class PageUserResponse extends RepresentationModel<PageUserResponse> {
 		return Objects.equals(content, other.content) && pageNumber == other.pageNumber
 				&& totalPages == other.totalPages;
 	}
-	
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nPage response{ content=").append(content);
+		sb.append("Page response{ content=").append(content);
 		sb.append(", totalPages=").append(totalPages);
 		sb.append(", pageNumber=").append(pageNumber).append(" }");
 		return sb.toString();
-	} 
+	}
 }

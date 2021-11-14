@@ -7,16 +7,17 @@ import org.springframework.hateoas.RepresentationModel;
 import com.epam.esm.dto.GiftCertificateOrderDto;
 
 /**
- * The {@code GiftCertificateOrderResponse} class describes the response GiftCertificateOrder entity
+ * The {@code GiftCertificateOrderResponse} class describes the response
+ * GiftCertificateOrder entity
  * 
  * @author Ihar Klepcha
  * @see RepresentationModel
  */
 public class GiftCertificateOrderResponse extends RepresentationModel<GiftCertificateOrderResponse> {
 	GiftCertificateResponse giftCertificate;
-    int quantity;
-    
-    /**
+	int quantity;
+
+	/**
 	 * Constructs a new response
 	 */
 	public GiftCertificateOrderResponse() {
@@ -27,7 +28,7 @@ public class GiftCertificateOrderResponse extends RepresentationModel<GiftCertif
 	 * Constructs a new response with the specified
 	 * 
 	 * @param giftCertificate {@link GiftCertificeteResponse} response
-	 * @param quantity is quantity orders
+	 * @param quantity        is quantity orders
 	 */
 	public GiftCertificateOrderResponse(GiftCertificateResponse giftCertificate, int quantity) {
 		super();
@@ -36,15 +37,15 @@ public class GiftCertificateOrderResponse extends RepresentationModel<GiftCertif
 	}
 
 	/**
-	 * Builds a new response 
+	 * Builds a new response
 	 * 
-	 * @param giftCertificateOrderDto {@link GiftCertificateOrderDto}  entity
+	 * @param giftCertificateOrderDto {@link GiftCertificateOrderDto} entity
 	 * @return {@link GiftCertificateOrderResponse} response
 	 */
-    public static GiftCertificateOrderResponse valueOf(GiftCertificateOrderDto giftCertificateOrderDto) {
-    	return new GiftCertificateOrderResponse(
-    			GiftCertificateResponse.valueOf(giftCertificateOrderDto.getGiftCertificate())
-    			, giftCertificateOrderDto.getQuantity());
+	public static GiftCertificateOrderResponse valueOf(GiftCertificateOrderDto giftCertificateOrderDto) {
+		return new GiftCertificateOrderResponse(
+				GiftCertificateResponse.valueOf(giftCertificateOrderDto.getGiftCertificate()),
+				giftCertificateOrderDto.getQuantity());
 	}
 
 	public GiftCertificateResponse getGiftCertificate() {

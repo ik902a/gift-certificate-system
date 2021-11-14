@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,11 +24,14 @@ import com.epam.esm.entity.User;
 @SpringBootTest(classes = TestConfiguration.class)
 @Transactional
 public class OrderDaoImplTest {
-	public static Logger log = LogManager.getLogger();
+	private OrderDao orderDao;
 
 	@Autowired
-	private OrderDao orderDao;
-	
+	public OrderDaoImplTest(OrderDao orderDao) {
+		super();
+		this.orderDao = orderDao;
+	}
+
 	@Test
 	public void findEntityByIdPositiveTest() {
 		Order order = new Order();
@@ -52,9 +53,9 @@ public class OrderDaoImplTest {
 		giftCertificateOrder.setOrder(order);
 		giftCertificateOrder.setQuantity(3);
 		order.setGiftCertificateOrderList(List.of(giftCertificateOrder));
-		
+
 		Optional<Order> actual = orderDao.findEntityById(1);
-		
+
 		assertEquals(Optional.of(order), actual);
 	}
 
@@ -81,9 +82,9 @@ public class OrderDaoImplTest {
 		order.setGiftCertificateOrderList(List.of(giftCertificateOrder));
 		User user = new User();
 		user.setId(2L);
-		
+
 		List<Order> actual = orderDao.findOrdersByUser(user, new HashMap<String, String>());
-		
+
 		assertEquals(List.of(order), actual);
 	}
 }

@@ -3,7 +3,8 @@ package com.epam.esm.entity;
 import java.io.Serializable;
 
 /**
- * The {@code AbstractEntity} class is the root abstract class in the entity hierarchy
+ * The {@code AbstractEntity} class is the root abstract class in the entity
+ * hierarchy
  * 
  * @author Ihar Klepcha
  * @see Serializable

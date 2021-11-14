@@ -20,17 +20,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 public class GiftCertificateResponse extends RepresentationModel<GiftCertificateResponse> {
 	private long id;
-    private String name;
-    private String description;
-    private BigDecimal price;
-    private int duration;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime createDate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime lastUpdateDate;
-    private List<TagResponse> tags;
-    
-    /**
+	private String name;
+	private String description;
+	private BigDecimal price;
+	private int duration;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	private LocalDateTime createDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	private LocalDateTime lastUpdateDate;
+	private List<TagResponse> tags;
+
+	/**
 	 * Constructs a new response
 	 */
 	public GiftCertificateResponse() {
@@ -40,17 +40,17 @@ public class GiftCertificateResponse extends RepresentationModel<GiftCertificate
 	/**
 	 * Constructs a new response with the specified
 	 * 
-	 * @param id is gift certificate id
-	 * @param name {@link String} name
-	 * @param description {@link String} description
-	 * @param price {@link BigDecimal} price
-	 * @param duration is duration
-	 * @param createDate {@link LocalDateTime} create date
+	 * @param id             is gift certificate id
+	 * @param name           {@link String} name
+	 * @param description    {@link String} description
+	 * @param price          {@link BigDecimal} price
+	 * @param duration       is duration
+	 * @param createDate     {@link LocalDateTime} create date
 	 * @param lastUodateDate {@link LocalDateTime} last update date
-	 * @param tags {@link List} of ({@link TagResponse} list tags
+	 * @param tags           {@link List} of ({@link TagResponse} list tags
 	 */
-    public GiftCertificateResponse(long id, String name, String description, BigDecimal price, int duration,
-    		LocalDateTime createDate, LocalDateTime lastUpdateDate, List<TagResponse> tags) {
+	public GiftCertificateResponse(long id, String name, String description, BigDecimal price, int duration,
+			LocalDateTime createDate, LocalDateTime lastUpdateDate, List<TagResponse> tags) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -61,7 +61,7 @@ public class GiftCertificateResponse extends RepresentationModel<GiftCertificate
 		this.lastUpdateDate = lastUpdateDate;
 		this.tags = tags;
 	}
-    
+
 	/**
 	 * Builds a new response
 	 * 
@@ -69,20 +69,20 @@ public class GiftCertificateResponse extends RepresentationModel<GiftCertificate
 	 * @return {@link GiftCertificateResponse} response
 	 */
 	public static GiftCertificateResponse valueOf(GiftCertificateDto giftCertificate) {
-		List<TagResponse> tagResponse = (giftCertificate.getTags() != null) // TODO check
+		List<TagResponse> tagResponse = (giftCertificate.getTags() != null)
 				? giftCertificate.getTags()
 						.stream()
 						.map(tag -> TagResponse.valueOf(tag))
 						.collect(Collectors.toList())
 				: Collections.emptyList();
-		return new GiftCertificateResponse(giftCertificate.getId(),
-				giftCertificate.getName()
-    			, giftCertificate.getDescription()
-    			, giftCertificate.getPrice()
-    			, giftCertificate.getDuration()
-    			, giftCertificate.getCreateDate()
-    			, giftCertificate.getLastUpdateDate()
-    			, tagResponse);
+		return new GiftCertificateResponse(giftCertificate.getId(), 
+				giftCertificate.getName(),
+				giftCertificate.getDescription(), 
+				giftCertificate.getPrice(), 
+				giftCertificate.getDuration(),
+				giftCertificate.getCreateDate(), 
+				giftCertificate.getLastUpdateDate(), 
+				tagResponse);
 	}
 
 	public long getId() {
@@ -172,11 +172,11 @@ public class GiftCertificateResponse extends RepresentationModel<GiftCertificate
 				&& Objects.equals(name, other.name) && Objects.equals(price, other.price)
 				&& Objects.equals(tags, other.tags);
 	}
-    
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nGiftCertificateResponse{ ID=").append(id);
+		sb.append("GiftCertificateResponse{ ID=").append(id);
 		sb.append(", name=").append(name);
 		sb.append(", description=").append(description);
 		sb.append(", price=").append(price);

@@ -7,7 +7,6 @@ import static com.epam.esm.exception.ErrorMessageKey.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -34,11 +33,22 @@ import com.epam.esm.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 	public static Logger log = LogManager.getLogger();
-	@Autowired
 	private UserDao userDao;
-	@Autowired
 	private ModelMapper modelMapper;
-	
+
+	/**
+	 * Constructs service for user
+	 * 
+	 * @param userDao     {@link UserDao} DAO for user
+	 * @param ModelMapper {@link ModelMapper} performs object mapping
+	 */
+	@Autowired
+	public UserServiceImpl(UserDao userDao, ModelMapper modelMapper) {
+		super();
+		this.userDao = userDao;
+		this.modelMapper = modelMapper;
+	}
+
 	@Override
 	@Transactional
 	public UserDto create(UserDto userDto) {
@@ -59,25 +69,24 @@ public class UserServiceImpl implements UserService {
 				.collect(Collectors.toList());
 		return buildPage(userDtoList, params);
 	}
-	
+
 	private PageDto<UserDto> buildPage(List<UserDto> userDtoList, Map<String, String> params) {
 		int offset = Integer.parseInt(params.get(OFFSET));
 		int limit = Integer.parseInt(params.get(LIMIT));
 		long totalPositions = userDao.getTotalNumber(params);
 		long totalPages = (long) Math.ceil((double) totalPositions / limit);
 		long pageNumber = offset / limit + 1;
-      return new PageDto<>(userDtoList, totalPages, pageNumber, offset, limit);
+		return new PageDto<>(userDtoList, totalPages, pageNumber, offset, limit);
 	}
 
 	@Override
 	@Transactional
 	public UserDto findById(long id) {
 		log.info("Finding User by id={}", id);
-		Optional<User> userOptional = userDao.findEntityById(id);
-		User user = userOptional.orElseThrow(
-			() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID
-					, String.valueOf(id)
-					, USER_INCORRECT));
+		User user = userDao.findEntityById(id)
+				.orElseThrow(() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID, 
+						String.valueOf(id), 
+						USER_INCORRECT));
 		return modelMapper.map(user, UserDto.class);
 	}
 }

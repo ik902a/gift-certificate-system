@@ -22,18 +22,26 @@ import com.epam.esm.entity.User;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 	public static Logger log = LogManager.getLogger();
-	@Autowired
 	private UserDao userDao;
-	
+
+	/**
+	 * Constructs service for searching user data
+	 * 
+	 * @param userDao {@link UserDao} DAO for user
+	 */
+	@Autowired
+	public UserDetailsServiceImpl(UserDao userDao) {
+		super();
+		this.userDao = userDao;
+	}
+
 	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		log.info("Logining user from {}", username);
-		User user  = userDao.findEntityByName(username)
+		User user = userDao.findEntityByName(username)
 				.orElseThrow(
-				() -> new UsernameNotFoundException("User Not Found with username: " + username));// TODO Localization 
-		log.info("Logining user from {}", username);
+						() -> new UsernameNotFoundException("User Not Found with username: " + username));
 		return UserDetailsImpl.build(user);
-		}
+	}
 }
-

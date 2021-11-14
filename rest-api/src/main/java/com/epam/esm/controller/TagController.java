@@ -39,15 +39,25 @@ import com.epam.esm.service.TagService;
 @RequestMapping("/tags")
 public class TagController {
 	public static Logger log = LogManager.getLogger();
-	@Autowired
 	private TagService tagService;
 
-    /**
-     * Creates new tag, processes POST requests at /tags
-     *
-     * @param tagDto {@link TagDto} tag
-     * @return {@link TagResponse} created tag
-     */
+	/**
+	 * Constructs a tag controller
+	 * 
+	 * @param tagService {@link TagService} service for tag
+	 */
+	@Autowired
+	public TagController(TagService tagService) {
+		super();
+		this.tagService = tagService;
+	}
+
+	/**
+	 * Creates new tag, processes POST requests at /tags
+	 *
+	 * @param tagDto {@link TagDto} tag
+	 * @return {@link TagResponse} created tag
+	 */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasRole('ADMIN')")
@@ -60,11 +70,12 @@ public class TagController {
 	}
 
 	/**
-     * Gets tags, processes GET requests at /tags
-     *
-     * @param params {@link Map} of {@link String} and {@link String} data for searching tags
-     * @return {@link PageTagResponse} founded tags
-     */
+	 * Gets tags, processes GET requests at /tags
+	 *
+	 * @param params {@link Map} of {@link String} and {@link String} data for
+	 *               searching tags
+	 * @return {@link PageTagResponse} founded tags
+	 */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -78,11 +89,11 @@ public class TagController {
 	}
 
 	/**
-     * Gets tag by id, processes GET requests at /tags/{id}
-     *
-     * @param id is the tag id
-     * @return {@link TagResponse} founded tag
-     */
+	 * Gets tag by id, processes GET requests at /tags/{id}
+	 *
+	 * @param id is the tag id
+	 * @return {@link TagResponse} founded tag
+	 */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -95,11 +106,11 @@ public class TagController {
 	}
 
 	/**
-     * Deletes tag by id, processes DELETE requests at /tags/{id}
-     *
-     * @param id is the tag id
-     * @return {@link ResponseEntity} response
-     */
+	 * Deletes tag by id, processes DELETE requests at /tags/{id}
+	 *
+	 * @param id is the tag id
+	 * @return {@link ResponseEntity} response
+	 */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasRole('ADMIN')")
@@ -108,21 +119,22 @@ public class TagController {
 		tagService.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 	/**
-     * Gets the most widely used tag of a user with the highest cost of all orders at /tags/popular
-     *
-     * @return {@link TagResponse} founded tag
-     * 
-     */
-    @GetMapping("/popular")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public TagResponse getMostPopularTagOfUserWithHighestCostOfAllOrders() {
-    	log.info("Finding the most widely used Tag of a user with the highest cost of all orders");
-        TagDto tagDto = tagService.findMostPopularTagOfUserWithHighestCostOfAllOrders();
-        TagResponse response = TagResponse.valueOf(tagDto);
-        TagHateoasUtil.addLinks(response);
-        return response;
-    }
+	 * Gets the most widely used tag of a user with the highest cost of all orders
+	 * at /tags/popular
+	 *
+	 * @return {@link TagResponse} founded tag
+	 * 
+	 */
+	@GetMapping("/popular")
+	@ResponseStatus(HttpStatus.OK)
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public TagResponse getMostPopularTagOfUserWithHighestCostOfAllOrders() {
+		log.info("Finding the most widely used Tag of a user with the highest cost of all orders");
+		TagDto tagDto = tagService.findMostPopularTagOfUserWithHighestCostOfAllOrders();
+		TagResponse response = TagResponse.valueOf(tagDto);
+		TagHateoasUtil.addLinks(response);
+		return response;
+	}
 }

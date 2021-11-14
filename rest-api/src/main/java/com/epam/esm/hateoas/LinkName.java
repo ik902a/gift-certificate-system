@@ -8,10 +8,10 @@ package com.epam.esm.hateoas;
 public class LinkName {
 	public static final String NEXT = "next";
 	public static final String PREV = "prev";
-    //link param 
+	// link param
 	public static final String OFFSET = "offset";
 	public static final String LIMIT = "limit";
-    
+
 	private LinkName() {
 	}
 }

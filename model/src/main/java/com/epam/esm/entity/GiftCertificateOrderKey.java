@@ -29,7 +29,7 @@ public class GiftCertificateOrderKey implements Serializable {
 	/**
 	 * Constructs a gift certificate order key with the specified
 	 * 
-	 * @param orderId {@link Long} order id
+	 * @param orderId           {@link Long} order id
 	 * @param giftCertificateId {@link Long} gift certificate id
 	 */
 	public GiftCertificateOrderKey(Long orderId, Long giftCertificateId) {

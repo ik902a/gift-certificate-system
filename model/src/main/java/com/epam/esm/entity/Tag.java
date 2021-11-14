@@ -14,17 +14,17 @@ import javax.persistence.Table;
  * @see AbstractEntity
  */
 @Entity
-@Table(name="tags")
+@Table(name = "tags")
 public class Tag extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "name")
-    private String name;
-    
-    /**
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
+	@Column(name = "name")
+	private String name;
+
+	/**
 	 * Constructs a tag
 	 */
 	public Tag() {
@@ -33,7 +33,7 @@ public class Tag extends AbstractEntity {
 	/**
 	 * Constructs a tag with the specified
 	 * 
-	 * @param id {@link Long} tag id
+	 * @param id   {@link Long} tag id
 	 * @param name {@link String} name
 	 */
 	public Tag(Long id, String name) {
@@ -63,5 +63,5 @@ public class Tag extends AbstractEntity {
 		sb.append("Tag{ id=").append(id);
 		sb.append(", name=").append(name).append(" }");
 		return sb.toString();
-	}    
+	}
 }

@@ -1,7 +1,8 @@
 package com.epam.esm.exception;
 
 /**
- * The {@code GiftCertificateSystemException} class is the root class in the exception hierarchy
+ * The {@code GiftCertificateSystemException} class is the root class in the
+ * exception hierarchy
  * 
  * @author Ihar Klepcha
  * @see RuntimeException
@@ -29,7 +30,7 @@ public class GiftCertificateSystemException extends RuntimeException {
 	 * Constructor for organization of inheritance exception with the specified
 	 * 
 	 * @param message {@link String} message
-	 * @param cause {@link Throwable} cause
+	 * @param cause   {@link Throwable} cause
 	 */
 	public GiftCertificateSystemException(String message, Throwable cause) {
 		super(message, cause);

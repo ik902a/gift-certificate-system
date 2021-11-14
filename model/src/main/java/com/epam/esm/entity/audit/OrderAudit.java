@@ -18,8 +18,8 @@ public class OrderAudit {
 	 * 
 	 * @param order {@link Order} order
 	 */
-    @PrePersist
-    public void beforeCreateOrder(Order order) {
-        order.setDate(LocalDateTime.now());
-    }
+	@PrePersist
+	public void beforeCreateOrder(Order order) {
+		order.setDate(LocalDateTime.now());
+	}
 }

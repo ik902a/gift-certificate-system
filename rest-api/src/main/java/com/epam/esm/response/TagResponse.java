@@ -14,9 +14,9 @@ import com.epam.esm.dto.TagDto;
  */
 public class TagResponse extends RepresentationModel<TagResponse> {
 	private long id;
-    private String name;
-    
-    /**
+	private String name;
+
+	/**
 	 * Constructs a new response
 	 */
 	public TagResponse() {
@@ -26,7 +26,7 @@ public class TagResponse extends RepresentationModel<TagResponse> {
 	/**
 	 * Constructs a new response with the specified
 	 * 
-	 * @param id is tag id
+	 * @param id   is tag id
 	 * @param name {@link String} name
 	 */
 	public TagResponse(long id, String name) {
@@ -34,16 +34,16 @@ public class TagResponse extends RepresentationModel<TagResponse> {
 		this.id = id;
 		this.name = name;
 	}
-	
+
 	/**
-	 * Builds a new response 
+	 * Builds a new response
 	 * 
-	 * @param tag {@link TagDto}  entity
+	 * @param tag {@link TagDto} entity
 	 * @return {@link TagResponse} response
 	 */
-    public static TagResponse valueOf(TagDto tag) {
-    	return new TagResponse(tag.getId(), tag.getName());
-    }
+	public static TagResponse valueOf(TagDto tag) {
+		return new TagResponse(tag.getId(), tag.getName());
+	}
 
 	public long getId() {
 		return id;
@@ -80,12 +80,12 @@ public class TagResponse extends RepresentationModel<TagResponse> {
 		TagResponse other = (TagResponse) obj;
 		return id == other.id && Objects.equals(name, other.name);
 	}
-	
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nTagResponse{ id=").append(id);
+		sb.append("TagResponse{ id=").append(id);
 		sb.append(", name=").append(name).append(" }");
 		return sb.toString();
-	}  
+	}
 }

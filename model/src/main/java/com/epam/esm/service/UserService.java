@@ -18,7 +18,7 @@ public interface UserService {
 	 * @return {@link UserDto} received from database
 	 */
 	UserDto create(UserDto userDto);
-	
+
 	/**
 	 * Finds user by parameters
 	 * 

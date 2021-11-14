@@ -34,13 +34,24 @@ import com.epam.esm.service.UserService;
 @RequestMapping("/users")
 public class UserController {
 	public static Logger log = LogManager.getLogger();
-	@Autowired
 	private UserService userService;
+
+	/**
+	 * Constructs a user controller
+	 * 
+	 * @param userService {@link UserService} service for user
+	 */
+	@Autowired
+	public UserController(UserService userService) {
+		super();
+		this.userService = userService;
+	}
 
 	/**
 	 * Gets users by params, processes GET requests at /users
 	 *
-	 * @param params {@link Map} of {@link String} and {@link String} data for searching users
+	 * @param params {@link Map} of {@link String} and {@link String} data for
+	 *               searching users
 	 * @return {@link PageUserResponse} founded users
 	 */
 	@GetMapping
@@ -53,7 +64,7 @@ public class UserController {
 		response.getContent().forEach(UserHateoasUtil::addLinks);
 		UserHateoasUtil.addLinkOnPagedResourceRetrieval(response, params);
 		return response;
-	}	
+	}
 
 	/**
 	 * Gets user by id, processes GET requests at /users/{id}
@@ -70,7 +81,5 @@ public class UserController {
 		UserResponse response = UserResponse.valueOf(userDto);
 		UserHateoasUtil.addLinks(response);
 		return response;
-	}	
-
-
+	}
 }

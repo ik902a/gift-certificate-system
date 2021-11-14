@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,10 +27,13 @@ import com.epam.esm.entity.Tag;
 @SpringBootTest(classes = TestConfiguration.class)
 @Transactional
 public class GiftCertificateDaoImpTest {
-	public static Logger log = LogManager.getLogger();
+	private GiftCertificateDao giftCertificateDao;
 
 	@Autowired
-	private GiftCertificateDao giftCertificateDao;
+	public GiftCertificateDaoImpTest(GiftCertificateDao giftCertificateDao) {
+		super();
+		this.giftCertificateDao = giftCertificateDao;
+	}
 
 	@Test
 	public void createPositiveTest() {
@@ -51,9 +52,9 @@ public class GiftCertificateDaoImpTest {
 		giftCertificateCreated.setDuration(90);
 		giftCertificateCreated.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
 		giftCertificateCreated.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
-		
+
 		GiftCertificate actual = giftCertificateDao.create(giftCertificateNew);
-		
+
 		assertEquals(giftCertificateCreated, actual);
 	}
 
@@ -69,9 +70,9 @@ public class GiftCertificateDaoImpTest {
 		giftCertificate.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
 		giftCertificate.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
 		giftCertificate.setTags(List.of(new Tag(1L, "tag1"), new Tag(3L, "tag3")));
-		
+
 		List<GiftCertificate> actual = giftCertificateDao.find(params);
-		
+
 		assertEquals(List.of(giftCertificate), actual);
 	}
 
@@ -97,7 +98,7 @@ public class GiftCertificateDaoImpTest {
 		giftCertificate.setDuration(90);
 		giftCertificate.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
 		giftCertificate.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
-		
+
 		Optional<GiftCertificate> actual = giftCertificateDao.findEntityById(1);
 
 		assertEquals(Optional.of(giftCertificate), actual);
@@ -106,7 +107,6 @@ public class GiftCertificateDaoImpTest {
 	@Test
 	public void findEntityByIdNegativeTest() {
 		Optional<GiftCertificate> actual = giftCertificateDao.findEntityById(15);
-		
 		assertFalse(actual.isPresent());
 	}
 
@@ -120,30 +120,27 @@ public class GiftCertificateDaoImpTest {
 		giftCertificate.setDuration(90);
 		giftCertificate.setCreateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
 		giftCertificate.setLastUpdateDate(LocalDateTime.parse("2021-08-12T08:12:15"));
-		
+
 		Optional<GiftCertificate> actual = giftCertificateDao.findEntityByName("First");
-		
+
 		assertEquals(Optional.of(giftCertificate), actual);
 	}
 
 	@Test
 	public void findEntityByNameNegativeTest() {
 		Optional<GiftCertificate> actual = giftCertificateDao.findEntityByName("Sun");
-		
 		assertFalse(actual.isPresent());
 	}
 
 	@Test
 	public void deletePositiveTest() {
 		boolean actual = giftCertificateDao.delete(4);
-		
 		assertTrue(actual);
 	}
 
 	@Test
 	public void deleteNegativeTest() {
 		boolean actual = giftCertificateDao.delete(42);
-		
 		assertFalse(actual);
 	}
 }

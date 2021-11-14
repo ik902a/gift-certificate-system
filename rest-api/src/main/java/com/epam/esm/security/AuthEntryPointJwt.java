@@ -23,7 +23,7 @@ import com.epam.esm.exceptionhandler.ErrorData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * The {@code AuthEntryPointJwt} class is for generate exception reponse
+ * The {@code AuthEntryPointJwt} class is for generate exception response
  *
  * @author Ihar Klepcha
  * @see AuthenticationEntryPoint
@@ -32,22 +32,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 	public static Logger log = LogManager.getLogger();
 	private static final String ENCODING = "UTF-8";
-	@Autowired
 	private MessageSource messageSource;
 
+	/**
+	 * Constructs a new authentication entry point
+	 * 
+	 * @param messageSourcel {@link MessageSource} source of messages
+	 * 
+	 */
+	@Autowired
+	public AuthEntryPointJwt(MessageSource messageSource) {
+		super();
+		this.messageSource = messageSource;
+	}
+
 	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response,
+	public void commence(HttpServletRequest request, 
+			HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
 		log.error(authException.getLocalizedMessage(), authException);
-//		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
-		String message = messageSource.getMessage(ErrorMessageKey.NO_ACCESS, new String[] {}, request.getLocale());;
-	    response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
-	    response.setCharacterEncoding(ENCODING);
-	    response.setStatus(HttpStatus.UNAUTHORIZED.value());
-	    response.getWriter()
-	    	.write(String.valueOf(new ObjectMapper()
-	                    .writeValueAsString(new ErrorData(List.of(message),
-	                    		HttpStatus.UNAUTHORIZED.value() + ErrorCode.UNAUTHORIZED))));
+		String message = messageSource.getMessage(ErrorMessageKey.NO_ACCESS, new String[] {}, request.getLocale());
+		response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
+		response.setCharacterEncoding(ENCODING);
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		response.getWriter().write(String.valueOf(new ObjectMapper().writeValueAsString(
+				new ErrorData(List.of(message), HttpStatus.UNAUTHORIZED.value() + ErrorCode.UNAUTHORIZED))));
 	}
 }
-

@@ -33,23 +33,33 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	public static Logger log = LogManager.getLogger();
 	private static final String AUTHORIZATION_TYPE = "Bearer ";
 	private static final String SEPARATOR = " ";
-	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
-	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
 
+	/**
+	 * Constructs a new token security filter with the specified
+	 * 
+	 * @param jwtTokenUtil       {@link JwtTokenUtil} util class
+	 * @param userDetailsService {@link UserDetailsServiceImpl} service for user
+	 *                           data
+	 */
+	@Autowired
+	public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, UserDetailsServiceImpl userDetailsService) {
+		super();
+		this.jwtTokenUtil = jwtTokenUtil;
+		this.userDetailsService = userDetailsService;
+	}
+
 	@Override
-	protected void doFilterInternal(HttpServletRequest request
-			, HttpServletResponse response
-			, FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
 		try {
 			Optional<String> jwt = parseJwt(request);
-			
 			if (jwt.isPresent() && jwtTokenUtil.validateJwtToken(jwt.get())) {
 				String username = jwtTokenUtil.getUserNameFromJwtToken(jwt.get());
 				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-				UsernamePasswordAuthenticationToken authentication = 
-						new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+						userDetails, null, userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
@@ -61,7 +71,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
 	private Optional<String> parseJwt(HttpServletRequest request) {
 		String headerAuth = request.getHeader(HttpHeaders.AUTHORIZATION);
-		Optional <String> jwt = Optional.empty();
+		Optional<String> jwt = Optional.empty();
 		if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(AUTHORIZATION_TYPE)) {
 			jwt = Optional.of(headerAuth.split(SEPARATOR)[1].trim());// TODO mb beter
 		}

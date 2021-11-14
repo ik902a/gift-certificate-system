@@ -15,10 +15,10 @@ import com.epam.esm.entity.Role;
  */
 public class UserResponse extends RepresentationModel<UserResponse> {
 	private long id;
-    private String login;
-    private Role role;
-	
-    /**
+	private String login;
+	private Role role;
+
+	/**
 	 * Constructs a new response
 	 */
 	public UserResponse() {
@@ -28,7 +28,7 @@ public class UserResponse extends RepresentationModel<UserResponse> {
 	/**
 	 * Constructs a new response with the specified
 	 * 
-	 * @param id is user id
+	 * @param id    is user id
 	 * @param login {@link String} login
 	 */
 	public UserResponse(long id, String login, Role role) {
@@ -37,15 +37,17 @@ public class UserResponse extends RepresentationModel<UserResponse> {
 		this.login = login;
 		this.role = role;
 	}
-	
+
 	/**
-	 * Builds a new response 
+	 * Builds a new response
 	 * 
-	 * @param user {@link UserDto}  entity
+	 * @param user {@link UserDto} entity
 	 * @return {@link UserResponse} response
 	 */
-    public static UserResponse valueOf(UserDto user) {
-    	return new UserResponse(user.getId(), user.getLogin(), user.getRole());
+	public static UserResponse valueOf(UserDto user) {
+		return new UserResponse(user.getId(), 
+				user.getLogin(), 
+				user.getRole());
 	}
 
 	public long getId() {
@@ -95,7 +97,7 @@ public class UserResponse extends RepresentationModel<UserResponse> {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nUser{ id=").append(id);
+		sb.append("User{ id=").append(id);
 		sb.append(", login=").append(login);
 		sb.append(", role=").append(role).append(" }");
 		return sb.toString();

@@ -17,8 +17,9 @@ public final class ErrorMessageKey {
 	public static final String DATABASE_ERROR = "message.database_error";
 	public static final String BAD_CREDENTIALS = "message.bad_credentials";
 	public static final String NO_ACCESS = "message.no_access";
+	public static final String LOCKED_ACCOUNT = "message.locked_account";
 	public static final String INTERNAL_SERVER_ERROR = "message.internal_server_error";
-	
+
 	private ErrorMessageKey() {
 	}
 }
