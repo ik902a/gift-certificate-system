@@ -117,7 +117,7 @@ ORM stands for Object Relational Mapping. Itâ€™s a bit of an abstract concept â€
 8. Abstraction should be used everywhere to avoid code duplication. 
 9. Several configurations should be implemented.
 
-#(Basics)
+# (Basics)
 
 #### Business requirements
 1. Develop web service for Gift Certificates system with the following entities (many-to-many):

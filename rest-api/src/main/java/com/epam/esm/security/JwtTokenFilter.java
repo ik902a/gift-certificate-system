@@ -32,7 +32,6 @@ import com.epam.esm.service.impl.UserDetailsServiceImpl;
 public class JwtTokenFilter extends OncePerRequestFilter {
 	public static Logger log = LogManager.getLogger();
 	private static final String AUTHORIZATION_TYPE = "Bearer ";
-	private static final String SEPARATOR = " ";
 	private JwtTokenUtil jwtTokenUtil;
 	private UserDetailsServiceImpl userDetailsService;
 
@@ -73,7 +72,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 		String headerAuth = request.getHeader(HttpHeaders.AUTHORIZATION);
 		Optional<String> jwt = Optional.empty();
 		if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(AUTHORIZATION_TYPE)) {
-			jwt = Optional.of(headerAuth.split(SEPARATOR)[1].trim());// TODO mb beter
+			jwt = Optional.of(headerAuth.replaceFirst(AUTHORIZATION_TYPE, "").trim());
 		}
 		return jwt;
 	}
