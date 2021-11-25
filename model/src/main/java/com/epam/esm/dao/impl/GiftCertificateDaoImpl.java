@@ -19,7 +19,8 @@ import com.epam.esm.dao.util.PaginationParamExtractor;
 import com.epam.esm.entity.GiftCertificate;
 
 /**
- * The {@code GiftCertificateDaoImpl} class works with gift_certificates table in database
+ * The {@code GiftCertificateDaoImpl} class works with gift_certificates table
+ * in database
  * 
  * @author Ihar Klepcha
  * @see GiftCertificateDao
@@ -76,8 +77,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 	@Override
 	public long getTotalNumber(Map<String, String> params) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<GiftCertificate> criteriaQuery = GiftCertificateQueryBuilder
-				.buildQueryFindByParams(params, criteriaBuilder);
+		CriteriaQuery<GiftCertificate> criteriaQuery = 
+				GiftCertificateQueryBuilder.buildQueryFindByParams(params, criteriaBuilder);
 		return entityManager.createQuery(criteriaQuery)
 				.getResultStream()
 				.count();

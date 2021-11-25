@@ -8,7 +8,6 @@ import static com.epam.esm.exception.ErrorMessageKey.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -38,12 +37,24 @@ import com.epam.esm.service.OrderService;
 @Service
 public class OrderServiceImpl implements OrderService {
 	public static Logger log = LogManager.getLogger();
-	@Autowired
 	private OrderDao orderDao;
-	@Autowired
 	private GiftCertificateDao giftCertificateDao;
-	@Autowired
 	private ModelMapper modelMapper;
+
+	/**
+	 * Constructs service for order
+	 * 
+	 * @param orderDao           {@link OrderDao} DAO for order
+	 * @param giftCertificateDao {@link GiftCertificateDao} DAO for certificate
+	 * @param ModelMapper        {@link ModelMapper} performs object mapping
+	 */
+	@Autowired
+	public OrderServiceImpl(OrderDao orderDao, GiftCertificateDao giftCertificateDao, ModelMapper modelMapper) {
+		super();
+		this.orderDao = orderDao;
+		this.giftCertificateDao = giftCertificateDao;
+		this.modelMapper = modelMapper;
+	}
 
 	@Override
 	@Transactional
@@ -63,28 +74,25 @@ public class OrderServiceImpl implements OrderService {
 		for (Map.Entry<String, Integer> giftCertificateEntry : giftCertificateMap.entrySet()) {
 			String giftCertificateName = giftCertificateEntry.getKey();
 			Integer quantity = giftCertificateEntry.getValue();
-			Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityByName(giftCertificateName);
-			GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
-							() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_NAME.getErrorMessageKey()
-									, giftCertificateName
-									, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
+			GiftCertificate giftCertificate = giftCertificateDao.findEntityByName(giftCertificateName)
+					.orElseThrow(() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_NAME, 
+							giftCertificateName,
+							GIFT_CERTIFICATE_INCORRECT));
 			order.addGiftCertificateOrder(new GiftCertificateOrder(order, giftCertificate, quantity));
 			cost = cost.add(giftCertificate.getPrice().multiply(new BigDecimal(quantity)));
-
 		}
 		order.setCost(cost);
 		return order;
 	}
-	
-	@Transactional
+
 	@Override
+	@Transactional
 	public OrderDto findById(long id) {
 		log.info("Finding Order by id={}", id);
-		Optional<Order> orderOptional = orderDao.findEntityById(id);
-		Order order = orderOptional.orElseThrow(
-				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-						, String.valueOf(id)
-						, ORDER_INCORRECT.getErrorCode()));
+		Order order = orderDao.findEntityById(id)
+				.orElseThrow(() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID, 
+						String.valueOf(id), 
+						ORDER_INCORRECT));
 		return modelMapper.map(order, OrderDto.class);
 	}
 
@@ -100,13 +108,13 @@ public class OrderServiceImpl implements OrderService {
 				.collect(Collectors.toList());
 		return buildPage(orderDtoList, user, params);
 	}
-	
+
 	private PageDto<OrderDto> buildPage(List<OrderDto> orderDtoList, User user, Map<String, String> params) {
 		int offset = Integer.parseInt(params.get(OFFSET));
 		int limit = Integer.parseInt(params.get(LIMIT));
 		long totalPositions = orderDao.getTotalNumberByUser(user, params);
 		long totalPages = (long) Math.ceil((double) totalPositions / limit);
 		long pageNumber = offset / limit + 1;
-      return new PageDto<>(orderDtoList, totalPages, pageNumber, offset, limit);
+		return new PageDto<>(orderDtoList, totalPages, pageNumber, offset, limit);
 	}
 }

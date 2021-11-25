@@ -8,21 +8,21 @@ import java.util.List;
  * @author Ihar Klepcha
  */
 public class ErrorData {
-    private List<String> errorMessage;
-    private String errorCode;
-    
+	private List<String> errorMessage;
+	private String errorCode;
+
 	/**
 	 * Constructs a new error data
 	 */
 	public ErrorData() {
 		super();
 	}
-	
+
 	/**
 	 * Constructs a new error date with the specified
 	 * 
 	 * @param errorMessage {@link String} error message
-	 * @param errorCode {@link String} error code
+	 * @param errorCode    {@link String} error code
 	 */
 	public ErrorData(List<String> errorMessage, String errorCode) {
 		super();

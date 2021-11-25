@@ -16,7 +16,7 @@ import com.epam.esm.response.UserResponse;
  * @author Ihar Klepcha
  */
 public class UserHateoasUtil {
-	
+
 	/**
 	 * Adds HATEOAS links
 	 * 
@@ -29,11 +29,11 @@ public class UserHateoasUtil {
 	/**
 	 * Adds HATEOAS links to page
 	 * 
-	 * @param page {@link PageUserResponse} page response
+	 * @param page   {@link PageUserResponse} page response
 	 * @param params {@link Map} of {@link String} and {@link String} parameters
 	 */
-    public static void addLinkOnPagedResourceRetrieval(PageUserResponse page, Map<String, String> params) {
-    	int offset = Integer.parseInt(params.get(OFFSET));
+	public static void addLinkOnPagedResourceRetrieval(PageUserResponse page, Map<String, String> params) {
+		int offset = Integer.parseInt(params.get(OFFSET));
 		int limit = Integer.parseInt(params.get(LIMIT));
 		if (hasNextPage(page.getPageNumber(), page.getTotalPages())) {
 			params.put(OFFSET, String.valueOf(offset + limit));

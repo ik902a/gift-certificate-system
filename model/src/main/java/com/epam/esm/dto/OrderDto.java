@@ -1,29 +1,27 @@
 package com.epam.esm.dto;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * The {@code OrderDto} class is implementation of pattern DTO for transmission order entity 
- * between service and controller
+ * The {@code OrderDto} class is implementation of pattern DTO for transmission
+ * order entity between service and controller
  *
  * @author Ihar Klepcha
  */
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderDto {
 	private Long id;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-	private ZonedDateTime date;
+	private LocalDateTime date;
 	private BigDecimal cost;
 	private List<GiftCertificateOrderDto> giftCertificateOrderList;
-	
-    /**
+
+	/**
 	 * Constructs a order DTO
 	 */
 	public OrderDto() {
@@ -33,14 +31,15 @@ public class OrderDto {
 	/**
 	 * Constructs a order DTO with the specified
 	 * 
-	 * @param id {@link Long} order id
-	 * @param date {@link ZonedDateTime} creating date
-	 * @param cost {@link BigDecimal} cost order
-	 * @param user {@link UserDto} is user owner order
-	 * @param giftCertificateOrderList {@link List} of {@link GiftCertificateOrderDto} is list 
-	 * gift certificates
+	 * @param id                       {@link Long} order id
+	 * @param date                     {@link LocalDateTime} creating date
+	 * @param cost                     {@link BigDecimal} cost order
+	 * @param user                     {@link UserDto} is user owner order
+	 * @param giftCertificateOrderList {@link List} of
+	 *                                 {@link GiftCertificateOrderDto} is list gift
+	 *                                 certificates
 	 */
-	public OrderDto(Long id, ZonedDateTime date, BigDecimal cost, UserDto user,
+	public OrderDto(Long id, LocalDateTime date, BigDecimal cost, UserDto user,
 			List<GiftCertificateOrderDto> giftCertificateOrderList) {
 		super();
 		this.id = id;
@@ -50,11 +49,11 @@ public class OrderDto {
 	}
 
 	public void addGiftCertificate(GiftCertificateOrderDto giftCertificate) {
-        if (giftCertificateOrderList == null) {
-        	giftCertificateOrderList = new ArrayList<>();
-        }
-        giftCertificateOrderList.add(giftCertificate);
-    }
+		if (giftCertificateOrderList == null) {
+			giftCertificateOrderList = new ArrayList<>();
+		}
+		giftCertificateOrderList.add(giftCertificate);
+	}
 
 	public Long getId() {
 		return id;
@@ -64,11 +63,11 @@ public class OrderDto {
 		this.id = id;
 	}
 
-	public ZonedDateTime getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(ZonedDateTime date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
@@ -109,7 +108,7 @@ public class OrderDto {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nOrderDTO{ id=").append(id);
+		sb.append("OrderDTO{ id=").append(id);
 		sb.append(", date=").append(date);
 		sb.append(", cost=").append(cost).append(" }");
 		return sb.toString();

@@ -12,7 +12,7 @@ import com.epam.esm.validator.ParamValidator;
 public class PaginationParamExtractor {
 	private static final String DEFAULT_OFFSET = "0";
 	private static final String DEFAULT_LIMIT = "20";
-	
+
 	/**
 	 * Extracts offset
 	 * 
@@ -24,7 +24,7 @@ public class PaginationParamExtractor {
 		params.put(ParamName.OFFSET, params.getOrDefault(ParamName.OFFSET, DEFAULT_OFFSET));
 		return Integer.parseInt(params.get(ParamName.OFFSET));
 	}
-	
+
 	/**
 	 * Extracts limit
 	 * 

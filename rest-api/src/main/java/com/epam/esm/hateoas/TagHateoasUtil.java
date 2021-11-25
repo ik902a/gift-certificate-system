@@ -16,21 +16,20 @@ import com.epam.esm.response.TagResponse;
  * @author Ihar Klepcha
  */
 public class TagHateoasUtil {
-    
+
 	/**
 	 * Adds HATEOAS links
 	 * 
 	 * @param tag {@link TagResponse} tag
 	 */
-    public static void addLinks(TagResponse tag) {
-        tag.add(linkTo(methodOn(TagController.class).getTagById(tag.getId())).withSelfRel());
-        tag.add(linkTo(methodOn(TagController.class).deleteTag(tag.getId())).withRel(DELETE));
-    }
-    
+	public static void addLinks(TagResponse tag) {
+		tag.add(linkTo(methodOn(TagController.class).getTagById(tag.getId())).withSelfRel());
+	}
+
 	/**
 	 * Adds HATEOAS links to page
 	 * 
-	 * @param page {@link PageTagResponse} page response
+	 * @param page   {@link PageTagResponse} page response
 	 * @param params {@link Map} of {@link String} and {@link String} parameters
 	 */
 	public static void addLinkOnPagedResourceRetrieval(PageTagResponse page, Map<String, String> params) {

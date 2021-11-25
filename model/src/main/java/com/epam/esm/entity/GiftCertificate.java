@@ -1,12 +1,13 @@
 package com.epam.esm.entity;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -27,34 +28,34 @@ import com.epam.esm.entity.audit.GiftCertificateAudit;
  * @see AbstractEntity
  */
 @Entity
-@Table(name="gift_certificates")
+@Table(name = "gift_certificates")
 @EntityListeners(GiftCertificateAudit.class)
 public class GiftCertificate extends AbstractEntity {
-	private static final long serialVersionUID = 1L;	
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	private Long id;
-	@Column(name="name")
+	@Column(name = "name")
 	private String name;
-	@Column(name="description")
+	@Column(name = "description")
 	private String description;
-	@Column(name="price")
+	@Column(name = "price")
 	private BigDecimal price;
-	@Column(name="duration")
+	@Column(name = "duration")
 	private Integer duration;
 	@Column(name = "create_date")
-	private ZonedDateTime createDate;
+	private LocalDateTime createDate;
 	@Column(name = "last_update_date")
-	private ZonedDateTime lastUpdateDate;
+	private LocalDateTime lastUpdateDate;
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "gift_certificates_tags"
-		, joinColumns = @JoinColumn(name = "gift_certificate_id")
-		, inverseJoinColumns = @JoinColumn(name = "tag_id"))
+	@JoinTable(name = "gift_certificates_tags", 
+		joinColumns = @JoinColumn(name = "gift_certificate_id"), 
+		inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private List<Tag> tags;
-	@OneToMany(mappedBy = "giftCertificate", cascade = CascadeType.ALL)    
+	@OneToMany(mappedBy = "giftCertificate", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<GiftCertificateOrder> giftCertificateOrderList;
-	
+
 	/**
 	 * Constructs a gift certificate
 	 */
@@ -64,18 +65,19 @@ public class GiftCertificate extends AbstractEntity {
 	/**
 	 * Constructs a gift certificate with the specified
 	 * 
-	 * @param id {@link Long} gift certificate id
-	 * @param name {@link String} name
-	 * @param description {@link String} description
-	 * @param price {@link BigDecimal} price
-	 * @param duration {@link Integer} duration
-	 * @param createDate {@link ZonedDateTime} create date
-	 * @param lastUodateDate {@link ZonedDateTime} last update date
-	 * @param tags {@link List} of ({@link Tag} list tags
-	 * @param giftCertificateOrderList {@link List} of ({@link GiftCertificateOrder} list GiftCertificateOrders
+	 * @param id                       {@link Long} gift certificate id
+	 * @param name                     {@link String} name
+	 * @param description              {@link String} description
+	 * @param price                    {@link BigDecimal} price
+	 * @param duration                 {@link Integer} duration
+	 * @param createDate               {@link LocalDateTime} create date
+	 * @param lastUodateDate           {@link LocalDateTime} last update date
+	 * @param tags                     {@link List} of ({@link Tag} list tags
+	 * @param giftCertificateOrderList {@link List} of ({@link GiftCertificateOrder}
+	 *                                 list GiftCertificateOrders
 	 */
 	public GiftCertificate(Long id, String name, String description, BigDecimal price, Integer duration,
-			ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<Tag> tags,
+			LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags,
 			List<GiftCertificateOrder> giftCertificateOrderList) {
 		super();
 		this.id = id;
@@ -144,19 +146,19 @@ public class GiftCertificate extends AbstractEntity {
 		this.duration = duration;
 	}
 
-	public ZonedDateTime getCreateDate() {
+	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(ZonedDateTime createDate) {
+	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;
 	}
 
-	public ZonedDateTime getLastUpdateDate() {
+	public LocalDateTime getLastUpdateDate() {
 		return lastUpdateDate;
 	}
 
-	public void setLastUpdateDate(ZonedDateTime lastUpdateDate) {
+	public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
 		this.lastUpdateDate = lastUpdateDate;
 	}
 

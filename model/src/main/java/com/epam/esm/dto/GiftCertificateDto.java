@@ -1,7 +1,7 @@
 package com.epam.esm.dto;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,33 +17,33 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * The {@code GiftCertificateDto} class is implementation of pattern DTO for transmission gift certificate
- * entity between service and controller.
+ * The {@code GiftCertificateDto} class is implementation of pattern DTO for
+ * transmission gift certificate entity between service and controller.
  *
  * @author Ihar Klepcha
  */
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GiftCertificateDto {
 	private Long id;
 	@NotBlank
-    @Size(max = 45)
-    private String name;
+	@Size(max = 45)
+	private String name;
 	@NotBlank
-    @Size(max = 100)
-    private String description;
+	@Size(max = 100)
+	private String description;
 	@NotNull
 	@Digits(integer = 4, fraction = 2)
-    private BigDecimal price;
+	private BigDecimal price;
 	@DecimalMin(value = "1")
 	@DecimalMax(value = "365")
 	@NotNull
-    private Integer duration;
-    private ZonedDateTime createDate;
-    private ZonedDateTime lastUpdateDate;
-    @Valid
-    private List<TagDto> tags;
-    
-    /**
+	private Integer duration;
+	private LocalDateTime createDate;
+	private LocalDateTime lastUpdateDate;
+	@Valid
+	private List<TagDto> tags;
+
+	/**
 	 * Constructs a gift certificate DTO
 	 */
 	public GiftCertificateDto() {
@@ -53,17 +53,17 @@ public class GiftCertificateDto {
 	/**
 	 * Constructs a gift certificate DTO with the specified
 	 * 
-	 * @param id {@link Long} gift certificate id
-	 * @param name {@link String} name
-	 * @param description {@link String} description
-	 * @param price {@link BigDecimal} price
-	 * @param duration {@link Integer} duration
-	 * @param createDate {@link ZonedDateTime} create date
-	 * @param lastUodateDate {@link ZonedDateTime} last update date
-	 * @param tags {@link List} of ({@link TagDto} list tags
+	 * @param id             {@link Long} gift certificate id
+	 * @param name           {@link String} name
+	 * @param description    {@link String} description
+	 * @param price          {@link BigDecimal} price
+	 * @param duration       {@link Integer} duration
+	 * @param createDate     {@link LocalDateTime} create date
+	 * @param lastUodateDate {@link LocalDateTime} last update date
+	 * @param tags           {@link List} of ({@link TagDto} list tags
 	 */
-    public GiftCertificateDto(Long id, String name, String description, BigDecimal price, Integer duration, 
-    		ZonedDateTime createDate, ZonedDateTime lastUpdateDate, List<TagDto> tags) {
+	public GiftCertificateDto(Long id, String name, String description, BigDecimal price, Integer duration,
+			LocalDateTime createDate, LocalDateTime lastUpdateDate, List<TagDto> tags) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -76,11 +76,11 @@ public class GiftCertificateDto {
 	}
 
 	public void addTag(TagDto tag) {
-        if (tags == null) {
-            tags = new ArrayList<>();
-        }
-        tags.add(tag);
-    }
+		if (tags == null) {
+			tags = new ArrayList<>();
+		}
+		tags.add(tag);
+	}
 
 	public Long getId() {
 		return id;
@@ -122,19 +122,19 @@ public class GiftCertificateDto {
 		this.duration = duration;
 	}
 
-	public ZonedDateTime getCreateDate() {
+	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(ZonedDateTime createDate) {
+	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;
 	}
 
-	public ZonedDateTime getLastUpdateDate() {
+	public LocalDateTime getLastUpdateDate() {
 		return lastUpdateDate;
 	}
 
-	public void setLastUpdateDate(ZonedDateTime lastUpdateDate) {
+	public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
 		this.lastUpdateDate = lastUpdateDate;
 	}
 
@@ -169,7 +169,7 @@ public class GiftCertificateDto {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nGiftCertificateDTO{ id=").append(id);
+		sb.append("GiftCertificateDTO{ id=").append(id);
 		sb.append(", name=").append(name);
 		sb.append(", description=").append(description);
 		sb.append(", price=").append(price);

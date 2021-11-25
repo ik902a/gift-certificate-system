@@ -1,7 +1,8 @@
 package com.epam.esm.response;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -19,12 +20,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 public class OrderResponse extends RepresentationModel<OrderResponse> {
 	private long id;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-	private ZonedDateTime date;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	private LocalDateTime date;
 	private BigDecimal cost;
 	private List<GiftCertificateOrderResponse> giftCertificateOrderList;
 
-    /**
+	/**
 	 * Constructs a new response
 	 */
 	public OrderResponse() {
@@ -34,13 +35,14 @@ public class OrderResponse extends RepresentationModel<OrderResponse> {
 	/**
 	 * Constructs a new response with the specified
 	 * 
-	 * @param id is order id
-	 * @param date {@link ZonedDateTime} creating date
-	 * @param cost {@link BigDecimal} cost order
-	 * @param giftCertificateOrderList {@link List} of {@link GiftCertificateOrderResponse} is list 
-	 * gift certificates
+	 * @param id                       is order id
+	 * @param date                     {@link LocalDateTime} creating date
+	 * @param cost                     {@link BigDecimal} cost order
+	 * @param giftCertificateOrderList {@link List} of
+	 *                                 {@link GiftCertificateOrderResponse} is list
+	 *                                 gift certificates
 	 */
-	public OrderResponse(long id, ZonedDateTime date, BigDecimal cost,
+	public OrderResponse(long id, LocalDateTime date, BigDecimal cost,
 			List<GiftCertificateOrderResponse> giftCertificateOrderList) {
 		super();
 		this.id = id;
@@ -50,17 +52,22 @@ public class OrderResponse extends RepresentationModel<OrderResponse> {
 	}
 
 	/**
-	 * Builds a new response 
+	 * Builds a new response
 	 * 
-	 * @param order {@link OrderDto}  entity
+	 * @param order {@link OrderDto} entity
 	 * @return {@link OrderResponse} response
 	 */
 	public static OrderResponse valueOf(OrderDto order) {
-		List<GiftCertificateOrderResponse> giftCertificateOrderResponse = order.getGiftCertificateOrderList()
-				.stream()
-				.map(giftCertificateOrder -> GiftCertificateOrderResponse.valueOf(giftCertificateOrder))
-				.collect(Collectors.toList());
-		return new OrderResponse(order.getId(), order.getDate(), order.getCost(), giftCertificateOrderResponse);
+		List<GiftCertificateOrderResponse> giftCertificateOrderResponse = (order.getGiftCertificateOrderList() != null)
+				? order.getGiftCertificateOrderList()
+						.stream()
+						.map(giftCertificateOrder -> GiftCertificateOrderResponse.valueOf(giftCertificateOrder))
+						.collect(Collectors.toList())
+				: Collections.emptyList();
+		return new OrderResponse(order.getId(), 
+				order.getDate(), 
+				order.getCost(), 
+				giftCertificateOrderResponse);
 	}
 
 	public long getId() {
@@ -71,11 +78,11 @@ public class OrderResponse extends RepresentationModel<OrderResponse> {
 		this.id = id;
 	}
 
-	public ZonedDateTime getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(ZonedDateTime date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
@@ -115,11 +122,11 @@ public class OrderResponse extends RepresentationModel<OrderResponse> {
 		return Objects.equals(cost, other.cost) && Objects.equals(date, other.date)
 				&& Objects.equals(giftCertificateOrderList, other.giftCertificateOrderList) && id == other.id;
 	}
-	
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nOrderResponse{ id=").append(id);
+		sb.append("OrderResponse{ id=").append(id);
 		sb.append(", date=").append(date);
 		sb.append(", cost=").append(cost).append(" }");
 		return sb.toString();

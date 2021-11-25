@@ -9,7 +9,7 @@ package com.epam.esm.exception;
 public class ResourceNotExistException extends GiftCertificateSystemException {
 	private static final long serialVersionUID = 1L;
 	private String incorrectParameter;
-    private String errorCode;
+	private String errorCode;
 
 	/**
 	 * Constructs a new resource exception
@@ -21,20 +21,20 @@ public class ResourceNotExistException extends GiftCertificateSystemException {
 	/**
 	 * Constructs a new resource exception with the specified
 	 * 
-	 * @param message {@link String} message
+	 * @param message            {@link String} message
 	 * @param incorrectParameter {@link String} incorrect value
-	 * @param errorCode {@link String} custom code error
+	 * @param errorCode          {@link String} custom code error
 	 */
 	public ResourceNotExistException(String message, String incorrectParameter, String errorCode) {
 		super(message);
 		this.incorrectParameter = incorrectParameter;
 		this.errorCode = errorCode;
 	}
-	
+
 	/**
 	 * Constructs a new resource exception with the specified
 	 * 
-	 * @param message {@link String} message
+	 * @param message   {@link String} message
 	 * @param errorCode {@link String} custom code error
 	 */
 	public ResourceNotExistException(String message, String errorCode) {
@@ -45,10 +45,10 @@ public class ResourceNotExistException extends GiftCertificateSystemException {
 	/**
 	 * Constructs a new resource exception with the specified
 	 * 
-	 * @param message {@link String} message
-	 * @param cause {@link Throwable} cause
+	 * @param message            {@link String} message
+	 * @param cause              {@link Throwable} cause
 	 * @param incorrectParameter {@link String} incorrect value
-	 * @param errorCode {@link String} custom code error
+	 * @param errorCode          {@link String} custom code error
 	 */
 	public ResourceNotExistException(String message, Throwable cause, String incorrectParameter, String errorCode) {
 		super(message, cause);
@@ -59,9 +59,9 @@ public class ResourceNotExistException extends GiftCertificateSystemException {
 	/**
 	 * Constructs a new resource exception with the specified
 	 * 
-	 * @param cause {@link Throwable} cause
+	 * @param cause              {@link Throwable} cause
 	 * @param incorrectParameter {@link String} incorrect value
-	 * @param errorCode {@link String} custom code error
+	 * @param errorCode          {@link String} custom code error
 	 */
 	public ResourceNotExistException(Throwable cause, String incorrectParameter, String errorCode) {
 		super(cause);
@@ -73,7 +73,7 @@ public class ResourceNotExistException extends GiftCertificateSystemException {
 	public String getMessage() {
 		return super.getMessage();
 	}
-	
+
 	public String getIncorrectParameter() {
 		return incorrectParameter;
 	}

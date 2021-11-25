@@ -7,7 +7,6 @@ import static com.epam.esm.exception.ErrorMessageKey.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -27,7 +26,8 @@ import com.epam.esm.exception.ResourceNotExistException;
 import com.epam.esm.service.GiftCertificateService;
 
 /**
- * The {@code GiftCertificateServiceImpl} class is responsible for operations with gift certificate
+ * The {@code GiftCertificateServiceImpl} class is responsible for operations
+ * with gift certificate
  * 
  * @author Ihar Klepcha
  * @see GiftCertificateService
@@ -35,12 +35,25 @@ import com.epam.esm.service.GiftCertificateService;
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 	public static Logger log = LogManager.getLogger();
-	@Autowired
 	private GiftCertificateDao giftCertificateDao;
-	@Autowired
 	private TagDao tagDao;
-	@Autowired
 	private ModelMapper modelMapper;
+
+	/**
+	 * Constructs service for gift certificate
+	 * 
+	 *
+	 * @param giftCertificateDao {@link GiftCertificateDao} DAO for certificate
+	 * @param tagDao             {@link TagDao} DAO for tag
+	 * @param ModelMapper        {@link ModelMapper} performs object mapping
+	 */
+	@Autowired
+	public GiftCertificateServiceImpl(GiftCertificateDao giftCertificateDao, TagDao tagDao, ModelMapper modelMapper) {
+		super();
+		this.giftCertificateDao = giftCertificateDao;
+		this.tagDao = tagDao;
+		this.modelMapper = modelMapper;
+	}
 
 	@Override
 	@Transactional
@@ -53,7 +66,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		giftCertificate = giftCertificateDao.create(giftCertificate);
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
 	}
-	
+
 	private List<Tag> createNewTag(List<Tag> tags) {
 		return tags.stream()
 				.map(tag -> tagDao.findEntityByName(tag.getName()).orElseGet(() -> tagDao.create(tag)))
@@ -65,31 +78,30 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	public PageDto<GiftCertificateDto> find(Map<String, String> params) {
 		log.info("Finding GiftCertificate with parameters: {}", params);
 		List<GiftCertificate> giftCertificateList = giftCertificateDao.find(params);
-	    List<GiftCertificateDto> giftCertificateDtoList = giftCertificateList.stream()
-                .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
-                .collect(Collectors.toList());
-	    return buildPage(giftCertificateDtoList, params);
+		List<GiftCertificateDto> giftCertificateDtoList = giftCertificateList.stream()
+				.map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
+				.collect(Collectors.toList());
+		return buildPage(giftCertificateDtoList, params);
 	}
-	
-	private PageDto<GiftCertificateDto> buildPage(List<GiftCertificateDto> giftCertificateDtoList
-			, Map<String, String> params) {
+
+	private PageDto<GiftCertificateDto> buildPage(List<GiftCertificateDto> giftCertificateDtoList,
+			Map<String, String> params) {
 		int offset = Integer.parseInt(params.get(OFFSET));
 		int limit = Integer.parseInt(params.get(LIMIT));
 		long totalPositions = giftCertificateDao.getTotalNumber(params);
 		long totalPages = (long) Math.ceil((double) totalPositions / limit);
 		long pageNumber = offset / limit + 1;
-      return new PageDto<>(giftCertificateDtoList, totalPages, pageNumber, offset, limit);
+		return new PageDto<>(giftCertificateDtoList, totalPages, pageNumber, offset, limit);
 	}
 
 	@Override
 	@Transactional
 	public GiftCertificateDto findById(long id) {
 		log.info("Finding GiftCertificate by id={}", id);
-		Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findEntityById(id);
-		GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
-				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-						, String.valueOf(id)
-						, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
+		GiftCertificate giftCertificate = giftCertificateDao.findEntityById(id)
+				.orElseThrow(() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID, 
+						String.valueOf(id),
+						GIFT_CERTIFICATE_INCORRECT));
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
 	}
 
@@ -97,17 +109,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	@Transactional
 	public GiftCertificateDto update(GiftCertificateDto giftCertificateNewDto) {
 		log.info("Updating GiftCertificate by data: {}", giftCertificateNewDto);
-		Optional<GiftCertificate> giftCertificateOptional = 
-				giftCertificateDao.findEntityById(giftCertificateNewDto.getId());
-		GiftCertificate giftCertificate = giftCertificateOptional.orElseThrow(
-				() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-						, giftCertificateNewDto.getId().toString()
-						, GIFT_CERTIFICATE_INCORRECT.getErrorCode()));
+		GiftCertificate giftCertificate = giftCertificateDao.findEntityById(giftCertificateNewDto.getId())
+				.orElseThrow(() -> new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID,
+						giftCertificateNewDto.getId().toString(), 
+						GIFT_CERTIFICATE_INCORRECT));
 		GiftCertificate giftCertificateNew = modelMapper.map(giftCertificateNewDto, GiftCertificate.class);
 		updateFields(giftCertificate, giftCertificateNew);
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
 	}
-	
+
 	private void updateFields(GiftCertificate giftCertificate, GiftCertificate giftCertificateNew) {
 		if (giftCertificateNew.getName() != null) {
 			giftCertificate.setName(giftCertificateNew.getName());
@@ -121,19 +131,19 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		if (giftCertificateNew.getDuration() != null) {
 			giftCertificate.setDuration(giftCertificateNew.getDuration());
 		}
-        if(giftCertificateNew.getTags() != null){
-            giftCertificate.setTags(createNewTag(giftCertificateNew.getTags()));
-        }
+		if (giftCertificateNew.getTags() != null) {
+			giftCertificate.setTags(createNewTag(giftCertificateNew.getTags()));
+		}
 	}
-	
+
 	@Override
 	@Transactional
 	public void delete(long id) {
 		log.info("Deleting GiftCertificate by id={}", id);
 		if (!giftCertificateDao.delete(id)) {
-			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID.getErrorMessageKey()
-					, String.valueOf(id)
-					, GIFT_CERTIFICATE_INCORRECT.getErrorCode());
+			throw new ResourceNotExistException(RESOURCE_NOT_FOUND_BY_ID, 
+					String.valueOf(id),
+					GIFT_CERTIFICATE_INCORRECT);
 		}
 	}
 }

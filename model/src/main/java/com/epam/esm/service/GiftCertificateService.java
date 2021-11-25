@@ -6,7 +6,8 @@ import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.PageDto;
 
 /**
- * The {@code GiftCertificateService} interface for operations with the gift certificate
+ * The {@code GiftCertificateService} interface for operations with the gift
+ * certificate
  * 
  * @author Ihar Klepcha
  */

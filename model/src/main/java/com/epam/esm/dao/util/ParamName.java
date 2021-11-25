@@ -14,7 +14,7 @@ public class ParamName {
 	public static final String LIMIT = "limit";
 	public static final String SORT_BY = "sort_by";
 	public static final String ORDER_BY = "order_by";
-    
+
 	private ParamName() {
 	}
 }

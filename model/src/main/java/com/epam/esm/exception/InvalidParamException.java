@@ -24,9 +24,9 @@ public class InvalidParamException extends GiftCertificateSystemException {
 	/**
 	 * Constructs a new invalid exception with the specified
 	 * 
-	 * @param errorMessageKeys {@link List} of {@link String} keys for message
+	 * @param errorMessageKeys   {@link List} of {@link String} keys for message
 	 * @param incorrectParameter {@link String} incorrect value
-	 * @param errorCode {@link String} custom code error
+	 * @param errorCode          {@link String} custom code error
 	 */
 	public InvalidParamException(List<String> errorMessageKeys, String incorrectParameter, String errorCode) {
 		super();
@@ -34,12 +34,12 @@ public class InvalidParamException extends GiftCertificateSystemException {
 		this.incorrectParameter = incorrectParameter;
 		this.errorCode = errorCode;
 	}
-	
+
 	/**
 	 * Constructs a new invalid exception with the specified
 	 * 
 	 * @param errorMessageKeys {@link List} of{@link String} keys for message
-	 * @param errorCode {@link String} custom code error
+	 * @param errorCode        {@link String} custom code error
 	 */
 	public InvalidParamException(List<String> errorMessageKeys, String errorCode) {
 		super();

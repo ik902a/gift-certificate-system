@@ -21,15 +21,16 @@ import com.epam.esm.validator.ParamValidator;
  */
 public class UserQueryBuilder {
 	private static final String PERCENT = "%";
-	
+
 	/**
 	 * Builds query find entity by parameters
 	 * 
-	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 * @param params          {@link Map} of {@link String} and {@link String}
+	 *                        parameters
 	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
 	 * @return {@link CriteriaQuery} of {@link User} query
 	 */
-	public static CriteriaQuery<User> buildQueryFindByParams(Map<String, String> params, 
+	public static CriteriaQuery<User> buildQueryFindByParams(Map<String, String> params,
 			CriteriaBuilder criteriaBuilder) {
 		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 		Root<User> userRoot = criteriaQuery.from(User.class);
@@ -45,29 +46,44 @@ public class UserQueryBuilder {
 	/**
 	 * Adds login to searching query
 	 * 
-	 * @param login {@link String} user login
+	 * @param login           {@link String} user login
 	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
-	 * @param userRoot {@link Root} of {@link User} root of query
+	 * @param userRoot        {@link Root} of {@link User} root of query
 	 * @return {@link Predicate} predicate
 	 */
 	private static Predicate addLogin(String login, CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
 		return criteriaBuilder.like(userRoot.get(USERS_LOGIN), PERCENT + login + PERCENT);
 	}
-	
+
 	/**
 	 * Adds sort type to query
 	 * 
-	 * @param params {@link Map} of {@link String} and {@link String} parameters
+	 * @param params          {@link Map} of {@link String} and {@link String}
+	 *                        parameters
 	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
-	 * @param userRoot {@link Root} of {@link User} root of query
+	 * @param userRoot        {@link Root} of {@link User} root of query
 	 * @return {@link Order} order
 	 */
 	private static Order addSort(Map<String, String> params, CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
 		ParamValidator.validateSortParam(params);
 		String sortBy = params.getOrDefault(SORT_BY, SortType.ID.toString().toLowerCase());
 		String orderBy = params.getOrDefault(ORDER_BY, OrderType.ASC.toString());
-		return (OrderType.valueOf(orderBy) == OrderType.ASC)
+		return (OrderType.valueOf(orderBy) == OrderType.ASC) 
 				? criteriaBuilder.asc(userRoot.get(sortBy))
 				: criteriaBuilder.desc(userRoot.get(sortBy));
+	}
+
+	/**
+	 * Builds query find entity by name
+	 * 
+	 * @param login           {@link String} user login
+	 * @param criteriaBuilder {@link CriteriaBuilder} criteria builder
+	 * @return {@link CriteriaQuery} of {@link User} query
+	 */
+	public static CriteriaQuery<User> buildQueryFindEntityByName(String login, CriteriaBuilder criteriaBuilder) {
+		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+		Root<User> userRoot = criteriaQuery.from(User.class);
+		criteriaQuery.select(userRoot).where(addLogin(login, criteriaBuilder, userRoot));
+		return criteriaQuery;
 	}
 }

@@ -1,5 +1,6 @@
 package com.epam.esm.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -15,10 +16,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
-	@Value("messages")
 	private String basename;
-	@Value("UTF-8")
 	private String encoding;
+
+	/**
+	 * Constructs a web configuration
+	 * 
+	 * @param basename {@link String} basename for resource
+	 * @param encoding {@link String} encoding
+	 */
+	@Autowired
+	public WebConfiguration(@Value("messages") String basename, @Value("UTF-8") String encoding) {
+		super();
+		this.basename = basename;
+		this.encoding = encoding;
+	}
 
 	/**
 	 * Creates bean MessageSource for working

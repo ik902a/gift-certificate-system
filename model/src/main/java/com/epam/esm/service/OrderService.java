@@ -11,16 +11,17 @@ import com.epam.esm.dto.PageDto;
  * @author Ihar Klepcha
  */
 public interface OrderService {
-	
+
 	/**
 	 * Creates order in database
 	 * 
-	 * @param userId is user id
-	 * @param giftCertificateMap {@link Map} of {@link String} and {@link Integer} map with gift certificate data
+	 * @param userId             is user id
+	 * @param giftCertificateMap {@link Map} of {@link String} and {@link Integer}
+	 *                           map with gift certificate data
 	 * @return {@link OrderDto} received from database
 	 */
 	OrderDto create(long userId, Map<String, Integer> giftCertificateMap);
-	
+
 	/**
 	 * Finds order by id
 	 * 

@@ -10,17 +10,18 @@ import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.PageDto;
 
 /**
- * The {@code PageGiftCertificateResponse} class describes the response page with certificates
+ * The {@code PageGiftCertificateResponse} class describes the response page
+ * with certificates
  * 
  * @author Ihar Klepcha
  * @see RepresentationModel
  */
 public class PageGiftCertificateResponse extends RepresentationModel<PageGiftCertificateResponse> {
 	private List<GiftCertificateResponse> content;
-    private long totalPages;
-    private long pageNumber;
-    
-    /**
+	private long totalPages;
+	private long pageNumber;
+
+	/**
 	 * Constructs a new page response
 	 */
 	public PageGiftCertificateResponse() {
@@ -30,7 +31,8 @@ public class PageGiftCertificateResponse extends RepresentationModel<PageGiftCer
 	/**
 	 * Constructs a new page response with the specified
 	 * 
-	 * @param content {@link List} of {@link GiftCertificateResponse} list entities
+	 * @param content    {@link List} of {@link GiftCertificateResponse} list
+	 *                   entities
 	 * @param totalPages contains number total pages
 	 * @param pageNumber contains number of page
 	 */
@@ -42,17 +44,17 @@ public class PageGiftCertificateResponse extends RepresentationModel<PageGiftCer
 	}
 
 	/**
-	 * Builds a new response 
+	 * Builds a new response
 	 * 
 	 * @param page {@link PageDto} of {@link GiftCertificateDto} list entities
 	 * @return {@link PageGiftCertificateResponse} response
 	 */
-    public static PageGiftCertificateResponse valueOf(PageDto<GiftCertificateDto> page) {
-    	List<GiftCertificateResponse> contentResponse = page.getContent()
-    			.stream()
-    			.map(giftCertificate -> GiftCertificateResponse.valueOf(giftCertificate))
-    			.collect(Collectors.toList());
-    	return new PageGiftCertificateResponse(contentResponse, page.getTotalPages(), page.getPageNumber());
+	public static PageGiftCertificateResponse valueOf(PageDto<GiftCertificateDto> page) {
+		List<GiftCertificateResponse> contentResponse = page.getContent()
+				.stream()
+				.map(giftCertificate -> GiftCertificateResponse.valueOf(giftCertificate))
+				.collect(Collectors.toList());
+		return new PageGiftCertificateResponse(contentResponse, page.getTotalPages(), page.getPageNumber());
 	}
 
 	public List<GiftCertificateResponse> getContent() {
@@ -99,13 +101,13 @@ public class PageGiftCertificateResponse extends RepresentationModel<PageGiftCer
 		return Objects.equals(content, other.content) && pageNumber == other.pageNumber
 				&& totalPages == other.totalPages;
 	}
-	
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nPage response{ content=").append(content);
+		sb.append("Page response{ content=").append(content);
 		sb.append(", totalPages=").append(totalPages);
 		sb.append(", pageNumber=").append(pageNumber).append(" }");
 		return sb.toString();
-	} 
+	}
 }

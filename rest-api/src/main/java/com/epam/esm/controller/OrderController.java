@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,19 +36,31 @@ import com.epam.esm.service.OrderService;
 @RequestMapping("/users/{userId}/orders")
 public class OrderController {
 	public static Logger log = LogManager.getLogger();
-	@Autowired
 	private OrderService orderService;
 
-	 /**
-     * Creates new order, processes POST requests at /users/{userId}/orders
-     *
-     * @param userId is user id
-     * @param giftCertificateMap {@link Map} of {@link String} and {@link Integer} data for creating order
-     * @return {@link OrderResponse} created order DTO
-     */
+	/**
+	 * Constructs a order controller
+	 * 
+	 * @param orderService {@link OrderService} service for order
+	 */
+	@Autowired
+	public OrderController(OrderService orderService) {
+		super();
+		this.orderService = orderService;
+	}
+
+	/**
+	 * Creates new order, processes POST requests at /users/{userId}/orders
+	 *
+	 * @param userId             is user id
+	 * @param giftCertificateMap {@link Map} of {@link String} and {@link Integer}
+	 *                           data for creating order
+	 * @return {@link OrderResponse} created order DTO
+	 */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public OrderResponse createOrder(@Positive  @PathVariable long userId, 
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public OrderResponse createOrder(@Positive @PathVariable long userId,
 			@RequestBody Map<String, @Positive Integer> giftCertificateMap) {
 		log.info("Creating Order");
 		OrderDto orderDtoCreated = orderService.create(userId, giftCertificateMap);
@@ -55,17 +68,19 @@ public class OrderController {
 		OrderHateoasUtil.addLinks(response);
 		return response;
 	}
-	
+
 	/**
 	 * Gets order by user id, processes GET requests at /users/{id}/orders
 	 *
-	 * @param userId is user id
-     * @param giftCertificateMap {@link Map} of {@link String} and {@link String} data for searching orders
+	 * @param userId             is user id
+	 * @param giftCertificateMap {@link Map} of {@link String} and {@link String}
+	 *                           data for searching orders
 	 * @return {@link PageOrderResponse} founded orders
 	 */
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public PageOrderResponse getOrdersByUser(@Positive @PathVariable long userId, 
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public PageOrderResponse getOrdersByUser(@Positive @PathVariable long userId,
 			@RequestParam Map<String, String> params) {
 		log.info("Finding Orders by user");
 		PageDto<OrderDto> pageDto = orderService.findOrdersByUser(userId, params);
@@ -74,7 +89,7 @@ public class OrderController {
 		OrderHateoasUtil.addLinkOnPagedResourceRetrieval(response, userId, params);
 		return response;
 	}
-	
+
 	/**
 	 * Gets order by id, processes GET requests at /users/{userId}/orders/{id}
 	 *
@@ -83,6 +98,7 @@ public class OrderController {
 	 */
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public OrderResponse getOrderById(@Positive @PathVariable long id) {
 		log.info("Finding Order by id");
 		OrderDto orderDto = orderService.findById(id);
