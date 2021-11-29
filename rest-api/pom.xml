@@ -8,46 +8,43 @@
 		<groupId>com.epam.esm</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+
 	<artifactId>rest-api</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>rest-api Maven Webapp</name>
 	<url>http://www.example.com</url>
-	
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring.boot.version>2.5.5</spring.boot.version>
-		<jsonwebtoken.version>0.9.1</jsonwebtoken.version>
-	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.epam.esm</groupId>
 			<artifactId>model</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
-			<version>${spring.boot.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
-			<version>${jsonwebtoken.version}</version>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<finalName>rest-api</finalName>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>3.2.2</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
+
 </project>
