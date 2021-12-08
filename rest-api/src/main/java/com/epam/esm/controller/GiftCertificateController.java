@@ -57,8 +57,8 @@ public class GiftCertificateController {
 	@GetMapping("/health-check")
 	@ResponseStatus(HttpStatus.OK)
 	public String healthCheck() {
-		log.info("Controller is worcking");
-		return "Health check is worcking!";
+		log.info("Controller is working");
+		return "Health check is working!";
 	}
 
 	/**
