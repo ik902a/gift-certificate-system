@@ -30,6 +30,8 @@ CREATE TABLE IF NOT EXISTS gift_certificates_tags (
 CREATE TABLE IF NOT EXISTS users (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `login` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(60) NOT NULL,
+  `role` VARCHAR(45) NULL,
   PRIMARY KEY (`id`));
 
 CREATE TABLE IF NOT EXISTS orders (

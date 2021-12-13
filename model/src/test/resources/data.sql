@@ -14,9 +14,9 @@ INSERT INTO tags (id, name) VALUES ('3', 'tag3');
 INSERT INTO gift_certificates_tags (gift_certificate_id, tag_id) VALUES ('2', '1');
 INSERT INTO gift_certificates_tags (gift_certificate_id, tag_id) VALUES ('2', '3');
 
-INSERT INTO users (id, login) VALUES ('1', 'user1');
-INSERT INTO users (id, login) VALUES ('2', 'user2');
-INSERT INTO users (id, login) VALUES ('3', 'user3');
+INSERT INTO users (id, login, password, role) VALUES ('1', 'user1', 'password', 'ROLE_USER');
+INSERT INTO users (id, login, password, role) VALUES ('2', 'user2', 'password', 'ROLE_USER');
+INSERT INTO users (id, login, password, role) VALUES ('3', 'user3', 'password', 'ROLE_USER');
 
 INSERT INTO orders (id, date, cost, user_id) VALUES ('1', '2021-08-12T08:12:15', 55.55, 1);
 INSERT INTO orders (id, date, cost, user_id) VALUES ('2', '2021-08-12T08:12:15', 45.45, 1);

@@ -3,7 +3,7 @@ package com.epam.esm.dao.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public class UserDaoImplTest {
 
 	@Test
 	public void findTest() {
-		List<User> userList = userDao.find(Collections.<String, String>emptyMap());
+		List<User> userList = userDao.find(new HashMap<String, String>());
 		assertTrue(userList.size() == 3);
 	}
 
@@ -39,8 +39,8 @@ public class UserDaoImplTest {
 		user.setId(1L);
 		user.setLogin("user1");
 
-		Optional<User> actual = userDao.findEntityById(1);
+		Optional<User> actual = userDao.findEntityById(1L);
 
-		assertEquals(Optional.of(user), actual);
+		assertEquals(user.getId(), actual.get().getId());
 	}
 }

@@ -1,6 +1,7 @@
 package com.epam.esm.dao.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -56,7 +57,7 @@ public class OrderDaoImplTest {
 
 		Optional<Order> actual = orderDao.findEntityById(1);
 
-		assertEquals(Optional.of(order), actual);
+		assertEquals(order.getId(), actual.get().getId());
 	}
 
 	@Test
@@ -85,6 +86,6 @@ public class OrderDaoImplTest {
 
 		List<Order> actual = orderDao.findOrdersByUser(user, new HashMap<String, String>());
 
-		assertEquals(List.of(order), actual);
+		assertTrue(actual.size() == 1);
 	}
 }
