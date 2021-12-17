@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,7 @@ import com.epam.esm.configuration.TestConfiguration;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
 
+@Disabled
 @SpringBootTest(classes = TestConfiguration.class)
 @Transactional
 public class TagDaoImplTest {

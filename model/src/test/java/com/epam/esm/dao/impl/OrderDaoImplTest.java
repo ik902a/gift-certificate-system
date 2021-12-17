@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,7 @@ import com.epam.esm.entity.GiftCertificateOrderKey;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
 
+@Disabled
 @SpringBootTest(classes = TestConfiguration.class)
 @Transactional
 public class OrderDaoImplTest {
