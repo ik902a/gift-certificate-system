@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>rest-api</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>rest-api Maven Webapp</name>
 	<url>http://www.example.com</url>
 
