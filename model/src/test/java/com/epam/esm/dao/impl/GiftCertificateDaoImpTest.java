@@ -25,9 +25,10 @@ import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 
-@Disabled
+//@Disabled
 @SpringBootTest(classes = TestConfiguration.class)
 @Transactional
+
 public class GiftCertificateDaoImpTest {
 	private GiftCertificateDao giftCertificateDao;
 

@@ -63,10 +63,9 @@
 
 
 	<properties>
-
 		<jacoco.version>0.8.7</jacoco.version>
-
 	</properties>
+	
 	<build>
 		<finalName>model</finalName>
 		<plugins>
@@ -87,7 +86,6 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-
 		</plugins>
 	</build>
 </project>

@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -33,14 +35,6 @@ import com.epam.esm.dto.PageDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.exception.ResourceNotExistException;
 
-//@Disabled
-//@AutoConfigureMockMvc
-//@ContextConfiguration(initializers = WireMockInitializer.class)
-//@ConfigurationProperties(prefix = "test")
-//@WebMvcTest
-//@ExtendWith(MockitoExtension.class)
-
-                
 @SpringBootTest(classes = ModelConfiguration.class)
 public class GiftCertificateServiceImplTest {
 	@MockBean
